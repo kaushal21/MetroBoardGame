@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-public class Board extends Metro {
+public class Board {
     public static void initializeBoard() {
 
     }
