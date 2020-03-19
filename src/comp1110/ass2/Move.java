@@ -8,6 +8,6 @@ public class Move {
 
     }
     public static void updatePlacementSequence() {
-        
+
     }
 }
