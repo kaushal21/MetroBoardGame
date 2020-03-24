@@ -47,6 +47,10 @@ public class Metro {
      */
     public static String drawFromDeck(String placementSequence) {
         // FIXME Task 5: draw a random tile from the deck
+        
+        // remove all tiles in the placement sequence from the deck (can't place a tile that you have already placed)
+        // get a random tile from the updated deck
+
         return "";
     }
 
