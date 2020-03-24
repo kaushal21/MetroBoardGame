@@ -6,6 +6,7 @@ public class Player {
     String currentHand = "";
 
     public static void switchTurn() {
+        // this might end up going in the viewer class depending on how the UI works
 
     }
     public static void canPickUpTile() {
