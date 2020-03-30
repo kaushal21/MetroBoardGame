@@ -52,7 +52,6 @@ public class Metro {
         
         // remove all tiles in the placement sequence from the deck (can't place a tile that you have already placed)
         // get a random tile from the updated deck
-
         return "";
     }
 
