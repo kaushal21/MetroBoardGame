@@ -4,14 +4,14 @@ package comp1110.ass2;
  * This class represents the Move that any player make in the Metro game.
  */
 public class Move {
-    String currentTile;             // Current Tile in current PLayers hand.
+    String totalHands;             // Current Tiles in current PLayers hand.
 
     /**
      * Draws from the deck.
      * @return the currentTile drawn form the deck.
      */
-    public static String drawFromDeck(String[] deck, int top, String currentTile) {
-        currentTile = Tile.pop(deck, top);
+    public static String drawFromDeck(String[] deck, int top) {
+        String currentTile = Tile.pop(deck, top);
         return currentTile;
     }
 
