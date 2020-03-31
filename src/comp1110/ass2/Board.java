@@ -17,12 +17,21 @@ package comp1110.ass2;
  * +-----(9,0)-----(9,1)--(9,2)--(9,3)--(9,4)--(9,5)--(9,6)--(9,7)--(9,8)-----(9,9)-----+
  */
 public class Board {
-    public static void initializeBoard() {
+    String tilePlacement;
+
+    /**
+     * Initialize the Board i.e. Place an empty board with the a empty placementSequence.
+     */
+    public Board() {
     }
 
+    /**
+     */
     public static void allocateStations() {
     }
 
+    /**
+     */
     public static void updateBoardState() {
     }
 }
