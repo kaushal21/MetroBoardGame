@@ -8,7 +8,7 @@ public class Player {
     int players;                    // Number of players from 2 to 6
     int currentPlayer;              // Player range 0 to (players-1) i.e. 5
     String[] tileInHand;            // Tile in players hand from range 0 to (players-1) i.e. 5
-    int[] totalTilesInHand;         // Total number of tiles in hand of a players from range 0 to (players-1) i.e. 5
+    int[] totalTilesInHand;         // Total number of tiles in hand of a player from range 0 to (players-1) i.e. 5
 
     /**
      * The number of playing the game is taken as an input from the user.

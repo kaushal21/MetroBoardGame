@@ -7,12 +7,11 @@ public class Move {
     String totalHands;             // Current Tiles in current PLayers hand.
 
     /**
-     * Draws from the deck.
-     * @return the currentTile drawn form the deck.
+     * Check the Tile Placement is valid or not.
+     * @return true if the tile is placed correctly, otherwise it returns false.
      */
-    public static String drawFromDeck(String[] deck, int top) {
-        String currentTile = Tile.pop(deck, top);
-        return currentTile;
+    public static boolean checkTilePlacement(String tilePlacement) {
+        return true;
     }
 
     /**

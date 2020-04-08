@@ -8,8 +8,8 @@ import java.util.*;
  * 2.> "top" - location of the top most tile which is ready to be popped.
  */
 public class Tile {
-    String[] deck = new String[60];
-    int top;
+    public static String[] deck = new String[60];
+    public static int top;
 
     /**
      * The implementation of the Deck is done as a Stack.
@@ -39,12 +39,13 @@ public class Tile {
                 deck[top++] = copies2[j];
             }
         }
+        randomiseDeck();
     }
 
     /**
      * Take the deck and shuffle it to create a randomized list of all the tiles
      */
-    public static void randomiseDeck(String[] deck) {
+    public static void randomiseDeck() {
         // Convert the Array of String into a List of String
         List<String> strList = Arrays.asList(deck);
 
@@ -60,7 +61,7 @@ public class Tile {
      * if there is nothing in deck i.e. top = 0.
      * @return true if the deck is empty, otherwise return false.
      */
-    public static boolean checkDeckEmpty(int top) {
+    public static boolean checkDeckEmpty() {
         return top > 0;
     }
 
@@ -69,7 +70,7 @@ public class Tile {
      * if "top" is 0 then it returns error.
      * @return the top most tile in the deck. Reduce the top by 1.
      */
-    public static String pop(String[] deck, int top) {
+    public static String pop() {
         return deck[--top];
     }
 

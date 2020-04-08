@@ -20,7 +20,7 @@ public class Board {
     String tilePlacement;
 
     /**
-     * Initialize the Board i.e. Place an empty board with the a empty placementSequence.
+     * Initialize the Board i.e. Place an empty board with an empty placementSequence.
      */
     public Board() {
     }
