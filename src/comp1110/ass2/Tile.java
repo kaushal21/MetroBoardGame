@@ -74,25 +74,5 @@ public class Tile {
         return deck[--top];
     }
 
-    /*
-    public static void main(String[] args) {
-        // Used to create the Constructor. That initialize the deck with all the tiles.
-        Tile n = new Tile();
-
-        // Randomize the deck of tiles
-        n.randomiseDeck();
-
-        // pop the last tile from the deck
-        String last = n.pop();
-        System.out.println(n.top);
-        System.out.println(last);
-        last = n.pop();
-        System.out.println(n.top);
-        System.out.println(last);
-    }
-    */
 }
-
-
-
 

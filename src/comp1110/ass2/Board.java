@@ -20,17 +20,13 @@ public class Board {
     String tilePlacement;
 
     /**
-     * Initialize the Board i.e. Place an empty board with an empty placementSequence.
+     * Initialize the Board i.e. Place an empty board with an empty placementSequence. Used in GUI.
      */
     public Board() {
     }
 
     /**
-     */
-    public static void allocateStations() {
-    }
-
-    /**
+     * Update the board State. This maybe used in the GUI stage. not clear yet.
      */
     public static void updateBoardState() {
     }
