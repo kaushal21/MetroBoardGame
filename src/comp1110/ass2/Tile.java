@@ -59,7 +59,7 @@ public class Tile {
     /**
      * Check for the termination condition of the deck i.e.
      * if there is nothing in deck i.e. top = 0.
-     * @return true if the deck is empty, otherwise return false.
+     * @return true if the deck is not empty, otherwise return false.
      */
     public static boolean checkDeckEmpty() {
         return top > 0;

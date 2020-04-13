@@ -54,9 +54,66 @@ public class Metro {
      */
     public static String drawFromDeck(String placementSequence, String totalHands) {
         // FIXME Task 5: draw a random tile from the deck
-        if ( !Tile.checkDeckEmpty() )
-            return Tile.pop();
-        return "";
+        // Create a new Tile variable that holds a deck and its top location.
+        Tile updatedDeck = new Tile();
+
+        // Store the number of tiles that are already placed and are in hand
+        int numberOfPlacedTiles = placementSequence.length() / 6;
+        int numberOfTilesInHand = totalHands.length() / 4;
+
+        // If the passed strings are not null then. i.e. there are some already placed tiles or some in hand
+        if ( placementSequence.length() != 0 || totalHands.length() != 0 ) {
+            // Create a list to store already placed tiles
+            String[] placedTiles = new String[numberOfPlacedTiles + numberOfTilesInHand];
+
+            // Store the tiles from the placementSequence to the newly created array.
+            for(int i = 0; i < numberOfPlacedTiles; i++) {
+                placedTiles[i] = placementSequence.substring(i*6, (i*6)+6);
+                placedTiles[i] = placedTiles[i].substring(0, 4);
+            }
+
+            // Store the tiles from the totalHands to the newly created array.
+            for(int i = numberOfPlacedTiles, k = 0; i < numberOfPlacedTiles + numberOfTilesInHand; i++, k++) {
+                placedTiles[i] = totalHands.substring(k*4, (k*4) + 4);
+            }
+
+            // Update the deck i.e. swap the tile that is there in the placedTiles to the last location in the deck.
+            for (String out: placedTiles){
+                updateDeck(updatedDeck, out);
+            }
+        }
+
+        // Create a String variable that will store the returning string
+        String temp = "";
+        // Check if the deck is empty or not
+        if ( Tile.checkDeckEmpty() ) {
+            temp = Tile.pop();
+        }
+        // Return the string that is top most tile in the deck.
+        return temp;
+    }
+
+    /**
+     * This function updated the passed deck by swapping the last location to that of string,
+     * and then update the top value.
+     * @param deck this is the Tile variable.
+     * @param alreadyPlacedTile this is the string which is already present either in the placementSequence or totalHands.
+     */
+    static void updateDeck ( Tile deck, String alreadyPlacedTile ) {
+        // Check the complete deck from starting to the last location i.e. top
+        for(int i = 0; i < Tile.top; i++) {
+
+            // if this tile is matched with the passed tile then swap these two
+            if ( Tile.deck[i].equals(alreadyPlacedTile) ) {
+
+                // Updating the top location and storing the value in a variable.
+                int lastLocation = --Tile.top;
+                String temp = Tile.deck[lastLocation];
+                Tile.deck[lastLocation] = Tile.deck[i];
+                Tile.deck[i] = temp;
+                return;
+            }
+        }
     }
 
     /**
