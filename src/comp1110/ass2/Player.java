@@ -1,30 +1,26 @@
 package comp1110.ass2;
-import java.util.*;
 
 /**
  * This class represents the Players in the Metro game.
  */
 public class Player {
-    public static int players;                    // Number of players from 2 to 6
-    public static int[][] stations;               // Stations allocated to the players
-    public static int currentPlayer;              // Player range 0 to (players-1) i.e. 5
-    String[] tileInHand;            // Tile in players hand from range 0 to (players-1) i.e. 5
-    int[] totalTilesInHand;         // Total number of tiles in hand of a player from range 0 to (players-1) i.e. 5
+    int players;                    // Number of players from 2 to 6
+    int[][] stations;               // Stations allocated to the players
+    int currentPlayer;              // Player range 0 to (players-1) i.e. 5
+    String[] tileInHand;            // For all the players it Stores the tile in hand of the players
 
     /**
      * The number of playing the game is taken as an input from the user.
      * Players are initialized with the current player being 1.
      */
-    public Player() {
-        Scanner z = new Scanner ( System.in );
-        System.out.print("Enter Number of Players: ");
-        players = z.nextInt();
+    public Player(int n) {
+        players = n;
         currentPlayer = 0;
         tileInHand = new String[players];
-        totalTilesInHand = new int[players];
         for(int i = 0; i < players; i++) {
-            totalTilesInHand[i] = 0;
+            tileInHand[i] = null;
         }
+        allocateStations(players);
     }
 
     /**
@@ -71,7 +67,7 @@ public class Player {
      * player 5 owns 3, 9, 13, 23, 30
      * player 6 owns 7, 12, 22, 28, 32
      */
-    public static void allocateStations() {
+    public void allocateStations(int players) {
         switch ( players ) {
             case 2:
                 stations = new int[2][];
@@ -126,6 +122,51 @@ public class Player {
             default:
                 return false;
         }
+    }
+
+    /**
+     * @return It returns the number of players in the Metro game
+     */
+    public int getPlayers () {
+        return players;
+    }
+
+    /**
+     * @return It return the currentPlayer.
+     */
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    /**
+     * @param currPlayer Sets the currentPlayer to the passed integer
+     */
+    public void setCurrentPlayer(int currPlayer) {
+        currentPlayer = currPlayer;
+    }
+
+    /**
+     * @param currentPlayer the currentPlayer for which we need to check the hand
+     * @return String value i.e. the tile in Hand of the current player.
+     */
+    public String getTileInHand (int currentPlayer) {
+        return tileInHand[currentPlayer];
+    }
+
+    /**
+     * @param currentPlayer The current Player for which we are storing the tile
+     * @param tile the Tile which is picked from the deck, and player is keeping it in his/her hand
+     */
+    public void setTileInHand (int currentPlayer, String tile) {
+        tileInHand[currentPlayer] = tile;
+    }
+
+    /**
+     * @param currentPlayer the currentPlayer for which we want the stations allocated to him/her
+     * @return the stations that are allocated to him/her in a integer array
+     */
+    public int[] getStations (int currentPlayer) {
+        return stations[currentPlayer];
     }
 
 }

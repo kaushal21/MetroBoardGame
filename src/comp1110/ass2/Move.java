@@ -34,7 +34,9 @@ public class Move {
         if ( temp == 1 ) {
             int t1 = Integer.parseInt(String.valueOf(tilePlacement.charAt(4)));
             int t2 = Integer.parseInt(String.valueOf(tilePlacement.charAt(5)));
-            return (t1 < 8 && t1 >= 0) && (t2 < 8 && t2 >= 0);
+            if ( (t1 < 8 && t1 >= 0) && (t2 < 8 && t2 >= 0) ) {
+                return (t1 != 3 || t2 != 3) && (t1 != 3 || t2 != 4) && (t1 != 4 || t2 != 3) && (t1 != 4 || t2 != 4);
+            }
         }
         return false;
     }

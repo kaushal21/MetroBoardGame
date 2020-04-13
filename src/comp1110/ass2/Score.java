@@ -14,8 +14,8 @@ public class Score {
     /**
      * This constructor initializes the scores for each player in the game
      */
-    public Score () {
-        score = new int[Player.players];
+    public Score (int players) {
+        score = new int[players];
         Arrays.fill(score, 0);
     }
 
