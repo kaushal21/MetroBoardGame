@@ -8,8 +8,8 @@ import java.util.*;
  * 2.> "top" - location of the top most tile which is ready to be popped.
  */
 public class Tile {
-    public static String[] deck = new String[60];
-    public static int top;
+    String[] deck = new String[60];
+    int top;
 
     /**
      * The implementation of the Deck is done as a Stack.
@@ -43,9 +43,23 @@ public class Tile {
     }
 
     /**
+     * @return The top location of deck
+     */
+    public int getTop () {
+        return this.top;
+    }
+
+    /**
+     * @return The tile at passed position in deck
+     */
+    public String getDeck (int pos) {
+        return deck[pos];
+    }
+
+    /**
      * Take the deck and shuffle it to create a randomized list of all the tiles
      */
-    public static void randomiseDeck() {
+    public void randomiseDeck() {
         // Convert the Array of String into a List of String
         List<String> strList = Arrays.asList(deck);
 
@@ -61,7 +75,7 @@ public class Tile {
      * if there is nothing in deck i.e. top = 0.
      * @return true if the deck is not empty, otherwise return false.
      */
-    public static boolean checkDeckEmpty() {
+    public boolean checkDeckEmpty() {
         return top > 0;
     }
 
@@ -70,8 +84,30 @@ public class Tile {
      * if "top" is 0 then it returns error.
      * @return the top most tile in the deck. Reduce the top by 1.
      */
-    public static String pop() {
+    public String pop() {
         return deck[--top];
+    }
+
+    /**
+     * This function updated the passed deck by swapping the last location to that of string,
+     * and then update the top value.
+     * @param alreadyPlacedTile this is the string which is already present either in the placementSequence or totalHands.
+     */
+    public void updateDeck ( String alreadyPlacedTile ) {
+        // Check the complete deck from starting to the last location i.e. top
+        for(int i = 0; i < this.top; i++) {
+
+            // if this tile is matched with the passed tile then swap these two
+            if ( this.deck[i].equals(alreadyPlacedTile) ) {
+
+                // Updating the top location and storing the value in a variable.
+                int lastLocation = --this.top;
+                String temp = this.deck[lastLocation];
+                this.deck[lastLocation] = this.deck[i];
+                this.deck[i] = temp;
+                return;
+            }
+        }
     }
 
 }

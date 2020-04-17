@@ -24,18 +24,6 @@ public class Player {
     }
 
     /**
-     * switch the "currentPlayer" in a round robin fashion
-     * Increment the currentPlayer and if it exceeds the players then bring it back to 1.
-     */
-    public static int switchTurn(int players, int currentPlayer) {
-        // this might end up going in the viewer class depending on how the UI works
-        currentPlayer++;
-        if(currentPlayer >= players)
-            currentPlayer = 0;
-        return currentPlayer;
-    }
-
-    /**
      * It allocates the stations to the players depending upon the number of players
      * 2 players:
      * player 1 owns 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31
@@ -108,23 +96,6 @@ public class Player {
     }
 
     /**
-     * Check if the player can pick the tile. That is follow the condition.
-     * 1.> If both the hands are free i.e. totalTilesInHand is 0.
-     * 2.> If the player have a tile in one hand. And the other is empty.  i.e. totalTilesInHand is 1.
-     * If the player already have a tile in hand and pick another one from deck then place the picked tile.
-     * @return true if can pickup a new tile from deck, otherwise return false.
-     */
-    public static boolean canPickUpTile(int[] totalTilesInHand, int currentPlayer) {
-        switch ( totalTilesInHand[currentPlayer] ) {
-            case 0:
-            case 1:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    /**
      * @return It returns the number of players in the Metro game
      */
     public int getPlayers () {
@@ -139,18 +110,26 @@ public class Player {
     }
 
     /**
-     * @param currPlayer Sets the currentPlayer to the passed integer
-     */
-    public void setCurrentPlayer(int currPlayer) {
-        currentPlayer = currPlayer;
-    }
-
-    /**
      * @param currentPlayer the currentPlayer for which we need to check the hand
      * @return String value i.e. the tile in Hand of the current player.
      */
     public String getTileInHand (int currentPlayer) {
         return tileInHand[currentPlayer];
+    }
+
+    /**
+     * @param currentPlayer the currentPlayer for which we want the stations allocated to him/her
+     * @return the stations that are allocated to him/her in a integer array
+     */
+    public int[] getStations (int currentPlayer) {
+        return stations[currentPlayer];
+    }
+
+    /**
+     * @param currPlayer Sets the currentPlayer to the passed integer
+     */
+    public void setCurrentPlayer(int currPlayer) {
+        currentPlayer = currPlayer;
     }
 
     /**
@@ -162,11 +141,32 @@ public class Player {
     }
 
     /**
-     * @param currentPlayer the currentPlayer for which we want the stations allocated to him/her
-     * @return the stations that are allocated to him/her in a integer array
+     * switch the "currentPlayer" in a round robin fashion
+     * Increment the currentPlayer and if it exceeds the players then bring it back to 1.
      */
-    public int[] getStations (int currentPlayer) {
-        return stations[currentPlayer];
+    public int switchTurn(int players, int currentPlayer) {
+        // this might end up going in the viewer class depending on how the UI works
+        currentPlayer++;
+        if(currentPlayer >= players)
+            currentPlayer = 0;
+        return currentPlayer;
+    }
+
+    /**
+     * Check if the player can pick the tile. That is follow the condition.
+     * 1.> If both the hands are free i.e. totalTilesInHand is 0.
+     * 2.> If the player have a tile in one hand. And the other is empty.  i.e. totalTilesInHand is 1.
+     * If the player already have a tile in hand and pick another one from deck then place the picked tile.
+     * @return true if can pickup a new tile from deck, otherwise return false.
+     */
+    public boolean canPickUpTile(int[] totalTilesInHand, int currentPlayer) {
+        switch ( totalTilesInHand[currentPlayer] ) {
+            case 0:
+            case 1:
+                return true;
+            default:
+                return false;
+        }
     }
 
 }
