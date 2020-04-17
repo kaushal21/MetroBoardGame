@@ -39,6 +39,7 @@ public class Move {
             int t1 = Integer.parseInt(String.valueOf(tilePlacement.charAt(4)));
             int t2 = Integer.parseInt(String.valueOf(tilePlacement.charAt(5)));
             if ( (t1 < 8 && t1 >= 0) && (t2 < 8 && t2 >= 0) ) {
+                // checks if the tile is in the middle 4 squares which would be it invalid.
                 return (t1 != 3 || t2 != 3) && (t1 != 3 || t2 != 4) && (t1 != 4 || t2 != 3) && (t1 != 4 || t2 != 4);
             }
         }
@@ -71,7 +72,7 @@ public class Move {
         String[] copies3 = {"cbcb", "bcbc"};
         String[] copies2 = {"cccc", "bbbb", "dacc", "cdac", "ccda", "accd", "dbba", "adbb", "badb", "bbad", "ddbc",
                 "cddb", "bcdd", "dbcd", "adad", "dada", "dddd"};
-        // Stores the number of times the tile has appeared in "placement" string
+        // Stores the number of times each tile has appeared in "placement" string
         int[] copies4count = new int[5];
         int[] copies3count = new int[2];
         int[] copies2count = new int[17];
