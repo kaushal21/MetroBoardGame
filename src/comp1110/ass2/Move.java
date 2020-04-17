@@ -4,7 +4,7 @@ package comp1110.ass2;
  * This class represents the Move that any player make in the Metro game.
  */
 public class Move {
-    String totalHands;             // Current Tiles in current PLayers hand.
+    Board board = new Board();
 
     /**
      * Check the Tile Placement is correct or not. It checks the following conditions:
@@ -13,7 +13,7 @@ public class Move {
      * 3.> The position of the tile in tilePlacement is valid position i.e. x and y lie between 0 and 7.
      * @return true if the tilePlacement is correct, otherwise it returns false.
      */
-    public static boolean checkTilePlacement(String tilePlacement) {
+    public boolean checkTilePlacement(String tilePlacement) {
         // Check if the piecePlacement is not of an accurate size
         if ( tilePlacement.length() != 6 )
             return false;
@@ -21,9 +21,12 @@ public class Move {
         // Divide the piecePlacement's string part to check for the valid tile.
         String piece = tilePlacement.substring(0, 4);
         int temp = 0;
+
+        // Create a Tile variable to check if the passed string is in the deck or not
+        Tile tile = new Tile();
         // Iterate the deck to look for the tile. If it isn't there then it means the tile is wrong and return false.
-        for (int i = Tile.top -1; i >= 0; i--) {
-            if ( piece.equals(Tile.deck[i]) ) {
+        for (int i = tile.top -1; i >= 0; i--) {
+            if ( piece.equals(tile.deck[i]) ) {
                 temp = 1;
                 break;
             }
@@ -31,6 +34,7 @@ public class Move {
 
         // If the tile was there in the deck, then temp will be 1.
         // Check for the next 2 integers. if within the range of 0 to 7 then return true, otherwise return false.
+        // Also, the passed values for row and col shouldn't be equal to the center station.
         if ( temp == 1 ) {
             int t1 = Integer.parseInt(String.valueOf(tilePlacement.charAt(4)));
             int t2 = Integer.parseInt(String.valueOf(tilePlacement.charAt(5)));
@@ -43,14 +47,6 @@ public class Move {
     }
 
     /**
-     * Update the Tile Placement.
-     * @return the updated tilePlacement string with the new tile and its location.
-     */
-    public static String updateTilePlacement() {
-        return "";
-    }
-
-    /**
      * Check the Placement Sequence String. It checks the following in the string
      * 1.> The length of the placementSequence is not greater than 60 tiles.
      * 2.> All the tiles are valid in the placementSequence
@@ -58,7 +54,7 @@ public class Move {
      * 4.> Number of times the same tile appear in the placementSequence.
      * @return true if the placementSequence string is correct, otherwise it returns false.
      */
-    public static boolean checkPlacementSequence( String placement ) {
+    public boolean checkPlacementSequence( String placement ) {
         // Check if the length of the placement string is greater than maximum length or is of uneven length
         if ( placement.length() / 6 > 60 || placement.length() % 6 != 0 )
             return false;
@@ -141,8 +137,299 @@ public class Move {
      * Update the Placement Sequence.
      * @return the updated placementSequence string with the new tilePlacement and its location.
      */
-    public static String updatePlacementSequence() {
-        return "";
+    public String updatePlacementSequence ( String placementSequence, String tile ) {
+        String temp = "";
+        if (isPlacementSequenceValid(placementSequence))
+            if (checkTilePlacement(tile))
+                temp = placementSequence + tile;
+        return temp;
+    }
+
+    /**
+     * This checks the validity of the placementSequence passed.
+     * It generates the board string for the passed placementSequence.
+     * @param placementSequence it is the string for all the tiles that are placed on the board
+     * @return true if the placementSequence is valid, otherwise return false
+     */
+    public boolean isPlacementSequenceValid ( String placementSequence ) {
+        // Check if the passed string is correct placementSequence string
+        if ( !checkPlacementSequence(placementSequence) )
+            return false;
+
+        // Get the number of tiles in the placementSequence
+        int numberOfTiles = placementSequence.length() / 6;
+        String[] tiles = new String[numberOfTiles];
+
+        // For each tile in the placementSequence check if it's a valid placement and update the board
+        for(int i = 0; i < numberOfTiles; i++) {
+            // Divide the string into pieces i.e. tile value and its location row and col.
+            tiles[i] = placementSequence.substring(i*6, (i*6)+6);
+            String currentTile = tiles[i].substring(0, 4);
+            int row = Integer.parseInt(String.valueOf(tiles[i].charAt(4)));
+            int col = Integer.parseInt(String.valueOf(tiles[i].charAt(5)));
+
+            // Get the upper, lower, right and left values for the given location
+            int top_row = row - 1, left_col = col - 1, right_col = col + 1, bottom_row = row + 1;
+            int t, b, l, r;
+
+            // Check if the location is already occupied, and we are not trying to overlap tiles
+            if ( board.getBoard(row, col) == 1 ) {
+                return false;
+            }
+
+            // Check if the location is overlapping the center stations
+            if ( ( row >= 3 && row <= 4 ) && ( col >= 3 && col <= 4 ) ) {
+                return false;
+            }
+
+            // Check if the tile is placed at the edge of central station and shares a boundary with other tile
+            if ( ( row >= 2 && row <= 5 ) && ( col >= 2 && col <= 5 ) ) {
+                t = 0;
+                l = 0;
+                r = 0;
+                b = 0;
+
+                // Check if the top position has a tile
+                if ( board.getBoard(top_row, col) == 1 )
+                    t = 1;
+                // Check if the bottom position has a tile
+                if ( board.getBoard(bottom_row, col) == 1 )
+                    b = 1;
+                // Check if the left position has a tile
+                if ( board.getBoard(row, left_col) == 1 )
+                    l = 1;
+                // Check if the right position has a tile
+                if ( board.getBoard(row, right_col) == 1 )
+                    r = 1;
+
+                // If none of the those position has a tile, then return false
+                if ( t != 1 && b != 1 && l != 1 && r != 1 )
+                    return false;
+            }
+
+            // Check if the tile is placed at an edge of the board. Also, allow the first tile from the deck to be placed here without any condition
+            if ( ( ( ( row == 0 || row == 7 ) && col <= 7 ) || ( ( col == 0 || col == 7 ) && row <= 7 ) ) && i != 0 ) {
+                // Check if its not a corner of the board.
+                if ( !( ( row == 0 && col == 0 ) || ( row == 0 && col == 7 ) || ( row == 7 && col == 0 ) || ( row == 7 && col == 7 ) ) ) {
+                    // Check for a loop at the top edge of the board
+                    if (row == 0 && currentTile.charAt(0) == 'd') {
+                        // return false if there is an empty place within the board which is also not an edge.
+                        for (int j = 1; j < 7; j++) {
+                            for (int k = 1; k < 7; k++) {
+                                if (board.getBoard(j, k) == 0) {
+                                    return false;
+                                }
+                            }
+                        }
+                        // Also, check if the there is no other empty position on other edges where it can be placed
+                        // Check on the left edge of the board
+                        for (int j = 1; j < 7; j++) {
+                            if ( board.getBoard(j,0) == 0 && currentTile.charAt(3) != 'd') {
+                                return false;
+                            }
+                        }
+                        // Check on the right edge of the board
+                        for (int j = 1; j < 7; j++) {
+                            if ( board.getBoard(j,7) == 0 && currentTile.charAt(1) != 'd') {
+                                return false;
+                            }
+                        }
+                        // Check on the bottom edge of the board
+                        for (int j = 0; j < 8; j++) {
+                            if ( board.getBoard(7, j) == 0 && currentTile.charAt(2) != 'd') {
+                                return false;
+                            }
+                        }
+                    }
+
+                    // Check for a loop at the bottom edge of the board
+                    if (row == 7 && currentTile.charAt(2) == 'd') {
+                        // return false if there is an empty place within the board which is also not an edge.
+                        for (int j = 1; j < 7; j++) {
+                            for (int k = 1; k < 7; k++) {
+                                if (board.getBoard(j, k) == 0) {
+                                    return false;
+                                }
+                            }
+                        }
+                        // Also, check if the there is no other empty position on other edges where it can be placed
+                        // Check on the left edge of the board
+                        for (int j = 1; j < 7; j++) {
+                            if ( board.getBoard(j,0) == 0 && currentTile.charAt(3) != 'd') {
+                                return false;
+                            }
+                        }
+                        // Check on the right edge of the board
+                        for (int j = 1; j < 7; j++) {
+                            if ( board.getBoard(j,7) == 0 && currentTile.charAt(1) != 'd') {
+                                return false;
+                            }
+                        }
+                        // Check on the top edge of the board
+                        for (int j = 0; j < 8; j++) {
+                            if ( board.getBoard(0, j) == 0 && currentTile.charAt(0) != 'd') {
+                                return false;
+                            }
+                        }
+                    }
+
+                    // Check for a loop at the left edge of the board
+                    if (col == 0 && currentTile.charAt(3) == 'd') {
+                        // return false if there is an empty place within the board which is also not an edge.
+                        for (int j = 1; j < 7; j++) {
+                            for (int k = 1; k < 7; k++) {
+                                if (board.getBoard(j, k) == 0) {
+                                    return false;
+                                }
+                            }
+                        }
+                        // Also, check if the there is no other empty position on other edges where it can be placed
+                        // Check on the top edge of the board
+                        for (int j = 1; j < 7; j++) {
+                            if ( board.getBoard(0, j) == 0 && currentTile.charAt(0) != 'd') {
+                                return false;
+                            }
+                        }
+                        // Check on the right edge of the board
+                        for (int j = 0; j < 8; j++) {
+                            if ( board.getBoard(j,7) == 0 && currentTile.charAt(1) != 'd') {
+                                return false;
+                            }
+                        }
+                        // Check on the bottom edge of the board
+                        for (int j = 1; j < 7; j++) {
+                            if ( board.getBoard(7, j) == 0 && currentTile.charAt(2) != 'd') {
+                                return false;
+                            }
+                        }
+                    }
+
+                    // Check for a loop at the right edge of the board
+                    if (col == 7 && currentTile.charAt(1) == 'd') {
+                        // return false if there is an empty place within the board which is also not an edge.
+                        for (int j = 1; j < 7; j++) {
+                            for (int k = 1; k < 7; k++) {
+                                if (board.getBoard(j, k) == 0) {
+                                    return false;
+                                }
+                            }
+                        }
+                        // Also, check if the there is no other empty position on other edges where it can be placed
+                        // Check on the top edge of the board
+                        for (int j = 1; j < 7; j++) {
+                            if ( board.getBoard(0, j) == 0 && currentTile.charAt(0) != 'd') {
+                                return false;
+                            }
+                        }
+                        // Check on the left edge of the board
+                        for (int j = 0; j < 8; j++) {
+                            if ( board.getBoard(j,0) == 0 && currentTile.charAt(3) != 'd') {
+                                return false;
+                            }
+                        }
+                        // Check on the bottom edge of the board
+                        for (int j = 1; j < 7; j++) {
+                            if ( board.getBoard(7, j) == 0 && currentTile.charAt(2) != 'd') {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Check if the tile is placed at the corner of the board
+            if ( ( row == 0 || row == 7 ) && ( col == 0 || col == 7 ) ) {
+                // Check for a loop in the top right corner of the board
+                if (row == 0 && col == 0 ) {
+                    // Check for the track that connects neighbouring stations
+                    if ( ( currentTile.charAt(0) == 'c') ) {
+                        // return true if it's the only place left for the tile on board
+                        return board.getBoardTotal() == 59;
+                    }
+                    // Check for two loops present at this position
+                    if ( currentTile.charAt(0) == 'd' && currentTile.charAt(3) == 'd' ) {
+                        if ( i == 0 )
+                            return false;
+                        return board.getBoardTotal() == 59;
+                    }
+                }
+
+                // Check for a loop in the top right corner of the board
+                if (row == 0 && col == 7 ) {
+                    // Check for the track that connects neighbouring stations
+                    if ( currentTile.charAt(1) == 'c' ) {
+                        // return true if it's the only place left for the tile on board
+                        return board.getBoardTotal() == 59;
+                    }
+                    // Check for two loops present at this position
+                    if ( currentTile.charAt(0) == 'd' && currentTile.charAt(1) == 'd' ) {
+                        if ( i == 0 )
+                            return false;
+                        return board.getBoardTotal() == 59;
+                    }
+                }
+
+                // Check for a loop in the bottom right corner of the board
+                if (row == 7 && col == 7 ) {
+                    // Check for the track that connects neighbouring stations
+                    if ( currentTile.charAt(2) == 'c') {
+                        // return true if it's the only place left for the tile on board
+                        return board.getBoardTotal() == 59;
+                    }
+                    // Check for two loops present at this position
+                    if ( currentTile.charAt(1) == 'd' && currentTile.charAt(2) == 'd' ) {
+                        if ( i == 0 )
+                            return false;
+                        return board.getBoardTotal() == 59;
+                    }
+                }
+
+                // Check for a loop in the bottom left corner of the board
+                if (row == 7 && col == 0 ) {
+                    // Check for the track that connects neighbouring stations
+                    if ( currentTile.charAt(3) == 'c') {
+                        // return true if it's the only place left for the tile on board
+                        return board.getBoardTotal() == 59;
+                    }
+                    // Check for two loops present at this position
+                    if ( currentTile.charAt(2) == 'd' && currentTile.charAt(3) == 'd' ) {
+                        if (i == 0)
+                            return false;
+                        return board.getBoardTotal() == 59;
+                    }
+                }
+            }
+
+            // Check if the location is not an edge nor a corner or an edge for the central stations
+            if ( row != 0 && row != 7 && col != 0 && col != 7 ) {
+                t = 0;
+                l = 0;
+                r = 0;
+                b = 0;
+
+                // Check if the top position has a tile, if so then increment t to 1
+                if ( board.getBoard(top_row, col) == 1 )
+                    t = 1;
+                // Check if the bottom position has a tile, if so then increment b to 1
+                if ( board.getBoard(bottom_row, col) == 1 )
+                    b = 1;
+                // Check if the left position has a tile, if so then increment l to 1
+                if ( board.getBoard(row, left_col) == 1 )
+                    l = 1;
+                // Check if the right position has a tile, if so then increment r to 1
+                if ( board.getBoard(row, right_col) == 1 )
+                    r = 1;
+
+                // If none of the those position has a tile, then return false
+                if ( t != 1 && b != 1 && l != 1 && r != 1 )
+                    return false;
+            }
+
+            // if all the above conditions were matched then update this tile in board
+            board.updateBoardPositions( tiles[i] );
+        }
+        // Return true if there is no error in the placementSequence, and it is a valid string
+        return true;
     }
 
 }

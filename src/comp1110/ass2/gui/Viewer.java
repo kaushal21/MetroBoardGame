@@ -244,9 +244,9 @@ public class Viewer extends Application {
         deckLoc.getChildren().add(deckName);
 
         // Store the top location from the newDeck which is passed.
-        int tempLocationOfTopDeck = Tile.top - 1;
+        int tempLocationOfTopDeck = newDeck.getTop() - 1;
         // Store the string value of the tile that is at the top of the deck
-        String topOfDeck= Tile.deck[tempLocationOfTopDeck];
+        String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck);
 
         // Find the tile that is at the top of deck and store its location
         String topLocation = "src/comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";

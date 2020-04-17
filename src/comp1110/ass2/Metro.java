@@ -5,6 +5,7 @@ public class Metro {
      * Creating a tile object. It stores the deck, and the top position of deck.
      */
     static Tile tile = new Tile();
+    static Move move = new Move();
 
     /**
      * Task 2
@@ -21,7 +22,7 @@ public class Metro {
      */
     public static boolean isPiecePlacementWellFormed(String piecePlacement) {
         // FIXME Task 2: determine whether a piece placement is well-formed
-        return Move.checkTilePlacement(piecePlacement);
+        return move.checkTilePlacement(piecePlacement);
     }
 
     /**
@@ -39,7 +40,7 @@ public class Metro {
      */
     public static boolean isPlacementSequenceWellFormed(String placement) {
         // FIXME Task 3: determine whether a placement sequence is well-formed
-        return Move.checkPlacementSequence(placement);
+        return move.checkPlacementSequence(placement);
     }
 
     /**
@@ -79,41 +80,18 @@ public class Metro {
 
             // Update the deck i.e. swap the tile that is there in the placedTiles to the last location in the deck.
             for (String out: placedTiles){
-                updateDeck(updatedDeck, out);
+                updatedDeck.updateDeck( out );
             }
         }
 
         // Create a String variable that will store the returning string
         String temp = "";
         // Check if the deck is empty or not
-        if ( Tile.checkDeckEmpty() ) {
-            temp = Tile.pop();
+        if ( updatedDeck.checkDeckEmpty() ) {
+            temp = updatedDeck.pop();
         }
         // Return the string that is top most tile in the deck.
         return temp;
-    }
-
-    /**
-     * This function updated the passed deck by swapping the last location to that of string,
-     * and then update the top value.
-     * @param deck this is the Tile variable.
-     * @param alreadyPlacedTile this is the string which is already present either in the placementSequence or totalHands.
-     */
-    static void updateDeck ( Tile deck, String alreadyPlacedTile ) {
-        // Check the complete deck from starting to the last location i.e. top
-        for(int i = 0; i < Tile.top; i++) {
-
-            // if this tile is matched with the passed tile then swap these two
-            if ( Tile.deck[i].equals(alreadyPlacedTile) ) {
-
-                // Updating the top location and storing the value in a variable.
-                int lastLocation = --Tile.top;
-                String temp = Tile.deck[lastLocation];
-                Tile.deck[lastLocation] = Tile.deck[i];
-                Tile.deck[i] = temp;
-                return;
-            }
-        }
     }
 
     /**
@@ -135,7 +113,8 @@ public class Metro {
      */
     public static boolean isPlacementSequenceValid(String placementSequence) {
         // FIXME Task 6: determine whether a placement sequence is valid
-        return false;
+        Move checkingPlacementSequence = new Move();
+        return checkingPlacementSequence.isPlacementSequenceValid ( placementSequence );
     }
 
     /**
