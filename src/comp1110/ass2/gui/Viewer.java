@@ -212,7 +212,7 @@ public class Viewer extends Application {
     GridPane updateBoard(GridPane board, String tile, int row, int col) throws FileNotFoundException {
         // Find the tile and store its location
         String tileLocation = "src/comp1110/ass2/gui/assets/"+tile+".jpg";
-        // Create the image from the location using the creatImage() function
+        // Create the image from the location using the create Image() function
         ImageView tileView = createImage(tileLocation, 0);
 
         // Store the image at the given location
