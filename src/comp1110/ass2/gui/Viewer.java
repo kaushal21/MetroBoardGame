@@ -56,8 +56,7 @@ public class Viewer extends Application {
     void makePlacement(String placement) throws FileNotFoundException {
         // FIXME Task 4: implement the simple placement viewer
         if (!Metro.isPiecePlacementWellFormed(placement)) {
-            String mess = "Plaese Enter a valid Placement String";
-            AlertBox.alertBox(mess);
+            AlertBox.alertBox("Please enter a valid placement string");
             return;
         }
         String tile = placement.substring(0, 4);
@@ -234,7 +233,7 @@ public class Viewer extends Application {
         GridPane deckLoc = new GridPane();
         deckLoc.setPadding(new Insets(0, 25, 0, 25));
 
-        // Creat a Label named "DECK" and apply all the properties.
+        // Create a Label named "DECK" and apply all the properties.
         Label deckName = new Label("DECK");
         deckName.setAlignment(Pos.CENTER);
         deckName.setFont(Font.font("Arial", 20));
@@ -250,7 +249,7 @@ public class Viewer extends Application {
 
         // Find the tile that is at the top of deck and store its location
         String topLocation = "src/comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
-        // Create the image from the location using the creatImage() function
+        // Create the image from the location using the createImage() function
         ImageView tileView = createImage(topLocation, 0);
         tileView.setFitHeight(150);
         tileView.setFitWidth(150);
@@ -266,8 +265,8 @@ public class Viewer extends Application {
         GridPane.setConstraints(tileName, 0, 2);
         deckLoc.getChildren().add(tileName);
 
-        // Creating Label for player's Name, and the Tile which is in his/her hand
-        Label playerName = new Label("Player No. "+(player.getCurrentPlayer() + 1));
+        // Creating Label for player's Name
+        Label playerName = new Label("Player "+(player.getCurrentPlayer() + 1));
         playerName.setAlignment(Pos.CENTER);
         playerName.setFont(Font.font("Arial", 20));
         playerName.setTextFill(Color.rgb(0, 0, 0));
@@ -275,19 +274,19 @@ public class Viewer extends Application {
         GridPane.setConstraints(playerName, 0, 3);
         deckLoc.getChildren().add(playerName);
 
-        // Check if the player already holds any tile in his/her hands
+        // Check if the player already holds any tile in his/her hands and create label for it
         String tileInHand = player.getTileInHand(player.getCurrentPlayer());
         if ( tileInHand != null ) {
-            // Find the tile that is at the top of deck and store its location
+            // Find the tile that is in the player's hand and store its location
             String playersHandTileLocation = "src/comp1110/ass2/gui/assets/" + tileInHand + ".jpg";
-            // Create the image from the location using the creatImage() function
+            // Create the image from the location using the createImage() function
             ImageView playersHandTileView = createImage(playersHandTileLocation, 0);
             playersHandTileView.setFitHeight(150);
             playersHandTileView.setFitWidth(150);
             GridPane.setConstraints(playersHandTileView, 0, 4);
             deckLoc.getChildren().add(playersHandTileView);
         } else {
-            // Creating Label for player's Name, and the Tile which is in his/her hand
+            // Creating Label that reflects the player's empty hand
             Label noTileInHand = new Label("No Tile In Hand");
             noTileInHand.setAlignment(Pos.CENTER);
             noTileInHand.setFont(Font.font("Arial", 15));
@@ -302,13 +301,13 @@ public class Viewer extends Application {
     }
 
     /**
-     * Create a basic text field for input and a refresh button.
+     * Create a basic text field for input and a "Place Tile" button.
      */
     private void makeControls() {
         Label label1 = new Label("Placement:");
         textField = new TextField();
         textField.setPrefWidth(300);
-        Button button = new Button("Refresh");
+        Button button = new Button("Place Tile");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
