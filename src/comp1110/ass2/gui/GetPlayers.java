@@ -30,7 +30,7 @@ public class GetPlayers {
         newWindow.setMinWidth(400);                                     // Set the Minimum width of the Window
         newWindow.setOnCloseRequest(e -> {
             e.consume();
-            String mess = "Are you Sure you wanna QUIT!!!";
+            String mess = "Are you sure you want to quit?!!";
             if ( ConfirmationBox.confirmationBox(mess) ) {
                 n.set(-1);
                 newWindow.close();
@@ -40,8 +40,8 @@ public class GetPlayers {
         Label name = new Label("Enter The number of Players (2-6):");       // Label Used to display the message
         TextField numberOfPlayers = new TextField();                            // TextField is used to store the input value
         numberOfPlayers.setMaxWidth(100);
-        numberOfPlayers.setPromptText("Number of Player");
-        Button submit = new Button("Submit");                               // Create a Submit button
+        numberOfPlayers.setPromptText("No. of Players");
+        Button submit = new Button("PLAY");                               // Create a Play button
         submit.setOnAction(e -> {
             // On click functionality of submit button
             // Check if the value entered is correct
@@ -79,7 +79,7 @@ public class GetPlayers {
             // Check the range of the entered value
             if ( n < 2 || n > 6 )
                 // If the value is out of range then throw an exception.
-                throw new NumberFormatException("The Entered Number is not in the range i.e. from 2 to 6.");
+                throw new NumberFormatException("You have to have 2-6 players to play!");
             else
                 // If the value is within the range then return true.
                 return true;
