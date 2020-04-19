@@ -238,9 +238,6 @@ public class Viewer extends Application {
         deckName.setAlignment(Pos.CENTER);
         deckName.setFont(Font.font("Arial", 20));
         deckName.setTextFill(Color.rgb(0, 0, 0));
-        // deckName.setPadding(new Insets(10, 25, 25, 55));
-        //GridPane.setConstraints(deckName, 0, 0);
-        //deckLoc.getChildren().add(deckName);
 
         // Store the top location from the newDeck which is passed.
         int tempLocationOfTopDeck = newDeck.getTop() - 1;
@@ -253,26 +250,18 @@ public class Viewer extends Application {
         ImageView tileView = createImage(topLocation, 0);
         tileView.setFitHeight(150);
         tileView.setFitWidth(150);
-        //GridPane.setConstraints(tileView, 0, 1);
-        //deckLoc.getChildren().add(tileView);
 
         // Create a new Label that stores the String value of the tile that is at the top of the deck.
-        Label tileName = new Label(topOfDeck);
-        tileName.setAlignment(Pos.CENTER);
-        tileName.setFont(Font.font("Arial", 15));
-        tileName.setTextFill(Color.rgb(0, 0, 0));
-        // tileName.setPadding(new Insets(5, 25, 5, 55));
-        //GridPane.setConstraints(tileName, 0, 2);
-        //deckLoc.getChildren().add(tileName);
+        Label tile1Name = new Label(topOfDeck);
+        tile1Name.setAlignment(Pos.CENTER);
+        tile1Name.setFont(Font.font("Arial", 15));
+        tile1Name.setTextFill(Color.rgb(0, 0, 0));
 
         // Creating Label for player's Name
         Label playerName = new Label("Player "+(player.getCurrentPlayer() + 1));
         playerName.setAlignment(Pos.CENTER);
         playerName.setFont(Font.font("Arial", 20));
         playerName.setTextFill(Color.rgb(0, 0, 0));
-        // playerName.setPadding(new Insets(20, 25, 5, 55));
-        //GridPane.setConstraints(playerName, 0, 3);
-        //deckLoc.getChildren().add(playerName);
 
         // Check if the player already holds any tile in his/her hands and create label for it
         String tileInHand = player.getTileInHand(player.getCurrentPlayer());
@@ -283,8 +272,6 @@ public class Viewer extends Application {
             ImageView playersHandTileView = createImage(playersHandTileLocation, 0);
             playersHandTileView.setFitHeight(150);
             playersHandTileView.setFitWidth(150);
-            //GridPane.setConstraints(playersHandTileView, 0, 4);
-            //deckLoc.getChildren().add(playersHandTileView);
         } else {
             // Creating Label that reflects the player's empty hand
             Label noTileInHand = new Label("No Tile In Hand");
@@ -292,8 +279,6 @@ public class Viewer extends Application {
             noTileInHand.setFont(Font.font("Arial", 15));
             noTileInHand.setTextFill(Color.rgb(0, 0, 0));
             noTileInHand.setPadding(new Insets(5, 25, 5, 55));
-            //GridPane.setConstraints(noTileInHand, 0, 4);
-            //deckLoc.getChildren().add(noTileInHand);
         }
 
         // Add button to press to pick up a tile from the deck
@@ -309,13 +294,18 @@ public class Viewer extends Application {
                     handView.setFitWidth(150);
                     GridPane.setConstraints(handView, 0, 1);
                     deckLoc.getChildren().add(handView);
+                    // Create a label for this tile
+                    Label tile2Name = new Label(topOfDeck);
+                    deckLoc.getChildren().add(tile2Name);
                 }
 
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
         });
-        deckLoc.getChildren().addAll(deckName, tileView, tileName, playerName, getTileButton);
+
+        // Add all of the elements of the right side to the VBox
+        deckLoc.getChildren().addAll(deckName, tileView, tile1Name, playerName, getTileButton);
         deckLoc.setSpacing(10);
         deckLoc.setLayoutX(710);
 
