@@ -228,19 +228,19 @@ public class Viewer extends Application {
      * @return It return the grid which will be displayed on the right side tf the screen.
      * @throws FileNotFoundException This exception may re thrown is the image of the tile from the deck is not found.
      */
-    GridPane deckLocation (Player player) throws FileNotFoundException {
-        // Create a New GripPane which will Show what to display on the right side of the screen.
-        GridPane deckLoc = new GridPane();
-        deckLoc.setPadding(new Insets(0, 25, 0, 25));
+    VBox deckLocation (Player player) throws FileNotFoundException {
+        // Create a New GridPane which will Show what to display on the right side of the screen.
+        VBox deckLoc = new VBox();
+        deckLoc.setPadding(new Insets(0, 0, 0, 0));
 
         // Create a Label named "DECK" and apply all the properties.
         Label deckName = new Label("DECK");
         deckName.setAlignment(Pos.CENTER);
         deckName.setFont(Font.font("Arial", 20));
         deckName.setTextFill(Color.rgb(0, 0, 0));
-        deckName.setPadding(new Insets(10, 25, 25, 55));
-        GridPane.setConstraints(deckName, 0, 0);
-        deckLoc.getChildren().add(deckName);
+        // deckName.setPadding(new Insets(10, 25, 25, 55));
+        //GridPane.setConstraints(deckName, 0, 0);
+        //deckLoc.getChildren().add(deckName);
 
         // Store the top location from the newDeck which is passed.
         int tempLocationOfTopDeck = newDeck.getTop() - 1;
@@ -253,26 +253,26 @@ public class Viewer extends Application {
         ImageView tileView = createImage(topLocation, 0);
         tileView.setFitHeight(150);
         tileView.setFitWidth(150);
-        GridPane.setConstraints(tileView, 0, 1);
-        deckLoc.getChildren().add(tileView);
+        //GridPane.setConstraints(tileView, 0, 1);
+        //deckLoc.getChildren().add(tileView);
 
         // Create a new Label that stores the String value of the tile that is at the top of the deck.
         Label tileName = new Label(topOfDeck);
         tileName.setAlignment(Pos.CENTER);
         tileName.setFont(Font.font("Arial", 15));
         tileName.setTextFill(Color.rgb(0, 0, 0));
-        tileName.setPadding(new Insets(5, 25, 5, 55));
-        GridPane.setConstraints(tileName, 0, 2);
-        deckLoc.getChildren().add(tileName);
+        // tileName.setPadding(new Insets(5, 25, 5, 55));
+        //GridPane.setConstraints(tileName, 0, 2);
+        //deckLoc.getChildren().add(tileName);
 
         // Creating Label for player's Name
         Label playerName = new Label("Player "+(player.getCurrentPlayer() + 1));
         playerName.setAlignment(Pos.CENTER);
         playerName.setFont(Font.font("Arial", 20));
         playerName.setTextFill(Color.rgb(0, 0, 0));
-        playerName.setPadding(new Insets(20, 25, 5, 55));
-        GridPane.setConstraints(playerName, 0, 3);
-        deckLoc.getChildren().add(playerName);
+        // playerName.setPadding(new Insets(20, 25, 5, 55));
+        //GridPane.setConstraints(playerName, 0, 3);
+        //deckLoc.getChildren().add(playerName);
 
         // Check if the player already holds any tile in his/her hands and create label for it
         String tileInHand = player.getTileInHand(player.getCurrentPlayer());
@@ -283,8 +283,8 @@ public class Viewer extends Application {
             ImageView playersHandTileView = createImage(playersHandTileLocation, 0);
             playersHandTileView.setFitHeight(150);
             playersHandTileView.setFitWidth(150);
-            GridPane.setConstraints(playersHandTileView, 0, 4);
-            deckLoc.getChildren().add(playersHandTileView);
+            //GridPane.setConstraints(playersHandTileView, 0, 4);
+            //deckLoc.getChildren().add(playersHandTileView);
         } else {
             // Creating Label that reflects the player's empty hand
             Label noTileInHand = new Label("No Tile In Hand");
@@ -292,13 +292,41 @@ public class Viewer extends Application {
             noTileInHand.setFont(Font.font("Arial", 15));
             noTileInHand.setTextFill(Color.rgb(0, 0, 0));
             noTileInHand.setPadding(new Insets(5, 25, 5, 55));
-            GridPane.setConstraints(noTileInHand, 0, 4);
-            deckLoc.getChildren().add(noTileInHand);
+            //GridPane.setConstraints(noTileInHand, 0, 4);
+            //deckLoc.getChildren().add(noTileInHand);
         }
 
-        // Return this grid.
+        // Add button to press to pick up a tile from the deck
+        Button getTileButton = new Button("Pick up tile");
+        // deckLoc.getChildren().add(getTileButton);
+        getTileButton.setOnAction(e -> {
+            // Create the image from the location using the createImage() function
+            ImageView handView = null;
+            try {
+                if (tileInHand == null) {
+                    handView = createImage(topLocation, 0);
+                    handView.setFitHeight(150);
+                    handView.setFitWidth(150);
+                    GridPane.setConstraints(handView, 0, 1);
+                    deckLoc.getChildren().add(handView);
+                }
+
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
+        deckLoc.getChildren().addAll(deckName, tileView, tileName, playerName, getTileButton);
+        deckLoc.setSpacing(10);
+        deckLoc.setLayoutX(710);
+
+
         return deckLoc;
     }
+
+
+
+
+
 
     /**
      * Create a basic text field for input and a "Place Tile" button.
@@ -308,16 +336,13 @@ public class Viewer extends Application {
         textField = new TextField();
         textField.setPrefWidth(300);
         Button button = new Button("Place Tile");
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                try {
-                    makePlacement(textField.getText());
-                } catch (FileNotFoundException ex) {
-                    ex.printStackTrace();
-                }
-                textField.clear();
+        button.setOnAction(e -> {
+            try {
+                makePlacement(textField.getText());
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
             }
+            textField.clear();
         });
         HBox hb = new HBox();
         hb.getChildren().addAll(label1, textField, button);
@@ -329,12 +354,12 @@ public class Viewer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("FocusGame Viewer");
+        primaryStage.setTitle("Metro Game Viewer");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
+        makeControls();
         root.getChildren().add(controls);
 
-        makeControls();
 
         // Get the number of players from the user using getPlayer() function.
         int n = GetPlayers.getPlayers();
@@ -347,7 +372,7 @@ public class Viewer extends Application {
         newBoard = createBoard();
 
         // Create a new Grid that holds right side of the screen. i.e. DECK, and the image of the top most tile in deck.
-        GridPane rightDeckLocation = deckLocation(player);
+        VBox rightDeckLocation = deckLocation(player);
 
         GridPane screenDistribution = new GridPane();
         GridPane.setConstraints(newBoard, 0, 0);
@@ -356,6 +381,7 @@ public class Viewer extends Application {
         screenDistribution.getChildren().add(rightDeckLocation);
 
         root.getChildren().add(screenDistribution);
+
 
         primaryStage.setScene(scene);
         primaryStage.show();
