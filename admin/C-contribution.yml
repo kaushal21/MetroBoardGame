@@ -12,8 +12,8 @@ contributions:
     contribution: 33
   - uid: u7028766
     contribution: 33
-  - uid:
-    contribution:
+  - uid: u6671630
+    contribution: 33
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members)
@@ -22,5 +22,5 @@ signatures:
     uid: u6953044
   - name: Kaushal Sharma
     uid: u7028766
-  - name:
-    uid:
+  - name: Kyle Robertson
+    uid: u6671630
