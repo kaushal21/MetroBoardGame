@@ -283,12 +283,14 @@ public class Viewer extends Application {
 
         // Add button to press to pick up a tile from the deck
         Button getTileButton = new Button("Pick up tile");
-        // deckLoc.getChildren().add(getTileButton);
         getTileButton.setOnAction(e -> {
             // Create the image from the location using the createImage() function
             ImageView handView = null;
             try {
                 if (tileInHand == null) {
+                    // adds the tile to the player's hand
+                    player.setTileInHand(player.getCurrentPlayer(), topOfDeck);
+
                     handView = createImage(topLocation, 0);
                     handView.setFitHeight(150);
                     handView.setFitWidth(150);
@@ -312,8 +314,6 @@ public class Viewer extends Application {
 
         return deckLoc;
     }
-
-
 
 
 
