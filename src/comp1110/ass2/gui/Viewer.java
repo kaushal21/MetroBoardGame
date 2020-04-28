@@ -23,6 +23,12 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.MouseInfo;
+
+
+
 /**
  * A very simple viewer for piece placements in the Metro game.
  * <p>
@@ -30,7 +36,7 @@ import java.io.FileNotFoundException;
  * class does not play a game, it just illustrates various piece
  * placements.
  */
-public class Viewer extends Application {
+public class Viewer extends Application implements MouseListener{
     /* board layout */
     private static final int SQUARE_SIZE = 70;
     private static final int VIEWER_WIDTH = 1024;
@@ -301,6 +307,8 @@ public class Viewer extends Application {
                     deckLoc.getChildren().add(tile2Name);
                 }
 
+
+
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
@@ -313,6 +321,11 @@ public class Viewer extends Application {
 
 
         return deckLoc;
+    }
+
+    public void mousePress() throws Exception{
+
+
     }
 
 
@@ -342,6 +355,34 @@ public class Viewer extends Application {
         controls.getChildren().add(hb);
     }
 
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        System.out.println("Mouse Pressed X " + x + "Y " + y);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Metro Game Viewer");
@@ -349,7 +390,6 @@ public class Viewer extends Application {
 
         makeControls();
         root.getChildren().add(controls);
-
 
         // Get the number of players from the user using getPlayer() function.
         int n = GetPlayers.getPlayers();
@@ -369,6 +409,13 @@ public class Viewer extends Application {
         screenDistribution.getChildren().add(newBoard);
         GridPane.setConstraints(rightDeckLocation, 1, 0);
         screenDistribution.getChildren().add(rightDeckLocation);
+
+        scene.setOnMouseClicked(event ->{
+            Point p = MouseInfo.getPointerInfo().getLocation();
+            System.out.println(p);
+        });
+
+
 
         root.getChildren().add(screenDistribution);
 
