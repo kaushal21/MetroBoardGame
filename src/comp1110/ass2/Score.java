@@ -70,10 +70,6 @@ public class Score {
     }
 
 
-    public void scoreTrack(String tile, int inputPosition) {
-
-    }
-
     /**
      * It checks if a line terminates at one of the middle stations
      * @return true if the termination station is a middle station, otherwise it returns false.
@@ -151,7 +147,31 @@ public class Score {
         }
     }
 
-    public void atWhoseStation(String tile) {
+    // checks if a tile is at the end of a line (i.e. at a station and facing a track into the station)
+    public boolean atStation(String tile, int inputPosition) {
+        int output = getOutput(tile, inputPosition);
+
+        // check corners
+        if ((tile.charAt(4) == 0 && tile.charAt(5) == 0) && (output == 1 || output == 7)) {
+            return true;
+        } else if ((tile.charAt(4) == 0 && tile.charAt(5) == 7) && (output == 1 || output == 3)) {
+            return true;
+        } else if ((tile.charAt(4) == 7 && tile.charAt(5) == 0) && (output == 7 || output == 5)) {
+            return true;
+        } else if ((tile.charAt(4) == 7 && tile.charAt(5) == 7) && (output == 3 || output == 5)) {
+            return true;
+        }
+        // then check edges
+        if ((tile.charAt(4) == 0) && (output == 1)) {
+            return true;
+        } else if ((tile.charAt(5) == 0) && (output == 7)) {
+            return true;
+        } else if ((tile.charAt(4) == 7) && (output == 5)) {
+            return true;
+        } else if ((tile.charAt(5) == 7) && (output == 3)) {
+            return true;
+        }
+        return false;
 
     }
 
