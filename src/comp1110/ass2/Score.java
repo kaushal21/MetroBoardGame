@@ -1,8 +1,6 @@
 package comp1110.ass2;
 
 import java.util.Arrays;
-import comp1110.ass2.Move;
-import java.util.Scanner;
 
 /**
  * This class calculates the score at the end of the game
@@ -37,52 +35,39 @@ public class Score {
             tiles[i] = placementSequence.substring(i * 6, (i * 6) + 6);
         }
 
-        // Check through the array to find a tile that is placed at a station
-        for (int i = 0; i < numberOfTiles; i++) {
-            int row = Integer.parseInt(String.valueOf(tiles[i].charAt(4)));
-            int col = Integer.parseInt(String.valueOf(tiles[i].charAt(5)));
-            // get the station we are currently at
-            // add 1 to the score of the player at station
-            // find the next tile to look at - for this we need to know what side of the tile the station
-            // is on - get the original input position of the track (i.e where and in which direction the track starts)
-
-            // If its at a corner check both possible paths
-            if ((row == 0) && (col == 0)) {
-                int inputPosition = 0;
-                score[0]++ ;
-                getNextTile(tiles[i], inputPosition);
-
-                while (true) //tile not outputting a track into a station
-                score[0]++ ;
-
-
-            } else if (col == 0) {
-
-            } else if (row == 7) {
-
-            } else if (col == 7) {
-
-            }
-        }
 
 
         return score;
     }
 
+    // Returns the tile next to a particular station if there is one.
+    // remembering that (y,x)
+    public static String getTileAtStation(int station, String[] tiles) {
+        int positionX = 100; // if these values don't get changed then there is no tile at the station
+        int positionY = 100;
+        if (station >= 1 && station <= 8) {
+            positionX = 8 - station;
+            positionY = 0;
+        }
+        else if (station >= 9 && station <= 16) {
+            positionX = 0;
+            positionY = station - 9;
+        }
+        else if (station >= 17 && station <= 24) {
+            positionX = station - 17;
+            positionY = 7;
+        }
+        else if (station >= 25 && station <= 32) {
+            positionX = 7;
+            positionY = 32 - station;
+        }
 
-    /**
-     * It checks if a line terminates at one of the middle stations
-     * @return true if the termination station is a middle station, otherwise it returns false.
-     */
-    public static boolean atMiddleStations(String tile) {
-        boolean inMiddleColumns = tile.charAt(5) == 3 || tile.charAt(5) == 4;
-        boolean inMiddleRows = tile.charAt(4) == 3 || tile.charAt(4) == 4;
-        if (tile.charAt(4) == 2 && inMiddleColumns) return true;
-        else if (tile.charAt(4) == 5 && inMiddleColumns) return true;
-        else if (tile.charAt(5) == 2 && inMiddleRows) return true;
-        else if (tile.charAt(5) == 5 && inMiddleRows) return true;
-        else return false;
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i].charAt(4) == positionX && tiles[i].charAt(5) == positionY) return tiles[i];
+        }
+        return "";
     }
+
 
     /**
      * It gives position of the next tile in the track to check
@@ -147,33 +132,39 @@ public class Score {
         }
     }
 
-    // checks if a tile is at the end of a line (i.e. at a station and facing a track into the station)
+    /**
+     * @return true if the line terminates at a middle station (i.e. at a station and facing a track into the station),
+     * otherwise it returns false.
+     */
     public boolean atStation(String tile, int inputPosition) {
         int output = getOutput(tile, inputPosition);
 
         // check corners
-        if ((tile.charAt(4) == 0 && tile.charAt(5) == 0) && (output == 1 || output == 7)) {
-            return true;
-        } else if ((tile.charAt(4) == 0 && tile.charAt(5) == 7) && (output == 1 || output == 3)) {
-            return true;
-        } else if ((tile.charAt(4) == 7 && tile.charAt(5) == 0) && (output == 7 || output == 5)) {
-            return true;
-        } else if ((tile.charAt(4) == 7 && tile.charAt(5) == 7) && (output == 3 || output == 5)) {
-            return true;
-        }
-        // then check edges
-        if ((tile.charAt(4) == 0) && (output == 1)) {
-            return true;
-        } else if ((tile.charAt(5) == 0) && (output == 7)) {
-            return true;
-        } else if ((tile.charAt(4) == 7) && (output == 5)) {
-            return true;
-        } else if ((tile.charAt(5) == 7) && (output == 3)) {
-            return true;
-        }
-        return false;
+        if ((tile.charAt(4) == 0 && tile.charAt(5) == 0) && (output == 1 || output == 7)) return true;
+        else if ((tile.charAt(4) == 0 && tile.charAt(5) == 7) && (output == 1 || output == 3)) return true;
+        else if ((tile.charAt(4) == 7 && tile.charAt(5) == 0) && (output == 7 || output == 5)) return true;
+        else if ((tile.charAt(4) == 7 && tile.charAt(5) == 7) && (output == 3 || output == 5)) return true;
 
+        // then check edges
+        if ((tile.charAt(4) == 0) && (output == 1)) return true;
+        else if ((tile.charAt(5) == 0) && (output == 7)) return true;
+        else if ((tile.charAt(4) == 7) && (output == 5)) return true;
+        else if ((tile.charAt(5) == 7) && (output == 3)) return true;
+        return false;
     }
 
+    /**
+     * @return true if the line terminates at a middle station, otherwise it returns false.
+     */
+    public static boolean atMiddleStation(String tile, int inputPosition) {
+        int output = getOutput(tile, inputPosition);
+        boolean inMiddleColumns = tile.charAt(5) == 3 || tile.charAt(5) == 4;
+        boolean inMiddleRows = tile.charAt(4) == 3 || tile.charAt(4) == 4;
+        if ((tile.charAt(4) == 2 && inMiddleColumns) && output == 5) return true;
+        else if ((tile.charAt(4) == 5 && inMiddleColumns) && output == 0) return true;
+        else if ((tile.charAt(5) == 2 && inMiddleRows) && output == 3) return true;
+        else if ((tile.charAt(5) == 5 && inMiddleRows) && output == 7) return true;
+        else return false;
+    }
 }
 
