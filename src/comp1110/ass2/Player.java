@@ -5,7 +5,7 @@ package comp1110.ass2;
  */
 public class Player {
     int players;                    // Number of players from 2 to 6
-    int[][] stations;               // Stations allocated to the players
+    static int[][] stations;               // Stations allocated to the players
     int currentPlayer;              // Player range 0 to (players-1) i.e. 5
     String[] tileInHand;            // For all the players it Stores the tile in hand of the players
 
@@ -15,7 +15,6 @@ public class Player {
      */
     public Player(int n) {
         players = n;
-        currentPlayer = 0;
         tileInHand = new String[players];
         for(int i = 0; i < players; i++) {
             tileInHand[i] = null;
@@ -72,8 +71,8 @@ public class Player {
                 stations = new int[4][];
                 stations[0] = new int[]{4, 7, 11, 16, 20, 23, 27, 32};
                 stations[1] = new int[]{3, 8, 12, 15, 19, 24, 28, 31};
-                stations[0] = new int[]{1, 6, 10, 13, 18, 21, 25, 30};
-                stations[1] = new int[]{2, 5,  9, 14, 17, 22, 26, 29};
+                stations[2] = new int[]{1, 6, 10, 13, 18, 21, 25, 30};
+                stations[3] = new int[]{2, 5,  9, 14, 17, 22, 26, 29};
                 break;
             case 5:
                 stations = new int[5][];
@@ -121,7 +120,7 @@ public class Player {
      * @param currentPlayer the currentPlayer for which we want the stations allocated to him/her
      * @return the stations that are allocated to him/her in a integer array
      */
-    public int[] getStations (int currentPlayer) {
+    public static int[] getStations(int currentPlayer) {
         return stations[currentPlayer];
     }
 
@@ -168,6 +167,7 @@ public class Player {
                 return false;
         }
     }
-
 }
+
+
 

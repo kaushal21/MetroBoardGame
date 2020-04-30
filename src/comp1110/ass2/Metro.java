@@ -127,7 +127,7 @@ public class Metro {
      */
     public static int[] getScore(String placementSequence, int numberOfPlayers) {
         // FIXME Task 7: determine the current score for the game
-        return new int[0];
+        return Score.scoreBoard(placementSequence, numberOfPlayers);
     }
 
     /**

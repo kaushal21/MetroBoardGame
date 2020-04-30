@@ -23,7 +23,7 @@ public class Score {
      * @param placementSequence is the string for all the tiles that are placed on the board
      * @return score for the players in an array.
      */
-    public static int[] ScoreBoard(String placementSequence, int players) {
+    public static int[] scoreBoard(String placementSequence, int players) {
 
         // Get the number of tiles in the placementSequence
         int numberOfTiles = placementSequence.length() / 6;
@@ -34,36 +34,58 @@ public class Score {
             // Put all of the tiles into an array
             tiles[i] = placementSequence.substring(i * 6, (i * 6) + 6);
         }
-
-
+        for (int i = 0; i < players; i++) {
+            score[i] = scorePlayer(i, tiles);
+        }
 
         return score;
     }
 
+    public static int scorePlayer(int player, String[] tiles) {
+        int[] stations = Player.getStations(player);
+        int playerScore = 0;
+        for (int i = 0; i < stations.length; i++) {
+            if (!(getTileAtStation(stations[i], tiles)).equals("")) {
+                int trackScore = 1;
+                int input = getFirstInputPosition(stations[i]);
+                String currentTile = getTileAtStation(stations[i], tiles);
+
+                while (!(currentTile.equals("")) && (!atStation(currentTile, input) && !atMiddleStation(currentTile, input))) {
+                    trackScore++;
+                    currentTile = getNextTile(currentTile, input, tiles);
+                    input = getNextInputPosition(currentTile, input);
+                }
+                if (atStation(currentTile, input)) playerScore += trackScore;
+                else if (atMiddleStation(currentTile, input)) playerScore += trackScore * 2;
+            }
+        }
+        return playerScore;
+    }
+
+
     // Returns the tile next to a particular station if there is one.
     // remembering that (y,x)
     public static String getTileAtStation(int station, String[] tiles) {
-        int positionX = 100; // if these values don't get changed then there is no tile at the station
-        int positionY = 100;
+        int positionY = 100; // if these values don't get changed then there is no tile at the station
+        int positionX = 100;
         if (station >= 1 && station <= 8) {
-            positionX = 8 - station;
             positionY = 0;
+            positionX = 8 - station;
         }
         else if (station >= 9 && station <= 16) {
-            positionX = 0;
             positionY = station - 9;
+            positionX = 0;
         }
         else if (station >= 17 && station <= 24) {
-            positionX = station - 17;
             positionY = 7;
+            positionX = station - 17;
         }
         else if (station >= 25 && station <= 32) {
-            positionX = 7;
             positionY = 32 - station;
+            positionX = 7;
         }
-
         for (int i = 0; i < tiles.length; i++) {
-            if (tiles[i].charAt(4) == positionX && tiles[i].charAt(5) == positionY) return tiles[i];
+            if (tiles[i].charAt(4) == positionY && tiles[i].charAt(5) == positionX) return tiles[i];
         }
         return "";
     }
@@ -80,31 +102,37 @@ public class Score {
      * @param tile the tile that is already part of our track (includes its position)
      * @return the same tile, but with the new position based on what type of track (a,b,c or d) and where it enters the tile.
      */
-    public static String getNextTile(String tile, int inputPosition) {
-        if (getOutput(tile,inputPosition) == 1) {
-            String nextTile = tile.substring(0,3) + (((int) tile.charAt(4)) - 1) + tile.substring(5);
-            return nextTile;
+    public static String getNextTile(String tile, int inputPosition, String[] tiles) {
+        int positionY = tile.charAt(4);
+        int positionX = tile.charAt(5);
 
-        } else if (getOutput(tile,inputPosition) == 3) {
-            String nextTile = tile.substring(0,4) + (((int) tile.charAt(5)) + 1);
-            return nextTile;
+        // check adjacent up
+        if (getOutput(tile,inputPosition) == 1) positionY -= 1;
+        //check adjacent right
+        else if (getOutput(tile,inputPosition) == 3) positionX += 1;
+        //check adjacent down
+        else if (getOutput(tile,inputPosition) == 5) positionY += 1;
+        //check adjacent left
+        else if (getOutput(tile,inputPosition) == 7) positionX -= 1;
 
-        } else if (getOutput(tile,inputPosition) == 5) {
-            // this corresponds to 5
-            String nextTile = tile.substring(0,3) + (((int) tile.charAt(4)) + 1) + tile.substring(5);
-            return nextTile;
-
-        } else if (getOutput(tile,inputPosition) == 7) {
-            // corresponds to 7
-            String nextTile = tile.substring(0,4) + (((int) tile.charAt(5)) - 1);
-            return nextTile;
-        } else {
-            return tile; // this should never be returned so long as the inputPosition is 0,2,4 or 6.
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i].charAt(4) == positionY && tiles[i].charAt(5) == positionX) return tiles[i];
         }
-
+        return ""; // this is returned when the track does not continue any further.
     }
 
+    public static int getFirstInputPosition(int station) {
+        //based on what station the track is starting from
+        if (station >= 1 && station <= 8) return 0;
+        else if (station >= 9 && station <= 16) return 6;
+        else if (station >= 17 && station <= 24) return 4;
+        else if (station >= 25 && station <= 32) return 2;
+        return 10; // this should never be returned so long as the input is a valid station.
+    }
+
+
     public static int getNextInputPosition(String tile, int inputPosition) {
+        // based on previous tile's output
         if (getOutput(tile,inputPosition) == 1) return 4;
         else if (getOutput(tile,inputPosition) == 3) return 6;
         else if (getOutput(tile,inputPosition) == 5) return 0;
@@ -136,7 +164,7 @@ public class Score {
      * @return true if the line terminates at a middle station (i.e. at a station and facing a track into the station),
      * otherwise it returns false.
      */
-    public boolean atStation(String tile, int inputPosition) {
+    public static boolean atStation(String tile, int inputPosition) {
         int output = getOutput(tile, inputPosition);
 
         // check corners
@@ -149,8 +177,7 @@ public class Score {
         if ((tile.charAt(4) == 0) && (output == 1)) return true;
         else if ((tile.charAt(5) == 0) && (output == 7)) return true;
         else if ((tile.charAt(4) == 7) && (output == 5)) return true;
-        else if ((tile.charAt(5) == 7) && (output == 3)) return true;
-        return false;
+        else return (tile.charAt(5) == 7) && (output == 3);
     }
 
     /**
@@ -163,8 +190,7 @@ public class Score {
         if ((tile.charAt(4) == 2 && inMiddleColumns) && output == 5) return true;
         else if ((tile.charAt(4) == 5 && inMiddleColumns) && output == 0) return true;
         else if ((tile.charAt(5) == 2 && inMiddleRows) && output == 3) return true;
-        else if ((tile.charAt(5) == 5 && inMiddleRows) && output == 7) return true;
-        else return false;
+        else return (tile.charAt(5) == 5 && inMiddleRows) && output == 7;
     }
 }
 
