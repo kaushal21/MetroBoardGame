@@ -54,7 +54,7 @@ public class Player {
      * player 5 owns 3, 9, 13, 23, 30
      * player 6 owns 7, 12, 22, 28, 32
      */
-    public void allocateStations(int players) {
+    public static int[][] allocateStations(int players) {
         switch ( players ) {
             case 2:
                 stations = new int[2][];
@@ -92,6 +92,7 @@ public class Player {
                 stations[5] = new int[]{7, 12, 22, 28, 32};
                 break;
         }
+        return stations;
     }
 
     /**
@@ -117,11 +118,11 @@ public class Player {
     }
 
     /**
-     * @param currentPlayer the currentPlayer for which we want the stations allocated to him/her
-     * @return the stations that are allocated to him/her in a integer array
+     * @param player the player whose stations we want
+     * @return the stations that are allocated to them in a integer array
      */
-    public static int[] getStations(int currentPlayer) {
-        return stations[currentPlayer];
+    public static int[] getStations(int player, int players) {
+        return allocateStations(players)[player];
     }
 
     /**

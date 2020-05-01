@@ -19,44 +19,50 @@ public class Score {
     }
 
     /**
-     * It calculates the score at the end of the game.
+     * It calculates the current score of a game based on the placement sequence and no. of players
      * @param placementSequence is the string for all the tiles that are placed on the board
      * @return score for the players in an array.
      */
     public static int[] scoreBoard(String placementSequence, int players) {
+        int[] score = new int[players];
+        Arrays.fill(score, 0);
 
         // Get the number of tiles in the placementSequence
         int numberOfTiles = placementSequence.length() / 6;
-        String[] tiles = new String[numberOfTiles];
 
         // Divide the string into pieces i.e. tile value and its location row and col.
+        String[] tiles = new String[numberOfTiles];
         for (int i = 0; i < numberOfTiles; i++) {
             // Put all of the tiles into an array
             tiles[i] = placementSequence.substring(i * 6, (i * 6) + 6);
         }
         for (int i = 0; i < players; i++) {
-            score[i] = scorePlayer(i, tiles);
+            score[i] = scorePlayer(i, tiles, players);
         }
-
         return score;
     }
 
-    public static int scorePlayer(int player, String[] tiles) {
-        int[] stations = Player.getStations(player);
+    public static int scorePlayer(int player, String[] tiles, int players) {
+        int[] playerStations = Player.getStations(player, players);
         int playerScore = 0;
-        for (int i = 0; i < stations.length; i++) {
-            if (!(getTileAtStation(stations[i], tiles)).equals("")) {
-                int trackScore = 1;
-                int input = getFirstInputPosition(stations[i]);
-                String currentTile = getTileAtStation(stations[i], tiles);
+        for (int i = 0; i < playerStations.length; i++) {
+            if (!(getTileAtStation(playerStations[i], tiles)).equals("")) {
+                int trackScore = 0;
+                int input = getFirstInputPosition(playerStations[i]);
+                String currentTile = getTileAtStation(playerStations[i], tiles);
 
-                while (!(currentTile.equals("")) && (!atStation(currentTile, input) && !atMiddleStation(currentTile, input))) {
-                    trackScore++;
-                    currentTile = getNextTile(currentTile, input, tiles);
+                while (!currentTile.equals("")) {
+                    trackScore ++;
+                    if (atStation(currentTile, input)) {
+                        playerScore += trackScore;
+                    }
+
+                    else if (atMiddleStation(currentTile, input)) {
+                        playerScore += trackScore * 2;
+                    }
                     input = getNextInputPosition(currentTile, input);
+                    currentTile = getNextTile(currentTile, input, tiles);
                 }
-                if (atStation(currentTile, input)) playerScore += trackScore;
-                else if (atMiddleStation(currentTile, input)) playerScore += trackScore * 2;
             }
         }
         return playerScore;
@@ -85,7 +91,7 @@ public class Score {
             positionX = 7;
         }
         for (int i = 0; i < tiles.length; i++) {
-            if (tiles[i].charAt(4) == positionY && tiles[i].charAt(5) == positionX) return tiles[i];
+            if (tiles[i].charAt(4) - 48 == positionY && tiles[i].charAt(5) - 48 == positionX) return tiles[i];
         }
         return "";
     }
@@ -107,13 +113,13 @@ public class Score {
         int positionX = tile.charAt(5);
 
         // check adjacent up
-        if (getOutput(tile,inputPosition) == 1) positionY -= 1;
-        //check adjacent right
-        else if (getOutput(tile,inputPosition) == 3) positionX += 1;
-        //check adjacent down
-        else if (getOutput(tile,inputPosition) == 5) positionY += 1;
-        //check adjacent left
-        else if (getOutput(tile,inputPosition) == 7) positionX -= 1;
+        if (inputPosition == 4) positionY -= 1;
+            //check adjacent right
+        else if (inputPosition == 6) positionX += 1;
+            //check adjacent down
+        else if (inputPosition == 0) positionY += 1;
+            //check adjacent left
+        else if (inputPosition == 2) positionX -= 1;
 
         for (int i = 0; i < tiles.length; i++) {
             if (tiles[i].charAt(4) == positionY && tiles[i].charAt(5) == positionX) return tiles[i];
@@ -130,7 +136,6 @@ public class Score {
         return 10; // this should never be returned so long as the input is a valid station.
     }
 
-
     public static int getNextInputPosition(String tile, int inputPosition) {
         // based on previous tile's output
         if (getOutput(tile,inputPosition) == 1) return 4;
@@ -145,16 +150,16 @@ public class Score {
     // also, inputPositions 0,2,4 & 6 map to letters 0,1,2 and 3 in the tile string (hence inputPosition/2)
     public static int getOutput(String tile,int inputPosition) {
         if (tile.charAt(inputPosition/2) == 'a') {
-            return inputPosition + 5;
+            return (inputPosition + 5) % 8;
 
         } else if (tile.charAt(inputPosition/2) == 'b') {
-            return inputPosition + 3;
+            return (inputPosition + 3) % 8;
 
         } else if (tile.charAt(inputPosition/2) == 'c') {
-            return inputPosition - 1;
+            return (inputPosition + 7) % 8;
 
         } else if (tile.charAt(inputPosition/2) == 'd') {
-            return inputPosition + 1;
+            return (inputPosition + 1) % 8;
         } else {
             return 0; // this should never be the output if the tile is valid.
         }
@@ -168,16 +173,16 @@ public class Score {
         int output = getOutput(tile, inputPosition);
 
         // check corners
-        if ((tile.charAt(4) == 0 && tile.charAt(5) == 0) && (output == 1 || output == 7)) return true;
-        else if ((tile.charAt(4) == 0 && tile.charAt(5) == 7) && (output == 1 || output == 3)) return true;
-        else if ((tile.charAt(4) == 7 && tile.charAt(5) == 0) && (output == 7 || output == 5)) return true;
-        else if ((tile.charAt(4) == 7 && tile.charAt(5) == 7) && (output == 3 || output == 5)) return true;
+        if ((tile.charAt(4) - 48 == 0 && tile.charAt(5) - 48 == 0) && (output == 1 || output == 7)) return true;
+        else if ((tile.charAt(4) - 48 == 0 && tile.charAt(5) - 48 == 7) && (output == 1 || output == 3)) return true;
+        else if ((tile.charAt(4) - 48 == 7 && tile.charAt(5) - 48 == 0) && (output == 7 || output == 5)) return true;
+        else if ((tile.charAt(4) - 48 == 7 && tile.charAt(5) - 48 == 7) && (output == 3 || output == 5)) return true;
 
         // then check edges
-        if ((tile.charAt(4) == 0) && (output == 1)) return true;
-        else if ((tile.charAt(5) == 0) && (output == 7)) return true;
-        else if ((tile.charAt(4) == 7) && (output == 5)) return true;
-        else return (tile.charAt(5) == 7) && (output == 3);
+        if ((tile.charAt(4) - 48 == 0) && (output == 1)) return true;
+        else if ((tile.charAt(5) - 48 == 0) && (output == 7)) return true;
+        else if ((tile.charAt(4) - 48 == 7) && (output == 5)) return true;
+        else return (tile.charAt(5) - 48 == 7) && (output == 3);
     }
 
     /**
@@ -185,12 +190,11 @@ public class Score {
      */
     public static boolean atMiddleStation(String tile, int inputPosition) {
         int output = getOutput(tile, inputPosition);
-        boolean inMiddleColumns = tile.charAt(5) == 3 || tile.charAt(5) == 4;
-        boolean inMiddleRows = tile.charAt(4) == 3 || tile.charAt(4) == 4;
-        if ((tile.charAt(4) == 2 && inMiddleColumns) && output == 5) return true;
-        else if ((tile.charAt(4) == 5 && inMiddleColumns) && output == 0) return true;
-        else if ((tile.charAt(5) == 2 && inMiddleRows) && output == 3) return true;
-        else return (tile.charAt(5) == 5 && inMiddleRows) && output == 7;
+        boolean inMiddleColumns = tile.charAt(5)  - 48 == 3 || tile.charAt(5) - 48 == 4;
+        boolean inMiddleRows = tile.charAt(4) - 48 == 3 || tile.charAt(4) - 48 == 4;
+        if ((tile.charAt(4) - 48 == 2 && inMiddleColumns) && output == 5) return true;
+        else if ((tile.charAt(4) - 48 == 5 && inMiddleColumns) && output == 1) return true;
+        else if ((tile.charAt(5) - 48 == 2 && inMiddleRows) && output == 3) return true;
+        else return (tile.charAt(5) - 48 == 5 && inMiddleRows) && output == 7;
     }
 }
-
