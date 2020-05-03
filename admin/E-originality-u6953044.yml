@@ -14,6 +14,16 @@ declaration: >-
   and all stages before it is entirely my own work, with the following
   exceptions:
 
+# Use this to list names of people who you collaborated with, and a
+# comment about what you collaborated on.
+#
+# Add as many "name+comment" entries as necessary
+# (or remove it altogether if you haven't collaborated with anyone)
+collaboration:
+  - name: Sebastian Tierney
+    comment: >-
+      We discussed Task 7 conceptually but did not share code.
+
 # sign *your* name and uid here
 name: Tom Stephens
 uid: u6953044
