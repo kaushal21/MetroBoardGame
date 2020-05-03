@@ -26,5 +26,14 @@ public class OurTests {
         assertNotNull("Expected score to be " + Arrays.toString(expected) + ", but got null", out);
         assertTrue("Expected score to be " + Arrays.toString(expected) + ", but got " + Arrays.toString(out), Arrays.equals(expected, out));
     }
+    @Test
+    public void testStationAlllocation(){
+        int NumOfPlayers = 3;
+        int[][] stationExpected = {{1, 4, 6, 11, 15, 20, 23, 25, 28, 31},{2, 7, 9, 12, 14, 19, 22, 27, 29, 32},{3, 5, 8, 10, 13, 18, 21, 24, 26, 30}};
+        int[][] stationOutcome = Player.allocateStations(NumOfPlayers);
+        assertNotNull("Expected station allocation :" + Arrays.deepToString(stationExpected) + " instead got null" ,stationOutcome);
+        assertTrue("Expected station allocation: " + Arrays.deepToString(stationExpected) + " but got " + Arrays.deepToString(stationOutcome)
+                , Arrays.deepEquals(stationExpected, stationOutcome));
 
+    }
 }
