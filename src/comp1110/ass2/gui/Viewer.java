@@ -8,8 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -24,10 +22,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.MouseInfo;
-import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -192,6 +187,7 @@ public class Viewer extends Application{
                         int tempLocationOfTopDeck2 = newDeck.getTop() - 1;
                         String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck2);
                         System.out.println(topOfDeck);
+                        System.out.println("Testing " + tempLocationOfTopDeck2);
                         try {
                             makePlacement(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1));
                         } catch (FileNotFoundException e1) {
@@ -265,9 +261,9 @@ public class Viewer extends Application{
         deckName.setTextFill(Color.rgb(0, 0, 0));
 
         // Store the top location from the newDeck which is passed.
-        int tempLocationOfTopDeck = newDeck.getTop() - 1;
+        AtomicInteger tempLocationOfTopDeck = new AtomicInteger(newDeck.getTop() - 1);
         // Store the string value of the tile that is at the top of the deck
-        String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck);
+        String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck.get());
 
         // Find the tile that is at the top of deck and store its location
         String topLocation = "src/comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
@@ -324,6 +320,7 @@ public class Viewer extends Application{
                     // Create a label for this tile
                     Label tile2Name = new Label(topOfDeck);
                     deckLoc.getChildren().add(tile2Name);
+                    //tempLocationOfTopDeck.set(tempLocationOfTopDeck.get() - 1);
                 }
 
 
@@ -398,6 +395,8 @@ public class Viewer extends Application{
         screenDistribution.getChildren().add(rightDeckLocation);
 
         root.getChildren().add(screenDistribution);
+
+        System.out.println();
 
         primaryStage.setScene(scene);
         primaryStage.show();
