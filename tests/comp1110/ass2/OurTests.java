@@ -26,6 +26,8 @@ public class OurTests {
         assertNotNull("Expected score to be " + Arrays.toString(expected) + ", but got null", out);
         assertTrue("Expected score to be " + Arrays.toString(expected) + ", but got " + Arrays.toString(out), Arrays.equals(expected, out));
     }
+    //Test to see if the correct stations have been assigned to each player depending on the amount of players in the
+    // in the game.
     @Test
     public void testStationAlllocation(){
         int NumOfPlayers = 3;
@@ -34,6 +36,19 @@ public class OurTests {
         assertNotNull("Expected station allocation :" + Arrays.deepToString(stationExpected) + " instead got null" ,stationOutcome);
         assertTrue("Expected station allocation: " + Arrays.deepToString(stationExpected) + " but got " + Arrays.deepToString(stationOutcome)
                 , Arrays.deepEquals(stationExpected, stationOutcome));
+
+    }
+    @Test
+        public void testStationReturn(){
+        int playerNumber = 2;
+        int playerPosition = playerNumber - 1;
+        int numberOfPlayers = 4;
+        int [] playerExpected = {3, 8, 12, 15, 19, 24, 28, 31};
+        int [] playerOutcome = Player.getStations(playerPosition,numberOfPlayers);
+        assertNotNull("Expected stations for player 2: "  + Arrays.toString(playerExpected) + "instead got null", playerOutcome);
+        assertTrue("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome)
+                ,Arrays.equals(playerExpected,playerOutcome));
+
 
     }
 
