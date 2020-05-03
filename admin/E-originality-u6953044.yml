@@ -20,7 +20,7 @@ declaration: >-
 # Add as many "name+comment" entries as necessary
 # (or remove it altogether if you haven't collaborated with anyone)
 collaboration:
-  - name: Seb Tierney
+  - name: Sebastian Tierney
     comment: >-
       We discussed Task 7 conceptually but did not share code.
 
