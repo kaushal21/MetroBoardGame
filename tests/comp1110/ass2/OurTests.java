@@ -36,4 +36,32 @@ public class OurTests {
                 , Arrays.deepEquals(stationExpected, stationOutcome));
 
     }
+
+    // This test is to check if the top tile is popped out or not
+    @Test
+    public void testPop() {
+        Tile tile = new Tile();
+        String topDeck = tile.getDeck(tile.getTop()-1);
+        String poppedTile = tile.pop();
+        assertNotNull("Expected popped tile to be "+topDeck+" but got NULL",poppedTile);
+        assertEquals("Expected Tile: " + topDeck + " But Got This: " + poppedTile, topDeck, poppedTile);
+    }
+
+    // This test is to check if the deck is Empty or not
+    @Test
+    public void testCheckDeckEmpty() {
+        Tile tile = new Tile();
+        // Check for the initialized Deck
+        assertTrue("Expected true but got "+tile.checkDeckEmpty(), tile.checkDeckEmpty());
+
+        // Check for empty deck
+        for(int i = 0; i < Utilities.COMPLETE_BOARDSTRINGS.length; i++) {
+            for(int j = 0; j < Utilities.COMPLETE_BOARDSTRINGS[i].length() / 6; j++) {
+                String placedTiles = Utilities.COMPLETE_BOARDSTRINGS[i].substring(j*6, (j*6)+6);
+                placedTiles = placedTiles.substring(0, 4);
+                tile.updateDeck(placedTiles);
+            }
+            assertFalse("Expected false but got "+tile.checkDeckEmpty(), tile.checkDeckEmpty());
+        }
+    }
 }
