@@ -40,6 +40,15 @@ public class GetScoreTest {
         }
     }
 
+    // Tests the situation where a track goes directly between 2 adjacent corner stations or 2 adjacent edge stations
+    // It also includes a track that goes to the middle station to check if that works (although that may be part of another test)
+    @Test
+    public void testCornerandEdgeSituation() {
+        String boardString = "cbcb00bcbc07bcbc70dbcd77ccda73cbaa74cbaa64cbaa54";
+        int[] expected = {1, 1, 7, 2, 1, 1};
+        test(expected, Metro.getScore(boardString, 6));
+    }
+
     private void test(int[] expected, int[] out) {
         assertNotNull("Expected score to be " + Arrays.toString(expected) + ", but got null", out);
         assertTrue("Expected score to be " + Arrays.toString(expected) + ", but got " + Arrays.toString(out), Arrays.equals(expected, out));
