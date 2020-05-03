@@ -29,34 +29,43 @@ public class Score {
 
         // Get the number of tiles in the placementSequence
         int numberOfTiles = placementSequence.length() / 6;
-
         // Divide the string into pieces i.e. tile value and its location row and col.
         String[] tiles = new String[numberOfTiles];
         for (int i = 0; i < numberOfTiles; i++) {
             // Put all of the tiles into an array
             tiles[i] = placementSequence.substring(i * 6, (i * 6) + 6);
         }
+        // iterate through the players and score each one
         for (int i = 0; i < players; i++) {
             score[i] = scorePlayer(i, tiles, players);
         }
         return score;
     }
 
+    /**
+     * @param player the current player being examined
+     * @param tiles the current state of the board in tile-array format (rather than board string)
+     * @param players the number of players (required to assign the right stations to each player)
+     * @return an int value corresponding to the player's score
+     */
     public static int scorePlayer(int player, String[] tiles, int players) {
+        // get the player's stations in an array
         int[] playerStations = Player.getStations(player, players);
         int playerScore = 0;
+        // iterate over the stations and follow the track that comes out of each one (if there is one)
         for (int i = 0; i < playerStations.length; i++) {
+            // check if a tile exists at a station
             if (!(getTileAtStation(playerStations[i], tiles)).equals("")) {
                 int trackScore = 0;
                 int input = getFirstInputPosition(playerStations[i]);
                 String currentTile = getTileAtStation(playerStations[i], tiles);
 
+                // stepping through the track, ending if there is no next tile or the track is at a station
                 while (!currentTile.equals("")) {
                     trackScore ++;
                     if (atStation(currentTile, input)) {
                         playerScore += trackScore;
                     }
-
                     else if (atMiddleStation(currentTile, input)) {
                         playerScore += trackScore * 2;
                     }
