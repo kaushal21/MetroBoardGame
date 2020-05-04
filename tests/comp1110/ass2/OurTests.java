@@ -39,6 +39,7 @@ public class OurTests {
 
     }
     @Test
+        //Test to see if the stations are assigned to the correct player.
         public void testStationReturn(){
         int playerNumber = 2;
         int playerPosition = playerNumber - 1;

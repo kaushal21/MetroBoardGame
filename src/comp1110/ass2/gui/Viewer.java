@@ -180,14 +180,20 @@ public class Viewer extends Application{
         grid.getChildren().addAll(centerImageView1, centerImageView2, centerImageView3, centerImageView4);
         //Checking which gridCell was clicked, then prints out the gridCell Location.
         grid.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, e -> {
+            //Loops through the gridPane looking at each panel and names them node
             for (Node node : grid.getChildren()) {
                 if (node instanceof Label) {
+                    //Checks if the mouse position in the gridCell, through getting the mouse's position by getSceneX & Y
                     if (node.getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) {
+                        //Prints out location of the gridCell.
                         System.out.println("Node: " + node + " at " + (GridPane.getRowIndex(node)-1) + "/" + (GridPane.getColumnIndex(node)-1));
+                        //Gets the top value from the shuffled deck.
                         int tempLocationOfTopDeck2 = newDeck.getTop() - 1;
                         String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck2);
                         System.out.println(topOfDeck);
                         System.out.println("Testing " + tempLocationOfTopDeck2);
+                        //Places the tile at the gridCell location
+                        //Getting an error, not sure how to fix it yet, still working on it.
                         try {
                             makePlacement(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1));
                         } catch (FileNotFoundException e1) {
