@@ -35,5 +35,78 @@ public class OurTests {
         assertNotNull("Expected score to be " + Arrays.toString(expected) + ", but got null", out);
         assertTrue("Expected score to be " + Arrays.toString(expected) + ", but got " + Arrays.toString(out), Arrays.equals(expected, out));
     }
+    //Test to see if the correct stations have been assigned to each player depending on the amount of players in the
+    // in the game.
+    @Test
+    public void testStationAlllocation(){
+        int NumOfPlayers = 3;
+        int[][] stationExpected = {{1, 4, 6, 11, 15, 20, 23, 25, 28, 31},{2, 7, 9, 12, 14, 19, 22, 27, 29, 32},{3, 5, 8, 10, 13, 18, 21, 24, 26, 30}};
+        int[][] stationOutcome = Player.allocateStations(NumOfPlayers);
+        assertNotNull("Expected station allocation :" + Arrays.deepToString(stationExpected) + " instead got null" ,stationOutcome);
+        assertTrue("Expected station allocation: " + Arrays.deepToString(stationExpected) + " but got " + Arrays.deepToString(stationOutcome)
+                , Arrays.deepEquals(stationExpected, stationOutcome));
 
+    }
+    @Test
+        //Test to see if the stations are assigned to the correct player.
+        public void testStationReturn(){
+        int playerNumber = 2;
+        int playerPosition = playerNumber - 1;
+        int numberOfPlayers = 4;
+        int [] playerExpected = {3, 8, 12, 15, 19, 24, 28, 31};
+        int [] playerOutcome = Player.getStations(playerPosition,numberOfPlayers);
+        assertNotNull("Expected stations for player 2: "  + Arrays.toString(playerExpected) + "instead got null", playerOutcome);
+        assertTrue("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome)
+                ,Arrays.equals(playerExpected,playerOutcome));
+
+
+    }
+
+    // This test is to check if the top tile is popped out or not
+    @Test
+    public void testPop() {
+        for(int i = 0; i < Utilities.VALID_SMALL_BOARDSTRINGS.length; i++) {
+            Tile tile = new Tile();
+            for(int j = 0; j < Utilities.VALID_SMALL_BOARDSTRINGS[i].length() / 6; j++) {
+                String placedTiles = Utilities.VALID_SMALL_BOARDSTRINGS[i].substring(j*6, (j*6)+6);
+                placedTiles = placedTiles.substring(0, 4);
+                tile.updateDeck(placedTiles);
+            }
+            String topDeck = tile.getDeck(tile.getTop()-1);
+            String poppedTile = tile.pop();
+            assertNotNull("Expected popped tile to be "+topDeck+" but got NULL",poppedTile);
+            assertEquals("Expected Tile: " + topDeck + " But Got This: " + poppedTile, topDeck, poppedTile);
+        }
+        for(int i = 0; i < Utilities.VALID_MEDIUM_BOARDSTRINGS.length; i++) {
+            Tile tile = new Tile();
+            for(int j = 0; j < Utilities.VALID_MEDIUM_BOARDSTRINGS[i].length() / 6; j++) {
+                String placedTiles = Utilities.VALID_MEDIUM_BOARDSTRINGS[i].substring(j*6, (j*6)+6);
+                placedTiles = placedTiles.substring(0, 4);
+                tile.updateDeck(placedTiles);
+            }
+            String topDeck = tile.getDeck(tile.getTop()-1);
+            String poppedTile = tile.pop();
+            assertNotNull("Expected popped tile to be "+topDeck+" but got NULL",poppedTile);
+            assertEquals("Expected Tile: " + topDeck + " But Got This: " + poppedTile, topDeck, poppedTile);
+        }
+    }
+
+    // This test is to check if the deck is Empty or not
+    @Test
+    public void testCheckDeckEmpty() {
+        Tile tile = new Tile();
+        // Check for the initialized Deck
+        assertTrue("Expected true but got "+tile.checkDeckEmpty(), tile.checkDeckEmpty());
+
+        // Check for empty deck
+        for(int i = 0; i < Utilities.COMPLETE_BOARDSTRINGS.length; i++) {
+            Tile lastTile = new Tile();
+            for(int j = 0; j < Utilities.COMPLETE_BOARDSTRINGS[i].length() / 6; j++) {
+                String placedTiles = Utilities.COMPLETE_BOARDSTRINGS[i].substring(j*6, (j*6)+6);
+                placedTiles = placedTiles.substring(0, 4);
+                lastTile.updateDeck(placedTiles);
+            }
+            assertFalse("Expected false but got "+lastTile.checkDeckEmpty(), lastTile.checkDeckEmpty());
+        }
+    }
 }

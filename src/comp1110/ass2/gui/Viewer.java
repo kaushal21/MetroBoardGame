@@ -4,11 +4,10 @@ import comp1110.ass2.Metro;
 import comp1110.ass2.Player;
 import comp1110.ass2.Tile;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -23,10 +22,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.MouseInfo;
-
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -36,7 +32,7 @@ import java.awt.MouseInfo;
  * class does not play a game, it just illustrates various piece
  * placements.
  */
-public class Viewer extends Application implements MouseListener{
+public class Viewer extends Application{
     /* board layout */
     private static final int SQUARE_SIZE = 70;
     private static final int VIEWER_WIDTH = 1024;
@@ -182,6 +178,31 @@ public class Viewer extends Application implements MouseListener{
         GridPane.setConstraints(centerImageView3, 4, 5);
         GridPane.setConstraints(centerImageView4, 5, 5);
         grid.getChildren().addAll(centerImageView1, centerImageView2, centerImageView3, centerImageView4);
+        //Checking which gridCell was clicked, then prints out the gridCell Location.
+        grid.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, e -> {
+            //Loops through the gridPane looking at each panel and names them node
+            for (Node node : grid.getChildren()) {
+                if (node instanceof Label) {
+                    //Checks if the mouse position in the gridCell, through getting the mouse's position by getSceneX & Y
+                    if (node.getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) {
+                        //Prints out location of the gridCell.
+                        System.out.println("Node: " + node + " at " + (GridPane.getRowIndex(node)-1) + "/" + (GridPane.getColumnIndex(node)-1));
+                        //Gets the top value from the shuffled deck.
+                        int tempLocationOfTopDeck2 = newDeck.getTop() - 1;
+                        String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck2);
+                        System.out.println(topOfDeck);
+                        System.out.println("Testing " + tempLocationOfTopDeck2);
+                        //Places the tile at the gridCell location
+                        //Getting an error, not sure how to fix it yet, still working on it.
+                        try {
+                            makePlacement(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1));
+                        } catch (FileNotFoundException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
 
         // Return the newly created Grid.
         return grid;
@@ -246,9 +267,9 @@ public class Viewer extends Application implements MouseListener{
         deckName.setTextFill(Color.rgb(0, 0, 0));
 
         // Store the top location from the newDeck which is passed.
-        int tempLocationOfTopDeck = newDeck.getTop() - 1;
+        AtomicInteger tempLocationOfTopDeck = new AtomicInteger(newDeck.getTop() - 1);
         // Store the string value of the tile that is at the top of the deck
-        String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck);
+        String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck.get());
 
         // Find the tile that is at the top of deck and store its location
         String topLocation = "src/comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
@@ -305,6 +326,7 @@ public class Viewer extends Application implements MouseListener{
                     // Create a label for this tile
                     Label tile2Name = new Label(topOfDeck);
                     deckLoc.getChildren().add(tile2Name);
+                    //tempLocationOfTopDeck.set(tempLocationOfTopDeck.get() - 1);
                 }
 
 
@@ -323,10 +345,6 @@ public class Viewer extends Application implements MouseListener{
         return deckLoc;
     }
 
-    public void mousePress() throws Exception{
-
-
-    }
 
 
 
@@ -353,34 +371,6 @@ public class Viewer extends Application implements MouseListener{
         hb.setLayoutX(130);
         hb.setLayoutY(VIEWER_HEIGHT - 50);
         controls.getChildren().add(hb);
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-        System.out.println("Mouse Pressed X " + x + "Y " + y);
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 
     @Override
@@ -410,17 +400,12 @@ public class Viewer extends Application implements MouseListener{
         GridPane.setConstraints(rightDeckLocation, 1, 0);
         screenDistribution.getChildren().add(rightDeckLocation);
 
-        scene.setOnMouseClicked(event ->{
-            Point p = MouseInfo.getPointerInfo().getLocation();
-            System.out.println(p);
-        });
-
-
-
         root.getChildren().add(screenDistribution);
 
+        System.out.println();
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 }
