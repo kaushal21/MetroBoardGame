@@ -140,7 +140,15 @@ public class Metro {
      * @return A valid placement of the given tile
      */
     public static String generateMove(String placementSequence, String piece, int numberOfPlayers) {
+        // Get the number of tiles in the placementSequence
+        int numberOfTiles = placementSequence.length() / 6;
+        // Divide the string into pieces i.e. tile value and its location row and col.
+        String[] tiles = new String[numberOfTiles];
+        for (int i = 0; i < numberOfTiles; i++) {
+            // Put all of the tiles into an array
+            tiles[i] = placementSequence.substring(i * 6, (i * 6) + 6);
+        }
         // FIXME Task 9: generate a valid move
-        return "";
+        return Move.generateValidMove(tiles, piece);
     }
 }

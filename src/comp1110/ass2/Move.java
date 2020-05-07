@@ -431,5 +431,68 @@ public class Move {
         // Return true if there is no error in the placementSequence, and it is a valid string
         return true;
     }
+
+    /**
+    @param piece is the tile that will be placed in a valid location
+     to be valid it must be:
+     - placed against one of the exterior stations or,
+     - placed adjacent to another tile and,
+     - cannot be placed in a way that it loops back to the same station it came from unless there is no other way to place the tile
+     @return a tile placement string (e.g. dacd07)
+     */
+    public static String generateValidMove(String[] tiles, String piece) {
+        // if there are no placed tiles then generate the first possible move that doesn't break the length 1 rule
+        if (tiles.length == 0) {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (!atStation2(piece, i, j)) return (piece + i + j);
+                }
+            }
+        }
+        // iterates through rows
+        for (int i = 0; i < 8; i++) {
+            //iterates through columns (each member of each row)
+            for (int j = 0; j < 8; j++) {
+                // if there is no tile there
+                for (int k = 0; k < tiles.length; k++) {
+                    // if there is a tile there then break the loop
+                    if (tiles[k].charAt(4) == i && tiles[k].charAt(5) == j) break;
+                    // if tile isn't facing back into a station
+                    else if (atStation2(piece, i,j)) break;
+                    else return (piece + i + j);
+                }
+            }
+        }
+        // if the program gets to this point (i.e. it hasn't been able to find a valid move) and the board is
+        // not full then we should place a tile even if it violates the length 1 rule.
+        if (tiles.length != 60) {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    for (int k = 0; k < tiles.length; k++) {
+                        // if there is a tile there then break the loop
+                        if (tiles[k].charAt(4) == i && tiles[k].charAt(5) == j) break;
+                            // if tile isn't facing back into a station
+                        else return (piece + i + j);
+                    }
+                }
+            }
+        }
+        return "Board is full, no valid moves left";
+    }
+
+    // Determines if a piece is invalidly going into a station based on its location
+    public static boolean atStation2 (String piece, int posY, int posX) {
+        // check corners
+        if ((posY == 0 && posX == 0) && (piece.charAt(0) == 'c' || piece.charAt(3) == 'b')) return true;
+        else if ((posY == 0 && posX == 7) && (piece.charAt(1) == 'c' || piece.charAt(0) == 'b')) return true;
+        else if ((posY == 7 && posX == 0) && (piece.charAt(3) == 'c' || piece.charAt(2) == 'b')) return true;
+        else if ((posY == 7 && posX == 7) && (piece.charAt(2) == 'c' || piece.charAt(1) == 'b')) return true;
+
+        // check edges
+        else if (posY == 0 && piece.charAt(0) == 'd') return true;
+        else if (posY == 7 && piece.charAt(2) == 'd') return true;
+        else if (posX == 0 && piece.charAt(3) == 'd') return true;
+        else return (posX == 7 && piece.charAt(1) == 'd');
+    }
 }
 
