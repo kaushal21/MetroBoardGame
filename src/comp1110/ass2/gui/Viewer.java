@@ -71,7 +71,7 @@ public class Viewer extends Application{
         String tile = placement.substring(0, 4);
         int row = Integer.parseInt(String.valueOf(placement.charAt(4)));
         int col = Integer.parseInt(String.valueOf(placement.charAt(5)));
-        newBoard = updateBoard(newBoard, tile, row, col);
+        newBoard = updateBoard(newBoard, tile, row, col); 
     }
 
     void makePlacementv2(String placementSequence, String tilePlacement) throws FileNotFoundException {
