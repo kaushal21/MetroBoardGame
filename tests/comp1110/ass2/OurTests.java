@@ -31,10 +31,6 @@ public class OurTests {
         assertTrue("expected outcome is achieved", expected == outcome);
     }
 
-    private void test(int[] expected, int[] out) {
-        assertNotNull("Expected score to be " + Arrays.toString(expected) + ", but got null", out);
-        assertTrue("Expected score to be " + Arrays.toString(expected) + ", but got " + Arrays.toString(out), Arrays.equals(expected, out));
-    }
     //Test to see if the correct stations have been assigned to each player depending on the amount of players in the
     // in the game.
     @Test
@@ -108,5 +104,13 @@ public class OurTests {
             }
             assertFalse("Expected false but got "+lastTile.checkDeckEmpty(), lastTile.checkDeckEmpty());
         }
+    }
+    @Test
+    public void testGenerateMoveHelpers() {
+        int Y = 0;
+        int X = 0;
+        String piece = "cbaa";
+        assertTrue("Expected true but got " + Move.atStation2(piece, Y, X), Move.atStation2(piece, Y, X));
+        assertFalse("Expected False but got " + Move.atMiddle(Y, X), Move.atMiddle(Y, X));
     }
 }
