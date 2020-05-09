@@ -43,6 +43,10 @@ public class Metro {
         return move.checkPlacementSequence(placement);
     }
 
+    public static String updatePlacement (String placement, String tile){
+        return move.updatePlacementSequence(placement,tile);
+    }
+
     /**
      * Task 5
      * Draw a random tile from the deck.

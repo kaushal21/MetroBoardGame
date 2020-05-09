@@ -1,8 +1,10 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.Metro;
+import comp1110.ass2.Move;
 import comp1110.ass2.Player;
 import comp1110.ass2.Tile;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -22,6 +24,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -39,6 +42,8 @@ public class Viewer extends Application{
     private static final int VIEWER_HEIGHT = 768;
 
     private static final String URI_BASE = "assets/";
+    private static String plSequence = "";
+    private static int playerNums = 0;
 
     private final Group root = new Group();
     private final Group controls = new Group();
@@ -55,16 +60,67 @@ public class Viewer extends Application{
      *
      * @param placement A valid placement string
      */
+
     void makePlacement(String placement) throws FileNotFoundException {
         // FIXME Task 4: implement the simple placement viewer
-        if (!Metro.isPiecePlacementWellFormed(placement)) {
+        if(!Metro.isPlacementSequenceValid(placement)){
+            System.out.println("isPieceSequenceWellFormed");
             AlertBox.alertBox("Please enter a valid placement string");
             return;
         }
         String tile = placement.substring(0, 4);
         int row = Integer.parseInt(String.valueOf(placement.charAt(4)));
         int col = Integer.parseInt(String.valueOf(placement.charAt(5)));
+        newBoard = updateBoard(newBoard, tile, row, col);
+    }
 
+    void makePlacementv2(String placementSequence, String tilePlacement) throws FileNotFoundException {
+        // FIXME Task 4: implement the simple placement viewer
+        //plSequence = plSequence + placement;
+        System.out.println("makePlace plSequence: "+plSequence);
+        System.out.println("makePlace placeSeqeucne: " + placementSequence);
+        String verifySq = placementSequence + tilePlacement;
+        if(Metro.isPiecePlacementWellFormed(tilePlacement)) {
+            if (!Metro.isPlacementSequenceValid(verifySq)) {
+                System.out.println("isPieceSequenceWellFormed");
+                System.out.println(verifySq);
+                AlertBox.alertBox("Please enter a valid placement string");
+                return;
+            }
+            String tile = tilePlacement.substring(0, 4);
+            int row = Integer.parseInt(String.valueOf(tilePlacement.charAt(4)));
+            int col = Integer.parseInt(String.valueOf(tilePlacement.charAt(5)));
+            System.out.println("Placed----------------------------------------");
+            plSequence = Metro.updatePlacement(placementSequence,tilePlacement);
+            Metro.getScore(plSequence,playerNums);
+            System.out.println("Score----------------------------------------Score");
+            System.out.println(Arrays.toString(Metro.getScore(plSequence,playerNums)));
+            newBoard = updateBoard(newBoard, tile, row, col);
+        } else
+            {
+        AlertBox.alertBox("Please enter a valid placement string");
+        return;
+            }
+    }
+
+    void firstMakePlacement (String firstPlacement, String firstTile) throws FileNotFoundException{
+        if(!Metro.isPlacementSequenceValid(firstTile)) {
+            System.out.println("First Placement " + firstPlacement);
+            System.out.println("Tile: " + firstTile);
+
+            System.out.println("First-isPieceSequenceWellFormed");
+            AlertBox.alertBox("Please enter a valid placement string");
+            return;
+
+        }
+        String tile = firstTile.substring(0, 4);
+        int row = Integer.parseInt(String.valueOf(firstTile.charAt(4)));
+        int col = Integer.parseInt(String.valueOf(firstTile.charAt(5)));
+        plSequence = Metro.updatePlacement(firstPlacement,firstTile);
+        System.out.println("plSequence: "+plSequence);
+        Metro.getScore(plSequence,playerNums);
+        System.out.println("Score----------------------------------------Score");
+        System.out.println(Arrays.toString(Metro.getScore(plSequence,playerNums)));
         newBoard = updateBoard(newBoard, tile, row, col);
     }
 
@@ -185,20 +241,48 @@ public class Viewer extends Application{
                 if (node instanceof Label) {
                     //Checks if the mouse position in the gridCell, through getting the mouse's position by getSceneX & Y
                     if (node.getBoundsInParent().contains(e.getSceneX(), e.getSceneY())) {
-                        //Prints out location of the gridCell.
-                        System.out.println("Node: " + node + " at " + (GridPane.getRowIndex(node)-1) + "/" + (GridPane.getColumnIndex(node)-1));
-                        //Gets the top value from the shuffled deck.
-                        int tempLocationOfTopDeck2 = newDeck.getTop() - 1;
-                        String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck2);
-                        System.out.println(topOfDeck);
-                        System.out.println("Testing " + tempLocationOfTopDeck2);
-                        //Places the tile at the gridCell location
-                        //Getting an error, not sure how to fix it yet, still working on it.
-                        try {
-                            makePlacement(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1));
-                        } catch (FileNotFoundException e1) {
-                            e1.printStackTrace();
-                        }
+                        //Have to use Platform run otherwise you get an java.util.ConcurrentModificationException error
+                        Platform.runLater(new Runnable() {
+                            //You have to run the makePlacementv2 inside this run function.
+                            @Override
+                            public void run() {
+                                //Prints out location of the gridCell.
+                                System.out.println("");
+                                System.out.println("New Click------------------------------------------");
+                                System.out.println("Node: " + node + " at " + (GridPane.getRowIndex(node) - 1) + "/" + (GridPane.getColumnIndex(node) - 1));
+                                //Gets the top value from the shuffled deck.
+                                int tempLocationOfTopDeck2 = newDeck.getTop() - 1;
+                                String topOfDeck = newDeck.getDeck(tempLocationOfTopDeck2);
+                                System.out.println("tile Placement: " + Metro.isPiecePlacementWellFormed(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1)));
+                                System.out.println("Negative tile Placement: " + !Metro.isPiecePlacementWellFormed(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1)));
+                                System.out.println("Placement Sequence: " + Metro.isPlacementSequenceValid(plSequence));
+                                System.out.println("Negative Placement Sequence: " + !Metro.isPlacementSequenceValid(plSequence));
+                               // System.out.println("Final Placement Check :" + Metro.isPlacementSequenceWellFormed(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1)));
+
+                                //Places the tile at the gridCell location
+
+                                //Getting an error, not sure how to fix it yet, still working on it.
+
+                                if (plSequence.isEmpty()) {
+                                    System.out.println(plSequence);
+                                    try {
+                                        firstMakePlacement(plSequence, topOfDeck + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1));
+                                    } catch (FileNotFoundException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                } else {
+                                    try {
+                                        System.out.println("");
+                                        System.out.println("Button Press plSequence " + plSequence);
+                                        makePlacementv2(plSequence,topOfDeck + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1));
+                                        System.out.println(plSequence);
+                                    } catch (FileNotFoundException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
+
                     }
                 }
             }
@@ -326,7 +410,6 @@ public class Viewer extends Application{
                     // Create a label for this tile
                     Label tile2Name = new Label(topOfDeck);
                     deckLoc.getChildren().add(tile2Name);
-                    //tempLocationOfTopDeck.set(tempLocationOfTopDeck.get() - 1);
                 }
 
 
@@ -359,7 +442,7 @@ public class Viewer extends Application{
         Button button = new Button("Place Tile");
         button.setOnAction(e -> {
             try {
-                makePlacement(textField.getText());
+                makePlacementv2(plSequence,textField.getText());
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
@@ -383,6 +466,7 @@ public class Viewer extends Application{
 
         // Get the number of players from the user using getPlayer() function.
         int n = GetPlayers.getPlayers();
+        playerNums = n;
         if ( n == -1 )                          // Check if the user wants to quit or continue
             return;
         // Create a new variable of Player that hold all the functionality of a player.
@@ -401,8 +485,6 @@ public class Viewer extends Application{
         screenDistribution.getChildren().add(rightDeckLocation);
 
         root.getChildren().add(screenDistribution);
-
-        System.out.println();
 
         primaryStage.setScene(scene);
         primaryStage.show();
