@@ -452,28 +452,28 @@ public class Move {
         // iterates through rows
         for (int i = 0; i < 8; i++) {
             //iterates through columns (each member of each row)
-            for (int j = 0; j < 8; j++) {
-                // if there is no tile there
-                for (int k = 0; k < tiles.length; k++) {
-                    // if there is a tile there then break the loop
-                    if (tiles[k].charAt(4) == i && tiles[k].charAt(5) == j) break;
-                    // if tile isn't facing back into a station
-                    else if (atStation2(piece, i,j)) break;
-                    else return (piece + i + j);
+            outer: for (int j = 0; j < 8; j++) {
+                if (atStation2(piece, i,j)) {
+                    continue;
                 }
+                for (String tile : tiles) {
+                    // if there is a tile there then break the loop
+                    if (tile.charAt(4) - 48 == i && tile.charAt(5) - 48 == j) continue outer;
+                }
+                return (piece + i + j);
             }
         }
         // if the program gets to this point (i.e. it hasn't been able to find a valid move) and the board is
         // not full then we should place a tile even if it violates the length 1 rule.
         if (tiles.length != 60) {
             for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    for (int k = 0; k < tiles.length; k++) {
+                outer1: for (int j = 0; j < 8; j++) {
+                    if (atMiddle(i,j)) continue;
+                    for (String tile : tiles) {
                         // if there is a tile there then break the loop
-                        if (tiles[k].charAt(4) == i && tiles[k].charAt(5) == j) break;
-                            // if tile isn't facing back into a station
-                        else return (piece + i + j);
+                        if (tile.charAt(4) - 48 == i && tile.charAt(5) - 48 == j) continue outer1;
                     }
+                    return (piece + i + j);
                 }
             }
         }
@@ -481,7 +481,12 @@ public class Move {
     }
 
     // Determines if a piece is invalidly going into a station based on its location
+    // OR, if a piece is invalid because it is on top of a middle station
     public static boolean atStation2 (String piece, int posY, int posX) {
+        // check if on top of middle stations
+        if (posY == 3 && (posX == 3 || posX == 4)) return true;
+        else if (posY == 4 && (posX == 3 || posX == 4)) return true;
+
         // check corners
         if ((posY == 0 && posX == 0) && (piece.charAt(0) == 'c' || piece.charAt(3) == 'b')) return true;
         else if ((posY == 0 && posX == 7) && (piece.charAt(1) == 'c' || piece.charAt(0) == 'b')) return true;
@@ -493,6 +498,12 @@ public class Move {
         else if (posY == 7 && piece.charAt(2) == 'd') return true;
         else if (posX == 0 && piece.charAt(3) == 'd') return true;
         else return (posX == 7 && piece.charAt(1) == 'd');
+    }
+    // Checks if a piece is invalid because it is on top of a middle station
+    public static boolean atMiddle (int posY, int posX) {
+        // check if on top of middle stations
+        if (posY == 3 && (posX == 3 || posX == 4)) return true;
+        else return (posY == 4 && (posX == 3 || posX == 4));
     }
 }
 

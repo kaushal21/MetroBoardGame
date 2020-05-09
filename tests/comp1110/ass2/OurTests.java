@@ -19,7 +19,7 @@ public class OurTests {
         String[] tileArray = {"cbcb00","bcbc07","bcbc70","dbcd77","ccda73","cbaa74","cbaa64","cbaa54"};
         int expected = 7;
         int outcome = Score.scorePlayer(2,tileArray, 6);
-        assertTrue("expected outcome is achieved", expected == outcome);
+        assertEquals("expected outcome is achieved", expected, outcome);
     }
 
     // Tests the getNextTile function in Score.java
@@ -28,13 +28,9 @@ public class OurTests {
         String[] tileArray = {"cbcb00","bcbc07","bcbc70","dbcd77","ccda73","cbaa74","cbaa64","cbaa54"};
         String expected = "cbaa64";
         String outcome = Score.getNextTile("cbaa74", 4, tileArray);
-        assertTrue("expected outcome is achieved", expected == outcome);
+        assertSame("expected outcome is achieved", expected, outcome);
     }
 
-    private void test(int[] expected, int[] out) {
-        assertNotNull("Expected score to be " + Arrays.toString(expected) + ", but got null", out);
-        assertTrue("Expected score to be " + Arrays.toString(expected) + ", but got " + Arrays.toString(out), Arrays.equals(expected, out));
-    }
     //Test to see if the correct stations have been assigned to each player depending on the amount of players in the
     // in the game.
     @Test
@@ -56,8 +52,7 @@ public class OurTests {
         int [] playerExpected = {3, 8, 12, 15, 19, 24, 28, 31};
         int [] playerOutcome = Player.getStations(playerPosition,numberOfPlayers);
         assertNotNull("Expected stations for player 2: "  + Arrays.toString(playerExpected) + "instead got null", playerOutcome);
-        assertTrue("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome)
-                ,Arrays.equals(playerExpected,playerOutcome));
+        assertArrayEquals("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome), playerExpected, playerOutcome);
 
 
     }
@@ -108,5 +103,13 @@ public class OurTests {
             }
             assertFalse("Expected false but got "+lastTile.checkDeckEmpty(), lastTile.checkDeckEmpty());
         }
+    }
+    @Test
+    public void testGenerateMoveHelpers() {
+        int Y = 0;
+        int X = 0;
+        String piece = "cbaa";
+        assertTrue("Expected true but got " + Move.atStation2(piece, Y, X), Move.atStation2(piece, Y, X));
+        assertFalse("Expected False but got " + Move.atMiddle(Y, X), Move.atMiddle(Y, X));
     }
 }
