@@ -19,7 +19,7 @@ public class OurTests {
         String[] tileArray = {"cbcb00","bcbc07","bcbc70","dbcd77","ccda73","cbaa74","cbaa64","cbaa54"};
         int expected = 7;
         int outcome = Score.scorePlayer(2,tileArray, 6);
-        assertTrue("expected outcome is achieved", expected == outcome);
+        assertEquals("expected outcome is achieved", expected, outcome);
     }
 
     // Tests the getNextTile function in Score.java
@@ -28,7 +28,7 @@ public class OurTests {
         String[] tileArray = {"cbcb00","bcbc07","bcbc70","dbcd77","ccda73","cbaa74","cbaa64","cbaa54"};
         String expected = "cbaa64";
         String outcome = Score.getNextTile("cbaa74", 4, tileArray);
-        assertTrue("expected outcome is achieved", expected == outcome);
+        assertSame("expected outcome is achieved", expected, outcome);
     }
 
     //Test to see if the correct stations have been assigned to each player depending on the amount of players in the
@@ -52,8 +52,7 @@ public class OurTests {
         int [] playerExpected = {3, 8, 12, 15, 19, 24, 28, 31};
         int [] playerOutcome = Player.getStations(playerPosition,numberOfPlayers);
         assertNotNull("Expected stations for player 2: "  + Arrays.toString(playerExpected) + "instead got null", playerOutcome);
-        assertTrue("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome)
-                ,Arrays.equals(playerExpected,playerOutcome));
+        assertArrayEquals("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome), playerExpected, playerOutcome);
 
 
     }
