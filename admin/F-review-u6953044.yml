@@ -1,0 +1,23 @@
+# Write your name and UID here.
+#
+reviewer:
+    name: Tom Stephens
+    uid: u6953044
+
+# Write the name of the author of the code here.
+#
+author:
+  name: Kyle Robertson
+  uid: u6671630
+
+# Write the class or method being reviewed here.
+#
+component: Viewer.java lines 236-281
+
+# Write a list of review comments here.
+#
+comments:
+  -I think there are some comments and printline methods that won’t be necessary when the code is finished, but those can be removed as you go. While it is possible to understand what the code does, the comments could be make slightly clearer by stepping through everything. The style is good consistent throughout. Some things haven’t been implemented yet and the code will require some cleanup but it looks to be on the right track.
+
+
+
