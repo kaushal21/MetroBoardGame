@@ -1,0 +1,27 @@
+# Write your name and UID here.
+#
+reviewer:
+  name: Kyle Robertson
+  uid: u6671630
+
+# Write the name of the author of the code here.
+#
+author:
+  name: Kaushal Shamra
+  uid: u7028766
+
+# Write the class or method being reviewed here.
+#
+component: Move.java 57-133;
+
+# Write a list of review comments here.
+#
+comments:
+  -Comments are well placed and describe what is happening in that section or line of code. The for loops used
+  to check the number of certain tiles on the board are well coded and the comments help to understand what is
+  happening. The style and format of the code is consistent throughout the function thus making it easier to
+  understand. None of the code goes of the screen which is good. Just a personal change is adding in the {} brackets
+  with if statements even if the code is one line so it is easier to see what is executed by the if statements.
+
+
+

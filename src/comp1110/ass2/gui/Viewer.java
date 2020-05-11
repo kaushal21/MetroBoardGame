@@ -71,10 +71,10 @@ public class Viewer extends Application{
         String tile = placement.substring(0, 4);
         int row = Integer.parseInt(String.valueOf(placement.charAt(4)));
         int col = Integer.parseInt(String.valueOf(placement.charAt(5)));
-        newBoard = updateBoard(newBoard, tile, row, col); 
+        newBoard = updateBoard(newBoard, tile, row, col);
     }
 
-    void makePlacementv2(String placementSequence, String tilePlacement) throws FileNotFoundException {
+    void makePlacementv2(String placementSequence, String tilePlacement, Player player) throws FileNotFoundException {
         // FIXME Task 4: implement the simple placement viewer
         //plSequence = plSequence + placement;
         System.out.println("makePlace plSequence: "+plSequence);
@@ -96,6 +96,7 @@ public class Viewer extends Application{
             System.out.println("Score----------------------------------------Score");
             System.out.println(Arrays.toString(Metro.getScore(plSequence,playerNums)));
             newBoard = updateBoard(newBoard, tile, row, col);
+            player.setTileInHand(player.getCurrentPlayer(),null);
         } else
             {
         AlertBox.alertBox("Please enter a valid placement string");
@@ -103,7 +104,7 @@ public class Viewer extends Application{
             }
     }
 
-    void firstMakePlacement (String firstPlacement, String firstTile) throws FileNotFoundException{
+    void firstMakePlacement (String firstPlacement, String firstTile, Player player) throws FileNotFoundException{
         if(!Metro.isPlacementSequenceValid(firstTile)) {
             System.out.println("First Placement " + firstPlacement);
             System.out.println("Tile: " + firstTile);
@@ -122,6 +123,7 @@ public class Viewer extends Application{
         System.out.println("Score----------------------------------------Score");
         System.out.println(Arrays.toString(Metro.getScore(plSequence,playerNums)));
         newBoard = updateBoard(newBoard, tile, row, col);
+        player.setTileInHand(player.getCurrentPlayer(),null);
     }
 
     /**
@@ -131,7 +133,7 @@ public class Viewer extends Application{
      * @return GridPane it returns the newly created board with all the stations including the center stations
      * and all the location where the tile can be placed.
      */
-    GridPane createBoard() throws FileNotFoundException {
+    GridPane createBoard(Player player) throws FileNotFoundException {
         // Create a GridPane to store the board
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(0, 25, 0, 5));
@@ -253,32 +255,37 @@ public class Viewer extends Application{
                                 //Gets the top value from the shuffled deck.
                                 int tempLocationOfTopDeck2 = newDeck.getTop() - 1;
                                 String topOfDeck = newDeck.getDeck(tempLocationOfTopDeck2);
-                                System.out.println("tile Placement: " + Metro.isPiecePlacementWellFormed(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1)));
-                                System.out.println("Negative tile Placement: " + !Metro.isPiecePlacementWellFormed(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1)));
+                                System.out.println("tile Placement: " + Metro.isPiecePlacementWellFormed(topOfDeck + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1)));
+                                System.out.println("Negative tile Placement: " + !Metro.isPiecePlacementWellFormed(topOfDeck + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1)));
                                 System.out.println("Placement Sequence: " + Metro.isPlacementSequenceValid(plSequence));
                                 System.out.println("Negative Placement Sequence: " + !Metro.isPlacementSequenceValid(plSequence));
-                               // System.out.println("Final Placement Check :" + Metro.isPlacementSequenceWellFormed(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1)));
+                                System.out.println();
+                                // System.out.println("Final Placement Check :" + Metro.isPlacementSequenceWellFormed(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1)));
 
                                 //Places the tile at the gridCell location
-
-                                //Getting an error, not sure how to fix it yet, still working on it.
-
-                                if (plSequence.isEmpty()) {
-                                    System.out.println(plSequence);
-                                    try {
-                                        firstMakePlacement(plSequence, topOfDeck + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1));
-                                    } catch (FileNotFoundException e1) {
-                                        e1.printStackTrace();
+                                if (player.getTileInHand(player.getCurrentPlayer()) != null) {
+                                    //Getting an error, not sure how to fix it yet, still working on it.
+                                    String tileInHand = player.getTileInHand(player.getCurrentPlayer());
+                                    if (plSequence.isEmpty()) {
+                                        System.out.println(plSequence);
+                                        try {
+                                            firstMakePlacement(plSequence, tileInHand + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1), player);
+                                            System.out.println(player.getTileInHand(player.getCurrentPlayer()));
+                                        } catch (FileNotFoundException e1) {
+                                            e1.printStackTrace();
+                                        }
+                                    } else {
+                                        try {
+                                            System.out.println("");
+                                            System.out.println("Button Press plSequence " + plSequence);
+                                            makePlacementv2(plSequence, tileInHand + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1), player);
+                                            System.out.println(plSequence);
+                                        } catch (FileNotFoundException e1) {
+                                            e1.printStackTrace();
+                                        }
                                     }
                                 } else {
-                                    try {
-                                        System.out.println("");
-                                        System.out.println("Button Press plSequence " + plSequence);
-                                        makePlacementv2(plSequence,topOfDeck + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1));
-                                        System.out.println(plSequence);
-                                    } catch (FileNotFoundException e1) {
-                                        e1.printStackTrace();
-                                    }
+                                    System.out.println("Player has no Card in their Hand");
                                 }
                             }
                         });
@@ -376,7 +383,9 @@ public class Viewer extends Application{
 
         // Check if the player already holds any tile in his/her hands and create label for it
         String tileInHand = player.getTileInHand(player.getCurrentPlayer());
-        if ( tileInHand != null ) {
+        System.out.println("Early Tile "+tileInHand);
+        System.out.println("Outside Tile "+player.getTileInHand(player.getCurrentPlayer()));
+        if (tileInHand != null) {
             // Find the tile that is in the player's hand and store its location
             String playersHandTileLocation = "src/comp1110/ass2/gui/assets/" + tileInHand + ".jpg";
             // Create the image from the location using the createImage() function
@@ -397,11 +406,11 @@ public class Viewer extends Application{
         getTileButton.setOnAction(e -> {
             // Create the image from the location using the createImage() function
             ImageView handView = null;
-            try {
-                if (tileInHand == null) {
+            try { //tileInHand == null
+                if (player.getTileInHand(player.getCurrentPlayer()) == null) {
                     // adds the tile to the player's hand
+                    tempLocationOfTopDeck.decrementAndGet();
                     player.setTileInHand(player.getCurrentPlayer(), topOfDeck);
-
                     handView = createImage(topLocation, 0);
                     handView.setFitHeight(150);
                     handView.setFitWidth(150);
@@ -410,6 +419,9 @@ public class Viewer extends Application{
                     // Create a label for this tile
                     Label tile2Name = new Label(topOfDeck);
                     deckLoc.getChildren().add(tile2Name);
+                    System.out.println(player.getTileInHand(0));
+                    //System.out.println(topOfDeck);
+                    System.out.println(tempLocationOfTopDeck);
                 }
 
 
@@ -442,7 +454,7 @@ public class Viewer extends Application{
         Button button = new Button("Place Tile");
         button.setOnAction(e -> {
             try {
-                makePlacementv2(plSequence,textField.getText());
+                makePlacement(textField.getText());
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
@@ -473,7 +485,7 @@ public class Viewer extends Application{
         Player player = new Player( n );
 
         // Create a new Grid. i.e. the initial stage of the board
-        newBoard = createBoard();
+        newBoard = createBoard(player);
 
         // Create a new Grid that holds right side of the screen. i.e. DECK, and the image of the top most tile in deck.
         VBox rightDeckLocation = deckLocation(player);
