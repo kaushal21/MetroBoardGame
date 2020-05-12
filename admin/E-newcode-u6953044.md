@@ -5,6 +5,6 @@
 For Deliverable D2E, I contributed the following new statements of original code:
 
 - Score.java - lines 21-77
-- GetScoreTest.java - lines 43-50
+- OurTest.java - lines 43-50
 
-(List at least 20, including at least one new unit test, and include line numbers.)
+(List at least 20, including at least one new unit test, and include line numbers.):
