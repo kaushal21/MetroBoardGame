@@ -1,23 +1,21 @@
 # Write your name and UID here.
 #
-reviewer:
-    name:
-    uid:
+reviewer: Kaushal Sharma
+    name: Kaushal Sharma
+    uid: u7028766
 
 # Write the name of the author of the code here.
 #
-author:
-  name:
-  uid:
+author: Tom Stephens
+  name: Tom Stephens
+  uid: u6953044
 
 # Write the class or method being reviewed here.
 #
-component:
+component: Score.java
 
 # Write a list of review comments here.
 #
 comments:
   -
-
-
 
