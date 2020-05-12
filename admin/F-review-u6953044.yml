@@ -21,7 +21,3 @@ comments: >
   but those can be removed as you go. While it is possible to understand what the code does, the comments
   could be make slightly clearer by stepping through everything. The style is good consistent throughout.
   Some things haven’t been implemented yet and the code will require some cleanup but it looks to be on the right track.
-
-
-
-
