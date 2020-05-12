@@ -16,7 +16,7 @@ component: Viewer.java lines 236-281;
 
 # Write a list of review comments here.
 #
-comments:
+comments: >
   I think there are some comments and print line methods that won’t be necessary when the code is finished,
   but those can be removed as you go. While it is possible to understand what the code does, the comments
   could be make slightly clearer by stepping through everything. The style is good consistent throughout.
