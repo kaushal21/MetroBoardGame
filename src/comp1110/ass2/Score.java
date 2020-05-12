@@ -78,7 +78,6 @@ public class Score extends Player{
         return playerScore;
     }
 
-
     // Returns the tile next to a particular station if there is one.
     // remembering that (y,x)
     public static String getTileAtStation(int station, String[] tiles) {
@@ -105,7 +104,6 @@ public class Score extends Player{
         }
         return "";
     }
-
 
     /**
      * It gives position of the next tile in the track to check

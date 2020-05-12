@@ -17,5 +17,8 @@ component: Score.java
 # Write a list of review comments here.
 #
 comments:
-  -
+  - Good task distribution in different functions.
+  - We extended the class Score from Players as it should be a child class for Players.
+  - The functions are well commented and the flow is easy to understand.
+  - I think there are two functions doing the same task of returning true the line ends at middle station, buts its cool since they are used in different scenarios. These could call a common function to do so in different scenarios, but thats just my thinking as it could reduce the number of lines.
 
