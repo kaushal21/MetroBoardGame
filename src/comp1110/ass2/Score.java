@@ -7,13 +7,14 @@ import java.util.Arrays;
  * The variables that are declared here are
  * 1.> "score" - An array of that stores the scores for all the players
  */
-public class Score {
+public class Score extends Player{
     public static int[] score;                    // Store the scores for each player
 
     /**
      * This constructor initializes the scores for each player in the game
      */
     public Score (int players) {
+        super(players);
         score = new int[players];
         Arrays.fill(score, 0);
     }
