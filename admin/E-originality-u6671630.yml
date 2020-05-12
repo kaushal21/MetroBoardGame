@@ -22,8 +22,7 @@ declaration: >-
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 code:
-  - comment: Used for placing tiles on the screen, by listening to the gridPane then getting the rowIndex and colIndex
-    and placing the current tile there.
+  - comment: Used for placing tiles on the screen, by listening to the gridPane then getting the rowIndex and colIndex and placing the current tile there.
     url: https://stackoverflow.com/questions/28320110/javafx-how-to-get-column-and-row-index-in-gridpane
     licence: CC-BY-SA
 
