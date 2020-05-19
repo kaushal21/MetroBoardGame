@@ -4,20 +4,18 @@ import comp1110.ass2.Metro;
 import comp1110.ass2.Player;
 import comp1110.ass2.Tile;
 import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -25,17 +23,13 @@ import javafx.scene.Scene;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CreatingBoard extends Application{
-    /*
-    ArrayList<Triangle> triangles = new ArrayList<>();
-    final int SIDE = 196;
-    Triangle highlighted = null;
-    */
+    Group root = new Group();
     String placementSequence;
     Group board = new Group();
     ArrayList<Label> boxes = new ArrayList<>();
-    private static final String URI_BASE = "assets/";
     private static final int SQUARE_SIZE = 75;
     private static final int VIEWER_WIDTH = 1024;
     private static final int VIEWER_HEIGHT = 768;
@@ -43,11 +37,17 @@ public class CreatingBoard extends Application{
     double mouseOffsetY;
     int temp_i, temp_j;
     Label highlighted = null;
+    Player player = new Player( 2 );
 
     // Create a new variable of Tile that hold a new random Deck and its top location
     Tile newDeck = new Tile();
     String topOfDeck = newDeck.pop();
 
+    /**
+     * createBoard function creates initial stage of the board.
+     * This creates a grid of size 10x10.
+     * It displays the stations at the edges and at the center and Metro sign at all the corners.
+     */
     void createBoard() throws FileNotFoundException {
         int startLocation;                                      // Stores the starting number of the station
 
@@ -163,6 +163,13 @@ public class CreatingBoard extends Application{
         board.getChildren().addAll(centerImageView1, centerImageView2, centerImageView3, centerImageView4);
     }
 
+    /**
+     * This function returns a rotated image of size SQUARE_SIZE with the specified degree
+     * @param imageLocation this is the location of the image i.e. File Path.
+     * @param rotation This indicates the degree by which the images needs to be rotated.
+     * @return It returns the image at the given location which is rotated by the specified degree.
+     * @throws FileNotFoundException, this exception is thrown if the image is not present at the that location.
+     */
     ImageView createImage(String imageLocation, int rotation) throws FileNotFoundException {
         FileInputStream fileLocation = new FileInputStream(imageLocation);          // Read the file from that location
         Image image = new Image(fileLocation);                                      // Create a image
@@ -174,6 +181,13 @@ public class CreatingBoard extends Application{
         return imageView;                                                           // Return the ImageView that we created
     }
 
+    /**
+     * This function updates the board with the new added tile.
+     * @param tile It is the String that hold the new tile that is needed to be placed on the board.
+     * @param row It is the row where the new tile is to be inserted.
+     * @param col It is the column where the new tile is to be inserted.
+     * @throws FileNotFoundException Throws this exception if the image of the tile is not found.
+     */
     void updateBoard(String tile, int row, int col) throws FileNotFoundException {
         // Find the tile and store its location
         String tileLocation = "src/comp1110/ass2/gui/assets/"+tile+".jpg";
@@ -186,22 +200,26 @@ public class CreatingBoard extends Application{
         board.getChildren().add(tileView);
     }
 
+    /**
+     * Draw a placement in the window
+     * @param placement A valid placement string
+     */
     void makePlacement(String placement) throws FileNotFoundException {
-        // FIXME Task 4: implement the simple placement viewer
         String tile = placement.substring(0, 4);
         int row = Integer.parseInt(String.valueOf(placement.charAt(4)));
         int col = Integer.parseInt(String.valueOf(placement.charAt(5)));
         updateBoard(tile, row, col);
         placementSequence += placement;
-        topOfDeck = newDeck.pop();
+        player.switchTurn();
     }
 
-    public ImageView deckLocation(String topOfDeck) throws FileNotFoundException {
-        VBox deckLoc = new VBox();
-        deckLoc.setPadding(new Insets(0, 0, 0, 12));
-        deckLoc.setMinWidth(250);
-        deckLoc.setAlignment(Pos.CENTER);
-
+    /**
+     * This is the Right side of the scene which displays the Deck
+     * @param topOfDeck It is the top of Deck
+     * @return It returns the image of top of deck
+     * @throws FileNotFoundException if there is no image found
+     */
+    public void deckLocation(String topOfDeck) throws FileNotFoundException {
         // Create a Label named "DECK" and apply all the properties.
         Label deckName = new Label("DECK");
         deckName.setMinWidth(250);
@@ -236,11 +254,15 @@ public class CreatingBoard extends Application{
         tile1Name.setLayoutY(paddingTop);
 
         board.getChildren().addAll(deckName, tileView, tile1Name);
-        //deckLoc.getChildren().addAll(deckName, tileView, tile1Name);
 
-        return tileView;
+        draggable(tileView, topOfDeck, "deck",(SQUARE_SIZE * 10) + (12) + (50), 30);
     }
 
+    /**
+     * Find the closest distance between the image and the array of labels
+     * @param tile the image from which we want to find the minimum distance
+     * @return returns the label that is closest to the image
+     */
     Label findClosestLabel(ImageView tile) {
         Label closest = new Label();
         double closetDistance = Double.MAX_VALUE;
@@ -261,9 +283,12 @@ public class CreatingBoard extends Application{
         return closest;
     }
 
+    /**
+     * This is the Right side of the scene which displays the Players and the tile in their hand
+     * @param player The player class that holds the currentPlayer and the number of Players
+     * @throws FileNotFoundException if there is no image found
+     */
     public void playerLocation(Player player) throws FileNotFoundException {
-        VBox playerLocation = new VBox();
-        playerLocation.setPadding(new Insets(25, 0, 0, 12));
 
         // Creating Label for player's Name
         Label playerName = new Label("Player "+(player.getCurrentPlayer() + 1));
@@ -281,9 +306,7 @@ public class CreatingBoard extends Application{
         // Check if the player already holds any tile in his/her hands and create label for it
         String tileInHand = player.getTileInHand(player.getCurrentPlayer());
         if (tileInHand != null) {
-            // Find the tile that is in the player's hand and store its location
             String playersHandTileLocation = "src/comp1110/ass2/gui/assets/" + tileInHand + ".jpg";
-            // Create the image from the location using the createImage() function
             ImageView playersHandTileView = createImage(playersHandTileLocation, 0);
             playersHandTileView.setFitHeight(SQUARE_SIZE*2);
             playersHandTileView.setFitWidth(SQUARE_SIZE*2);
@@ -303,19 +326,20 @@ public class CreatingBoard extends Application{
             TileInHand.setLayoutY(paddingTop);
 
             board.getChildren().addAll(playersHandTileView, TileInHand);
+
+            draggable(playersHandTileView, tileInHand, "player",(SQUARE_SIZE * 10) + (12) + (50), (SQUARE_SIZE*2) + (30) + (10) + (50) + (30));
         } else {
             Label playersHandTileView = new Label();
             playersHandTileView.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
             playersHandTileView.setMinHeight(SQUARE_SIZE*2);
             playersHandTileView.setMinWidth(SQUARE_SIZE*2);
-            playerLocation.getChildren().add(playersHandTileView);
             paddingLeft = (SQUARE_SIZE * 10) + (12) + (50);
             paddingTop = (SQUARE_SIZE*2) + (30) + (10) + (50) + (30);
             playersHandTileView.setLayoutX(paddingLeft);
             playersHandTileView.setLayoutY(paddingTop);
 
             // Creating Label that reflects the player's empty hand
-            Label noTileInHand = new Label("No Tile In Hand");
+            Button noTileInHand = new Button("Pick Up Tile");
             noTileInHand.setFont(Font.font("Arial", 15));
             noTileInHand.setTextFill(Color.BLACK);
             noTileInHand.setMinWidth(250);
@@ -324,54 +348,119 @@ public class CreatingBoard extends Application{
             paddingTop = (30) + (SQUARE_SIZE*2) + (10) + (50) + (30) + (SQUARE_SIZE*2) + (10);
             noTileInHand.setLayoutX(paddingLeft);
             noTileInHand.setLayoutY(paddingTop);
+            noTileInHand.setOnAction(actionEvent -> {
+                player.setTileInHand(player.getCurrentPlayer() ,topOfDeck);
+                board.getChildren().remove(playersHandTileView);
+                board.getChildren().remove(noTileInHand);
+                String newTileInHand = player.getTileInHand(player.getCurrentPlayer());
+
+                String playersHandTileLocation = "src/comp1110/ass2/gui/assets/" + newTileInHand + ".jpg";
+                ImageView afterPickupPlayersHandTileView = null;
+                try {
+                    afterPickupPlayersHandTileView = createImage(playersHandTileLocation, 0);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                afterPickupPlayersHandTileView.setFitHeight(SQUARE_SIZE*2);
+                afterPickupPlayersHandTileView.setFitWidth(SQUARE_SIZE*2);
+                afterPickupPlayersHandTileView.setLayoutX((SQUARE_SIZE * 10) + (12) + (50));
+                afterPickupPlayersHandTileView.setLayoutY((SQUARE_SIZE*2) + (30) + (10) + (50) + (30));
+
+                Label TileInHand = new Label(newTileInHand);
+                TileInHand.setFont(Font.font("Arial", 15));
+                TileInHand.setTextFill(Color.BLACK);
+                TileInHand.setMinWidth(250);
+                TileInHand.setAlignment(Pos.CENTER);
+                TileInHand.setLayoutX((SQUARE_SIZE * 10) + (12));
+                TileInHand.setLayoutY((30) + (SQUARE_SIZE*2) + (10) + (50) + (30) + (SQUARE_SIZE*2) + (10));
+
+                board.getChildren().addAll(afterPickupPlayersHandTileView, TileInHand);
+
+                draggable(afterPickupPlayersHandTileView, newTileInHand,"player",(SQUARE_SIZE * 10) + (12) + (50), (SQUARE_SIZE*2) + (30) + (10) + (50) + (30));
+
+            });
 
             board.getChildren().addAll(playersHandTileView, noTileInHand);
         }
     }
 
+    /**
+     * @return true if the game is over, otherwise it returns false
+     */
     boolean gameOver () {
         if ( !newDeck.checkDeckEmpty() )
             return true;
         return false;
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public void draggable(ImageView tileView, String tile, String passedBy, int X, int Y) {
+        tileView.setOnMousePressed(event -> {
+            mouseOffsetX = tileView.getLayoutX() - event.getSceneX();
+            mouseOffsetY = tileView.getLayoutY() - event.getSceneY();
+            tileView.setFitHeight(SQUARE_SIZE);
+            tileView.setFitWidth(SQUARE_SIZE);
+        });
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        stage.setTitle("Board");
+        tileView.setOnMouseDragged(event -> {
+            tileView.setLayoutX(event.getSceneX() + mouseOffsetX);
+            tileView.setLayoutY(event.getSceneY() + mouseOffsetY);
 
-        // Create a new variable of Player that hold all the functionality of a player.
-        Player player = new Player( 2 );
-        placementSequence = "";
+            Label closest = findClosestLabel(tileView);
+            double locationX = (closest.getLayoutX() / SQUARE_SIZE) - 1;
+            double locationY = (closest.getLayoutY() / SQUARE_SIZE) - 1;
+            String placement = tile + Integer.toString((int) locationX) + Integer.toString((int) locationY);
+            String tempPlacementSequence = placementSequence + placement;
+            if (highlighted != null) {
+                temp_i = (int) (highlighted.getLayoutX() / SQUARE_SIZE) - 1;
+                temp_j = (int) (highlighted.getLayoutY() / SQUARE_SIZE) - 1;
+                if (temp_i % 2 == 0) {
+                    if (temp_j % 2 == 0)
+                        highlighted.setBackground(new Background(new BackgroundFill(Color.BROWN, CornerRadii.EMPTY, Insets.EMPTY)));
+                    else
+                        highlighted.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+                } else {
+                    if (temp_j % 2 == 1)
+                        highlighted.setBackground(new Background(new BackgroundFill(Color.BROWN, CornerRadii.EMPTY, Insets.EMPTY)));
+                    else
+                        highlighted.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+                }
+            }
+            if (Metro.isPlacementSequenceValid(tempPlacementSequence)) {
+                closest.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+                highlighted = closest;
+            } else {
+                highlighted = null;
+            }
+        });
 
-        // Create a new Grid. i.e. the initial stage of the board
-        createBoard();
-
-//        while ( !gameOver() ) {
-            Group root = new Group();
-            // Store the string value of the tile that is at the top of the deck
-            ImageView tileView = deckLocation(topOfDeck);
-            playerLocation(player);
-
-            tileView.setOnMousePressed(event -> {
-                mouseOffsetX = tileView.getLayoutX() - event.getSceneX();
-                mouseOffsetY = tileView.getLayoutY() - event.getSceneY();
-                tileView.setFitHeight(SQUARE_SIZE);
-                tileView.setFitWidth(SQUARE_SIZE);
-            });
-
-            tileView.setOnMouseDragged(event -> {
-                tileView.setLayoutX(event.getSceneX() + mouseOffsetX);
-                tileView.setLayoutY(event.getSceneY() + mouseOffsetY);
-
+        tileView.setOnMouseReleased(event -> {
+            double locX = tileView.getLayoutX();
+            double locY = tileView.getLayoutY();
+            if (locX >= 70 && locX <= 630 && locY >= 70 && locY <= 630) {
                 Label closest = findClosestLabel(tileView);
                 double locationX = (closest.getLayoutX() / SQUARE_SIZE) - 1;
                 double locationY = (closest.getLayoutY() / SQUARE_SIZE) - 1;
-                String placement = topOfDeck + Integer.toString((int)locationX) + Integer.toString((int)locationY);
+                System.out.println("Mouse Released" + locationX + ", " + locationY);
+                String placement = topOfDeck + Integer.toString((int) locationX) + Integer.toString((int) locationY);
                 String tempPlacementSequence = placementSequence + placement;
+                if (Metro.isPlacementSequenceValid(tempPlacementSequence)) {
+                    try {
+                        makePlacement(placement);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    if (passedBy.equals("deck")) {
+                        topOfDeck = newDeck.pop();
+                    }
+                    if (passedBy.equals("player")) {
+                        player.setTileInHand(player.getCurrentPlayer(), null);
+                    }
+                    tileView.setOnMouseClicked(null);
+                } else {
+                    System.out.println(tempPlacementSequence);
+                    AlertBox.alertBox("Place Tile on a valid Place");
+                }
+            } else {
                 if (highlighted != null) {
                     temp_i = (int) (highlighted.getLayoutX() / SQUARE_SIZE) - 1;
                     temp_j = (int) (highlighted.getLayoutY() / SQUARE_SIZE) - 1;
@@ -387,39 +476,34 @@ public class CreatingBoard extends Application{
                             highlighted.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
                     }
                 }
-                if ( Metro.isPlacementSequenceValid(tempPlacementSequence) ) {
-                    closest.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
-                    highlighted = closest;
-                } else {
-                    highlighted = null;
-                }
-            });
+            }
+            tileView.setLayoutX(X);
+            tileView.setLayoutY(Y);
+            tileView.setFitWidth(SQUARE_SIZE * 2);
+            tileView.setFitHeight(SQUARE_SIZE * 2);
+        });
+    }
 
-            tileView.setOnMouseReleased(event -> {
-                Label closest = findClosestLabel(tileView);
-                double locationX = (closest.getLayoutX() / SQUARE_SIZE) - 1;
-                double locationY = (closest.getLayoutY() / SQUARE_SIZE) - 1;
-                System.out.println("Mouse Released"+locationX+", "+locationY);
-                String placement = topOfDeck + Integer.toString((int)locationX) + Integer.toString((int)locationY);
-                String tempPlacementSequence = placementSequence + placement;
-                if ( Metro.isPlacementSequenceValid(tempPlacementSequence) ) {
-                    try {
-                        makePlacement(placement);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    System.out.println(tempPlacementSequence);
-                    AlertBox.alertBox("Please enter a valid placement string");
-                }
-                tileView.setLayoutX((SQUARE_SIZE * 10) + (12) + (50));
-                tileView.setLayoutY(30);
-                tileView.setFitWidth(SQUARE_SIZE*2);
-                tileView.setFitHeight(SQUARE_SIZE*2);
-            });
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.setTitle("Board");
+
+        // Create a new variable of Player that hold all the functionality of a player.
+        placementSequence = "";
+
+        // Create a new Grid. i.e. the initial stage of the board
+        createBoard();
+
+//        while ( !gameOver() ) {
+            // Store the string value of the tile that is at the top of the deck
+            deckLocation(topOfDeck);
+            playerLocation(player);
 
             System.out.println(topOfDeck);
-            player.switchTurn();
             root.getChildren().add(board);
 
             Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
