@@ -4,8 +4,7 @@ import comp1110.ass2.Metro;
 import comp1110.ass2.Player;
 import comp1110.ass2.Tile;
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -30,6 +29,7 @@ public class CreatingBoard extends Application{
     String placementSequence;
     Group board = new Group();
     ArrayList<Label> boxes = new ArrayList<>();
+    private static final String URI_BASE = "assets/";
     private static final int SQUARE_SIZE = 75;
     private static final int VIEWER_WIDTH = 1024;
     private static final int VIEWER_HEIGHT = 768;
@@ -205,6 +205,7 @@ public class CreatingBoard extends Application{
      * @param placement A valid placement string
      */
     void makePlacement(String placement) throws FileNotFoundException {
+        // FIXME Task 4: implement the simple placement viewer
         String tile = placement.substring(0, 4);
         int row = Integer.parseInt(String.valueOf(placement.charAt(4)));
         int col = Integer.parseInt(String.valueOf(placement.charAt(5)));
@@ -458,7 +459,7 @@ public class CreatingBoard extends Application{
                     tileView.setOnMouseClicked(null);
                 } else {
                     System.out.println(tempPlacementSequence);
-                    AlertBox.alertBox("Place Tile on a valid Place");
+                    AlertBox.alertBox("Please enter a valid placement string");
                 }
             } else {
                 if (highlighted != null) {
@@ -504,6 +505,7 @@ public class CreatingBoard extends Application{
             playerLocation(player);
 
             System.out.println(topOfDeck);
+            player.switchTurn();
             root.getChildren().add(board);
 
             Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);

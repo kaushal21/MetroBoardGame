@@ -8,6 +8,7 @@ public class Player {
     static int[][] stations;               // Stations allocated to the players
     int currentPlayer;              // Player range 0 to (players-1) i.e. 5
     String[] tileInHand;            // For all the players it Stores the tile in hand of the players
+    int[] playerTiles;
 
     /**
      * The number of playing the game is taken as an input from the user.
@@ -133,6 +134,12 @@ public class Player {
         tileInHand[currentPlayer] = tile;
     }
 
+
+    public void setCurrentPlayer(int currPlayer){
+        currentPlayer = currPlayer;
+    }
+
+
     /**
      * switch the "currentPlayer" in a round robin fashion
      * Increment the currentPlayer and if it exceeds the players then bring it back to 1.
@@ -140,8 +147,9 @@ public class Player {
     public int switchTurn() {
         // this might end up going in the viewer class depending on how the UI works
         currentPlayer++;
-        if(currentPlayer >= players)
+        if(currentPlayer >= players) {
             currentPlayer = 0;
+        }
         return currentPlayer;
     }
 
@@ -161,6 +169,42 @@ public class Player {
                 return false;
         }
     }
+
+   /* public int numofTilesinHand(String tilesInHand){
+        switch (tilesInHand.length()){
+            case 0:
+                System.out.println("Tiles: 0");
+                return 0;
+            case 4:
+                System.out.println("Tiles: 1");
+                return 1;
+            default:
+                return 0;
+        }
+         stations = new int[2][];
+                stations[0] = new int[]{1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31};
+                stations[1] = new int[]{2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32};
+                break;
+    } */
+
+   /*public int[] playerTiles(int numOfPlayers){
+       switch (numOfPlayers){
+           case 2:
+               playerTiles = new int[2];
+               //playerTiles[0] =
+           case 3:
+               playerTiles = new int[3];
+           case 4:
+               playerTiles = new int[4];
+           case 5:
+               playerTiles = new int[5];
+           case 6:
+               playerTiles = new int[6];
+
+
+       }
+
+   } */
 }
 
 

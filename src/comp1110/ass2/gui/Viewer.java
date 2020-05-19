@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
 /**
  * A very simple viewer for piece placements in the Metro game.
  * <p>
@@ -42,6 +43,7 @@ public class Viewer extends Application{
 
     private static final String URI_BASE = "assets/";
     private static String plSequence = "";
+    private static String placeSq = "";
     private static int playerNums = 0;
 
     private final Group root = new Group();
@@ -56,8 +58,10 @@ public class Viewer extends Application{
 
     /**
      * Draw a placement in the window, removing any previously drawn one
+     *
      * @param placement A valid placement string
      */
+
     void makePlacement(String placement) throws FileNotFoundException {
         // FIXME Task 4: implement the simple placement viewer
         if(!Metro.isPlacementSequenceValid(placement)){
@@ -72,28 +76,26 @@ public class Viewer extends Application{
     }
 
     void makePlacementv2(String placementSequence, String tilePlacement, Player player) throws FileNotFoundException {
-        // FIXME Task 4: implement the simple placement viewer
-        //plSequence = plSequence + placement;
-        System.out.println("makePlace plSequence: "+plSequence);
-        System.out.println("makePlace placeSeqeucne: " + placementSequence);
         String verifySq = placementSequence + tilePlacement;
         if(Metro.isPiecePlacementWellFormed(tilePlacement)) {
             if (!Metro.isPlacementSequenceValid(verifySq)) {
-                System.out.println("isPieceSequenceWellFormed");
-                System.out.println(verifySq);
                 AlertBox.alertBox("Please enter a valid placement string");
                 return;
             }
             String tile = tilePlacement.substring(0, 4);
             int row = Integer.parseInt(String.valueOf(tilePlacement.charAt(4)));
             int col = Integer.parseInt(String.valueOf(tilePlacement.charAt(5)));
-            System.out.println("Placed----------------------------------------");
+
+            System.out.println();
             plSequence = Metro.updatePlacement(placementSequence,tilePlacement);
+
             Metro.getScore(plSequence,playerNums);
-            System.out.println("Score----------------------------------------Score");
-            System.out.println(Arrays.toString(Metro.getScore(plSequence,playerNums)));
             newBoard = updateBoard(newBoard, tile, row, col);
             player.setTileInHand(player.getCurrentPlayer(),null);
+
+            System.out.println("Before Player No: " + player.getCurrentPlayer());
+            player.switchTurn();
+            System.out.println("Player No: " + player.getCurrentPlayer());
         } else
             {
         AlertBox.alertBox("Please enter a valid placement string");
@@ -103,10 +105,6 @@ public class Viewer extends Application{
 
     void firstMakePlacement (String firstPlacement, String firstTile, Player player) throws FileNotFoundException{
         if(!Metro.isPlacementSequenceValid(firstTile)) {
-            System.out.println("First Placement " + firstPlacement);
-            System.out.println("Tile: " + firstTile);
-
-            System.out.println("First-isPieceSequenceWellFormed");
             AlertBox.alertBox("Please enter a valid placement string");
             return;
 
@@ -115,12 +113,14 @@ public class Viewer extends Application{
         int row = Integer.parseInt(String.valueOf(firstTile.charAt(4)));
         int col = Integer.parseInt(String.valueOf(firstTile.charAt(5)));
         plSequence = Metro.updatePlacement(firstPlacement,firstTile);
-        System.out.println("plSequence: "+plSequence);
         Metro.getScore(plSequence,playerNums);
-        System.out.println("Score----------------------------------------Score");
-        System.out.println(Arrays.toString(Metro.getScore(plSequence,playerNums)));
         newBoard = updateBoard(newBoard, tile, row, col);
         player.setTileInHand(player.getCurrentPlayer(),null);
+
+        System.out.println("Before Player No: " + player.getCurrentPlayer());
+        player.switchTurn();
+        System.out.println("Player No: " + player.getCurrentPlayer());
+
     }
 
     /**
@@ -200,19 +200,19 @@ public class Viewer extends Application{
                 // Set the Background color of the grid. This creates a chess board type of color effect.
                 if ( i % 2 == 0 ) {
                     if (j % 2 == 0)
-                        gridCell.setBackground(new Background(new BackgroundFill(Color.BROWN, CornerRadii.EMPTY, Insets.EMPTY)));
+                        gridCell.setBackground(new Background(new BackgroundFill(Color.rgb(107, 34, 18), CornerRadii.EMPTY, Insets.EMPTY)));
                     else
-                        gridCell.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+                        gridCell.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
                 } else {
                     if ( j % 2 == 1 )
-                        gridCell.setBackground(new Background(new BackgroundFill(Color.BROWN, CornerRadii.EMPTY, Insets.EMPTY)));
+                        gridCell.setBackground(new Background(new BackgroundFill(Color.rgb(107, 34, 18), CornerRadii.EMPTY, Insets.EMPTY)));
                     else
-                        gridCell.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+                        gridCell.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
                 }
 
                 // Set the minimum Width and Height for the label.
-                gridCell.setMinWidth(SQUARE_SIZE);
-                gridCell.setMinHeight(SQUARE_SIZE);
+                gridCell.setMinWidth(70);
+                gridCell.setMinHeight(70);
 
                 gridCell.setTextFill(Color.rgb(255, 255, 255));                 // Set the Text Color to White
                 gridCell.setFont(Font.font("Arial", 15));                           // Set Font Family to "Arial" and Font size to 12px
@@ -233,8 +233,9 @@ public class Viewer extends Application{
         GridPane.setConstraints(centerImageView3, 4, 5);
         GridPane.setConstraints(centerImageView4, 5, 5);
         grid.getChildren().addAll(centerImageView1, centerImageView2, centerImageView3, centerImageView4);
-
         //Checking which gridCell was clicked, then prints out the gridCell Location.
+        //grid.addEventFilter();
+
         grid.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, e -> {
             //Loops through the gridPane looking at each panel and names them node
             for (Node node : grid.getChildren()) {
@@ -247,37 +248,22 @@ public class Viewer extends Application{
                             @Override
                             public void run() {
                                 //Prints out location of the gridCell.
-                                System.out.println("");
-                                System.out.println("New Click------------------------------------------");
-                                System.out.println("Node: " + node + " at " + (GridPane.getRowIndex(node) - 1) + "/" + (GridPane.getColumnIndex(node) - 1));
+                                //System.out.println("Node: " + node + " at " + (GridPane.getRowIndex(node) - 1) + "/" + (GridPane.getColumnIndex(node) - 1));
                                 //Gets the top value from the shuffled deck.
-                                int tempLocationOfTopDeck2 = newDeck.getTop() - 1;
-                                String topOfDeck = newDeck.getDeck(tempLocationOfTopDeck2);
-                                System.out.println("tile Placement: " + Metro.isPiecePlacementWellFormed(topOfDeck + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1)));
-                                System.out.println("Negative tile Placement: " + !Metro.isPiecePlacementWellFormed(topOfDeck + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1)));
-                                System.out.println("Placement Sequence: " + Metro.isPlacementSequenceValid(plSequence));
-                                System.out.println("Negative Placement Sequence: " + !Metro.isPlacementSequenceValid(plSequence));
-                                System.out.println();
-                                // System.out.println("Final Placement Check :" + Metro.isPlacementSequenceWellFormed(topOfDeck + (GridPane.getRowIndex(node)-1) + (GridPane.getColumnIndex(node)-1)));
-
                                 //Places the tile at the gridCell location
                                 if (player.getTileInHand(player.getCurrentPlayer()) != null) {
                                     //Getting an error, not sure how to fix it yet, still working on it.
                                     String tileInHand = player.getTileInHand(player.getCurrentPlayer());
                                     if (plSequence.isEmpty()) {
-                                        System.out.println(plSequence);
+                                        //System.out.println(plSequence);
                                         try {
                                             firstMakePlacement(plSequence, tileInHand + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1), player);
-                                            System.out.println(player.getTileInHand(player.getCurrentPlayer()));
                                         } catch (FileNotFoundException e1) {
                                             e1.printStackTrace();
                                         }
                                     } else {
                                         try {
-                                            System.out.println("");
-                                            System.out.println("Button Press plSequence " + plSequence);
                                             makePlacementv2(plSequence, tileInHand + (GridPane.getRowIndex(node) - 1) + (GridPane.getColumnIndex(node) - 1), player);
-                                            System.out.println(plSequence);
                                         } catch (FileNotFoundException e1) {
                                             e1.printStackTrace();
                                         }
@@ -298,7 +284,7 @@ public class Viewer extends Application{
     }
 
     /**
-     * This function returns a rotated image of size SQUARE_SIZE with the specified degree
+     * This function returns a rotated image of size 70x70 with the specified degree
      * @param imageLocation this is the location of the image i.e. File Path.
      * @param rotation This indicates the degree by which the images needs to be rotated.
      * @return It returns the image at the given location which is rotated by the specified degree.
@@ -309,8 +295,8 @@ public class Viewer extends Application{
         Image image = new Image(fileLocation);                                      // Create a image
         ImageView imageView = new ImageView(image);                                 // Get the ImageView from the image
         imageView.setPreserveRatio(true);                                           // To preserve the image ratio
-        imageView.setFitHeight(SQUARE_SIZE);                                        // set Image's Height
-        imageView.setFitWidth(SQUARE_SIZE);                                         // set Image's Width
+        imageView.setFitHeight(70);                                                 // set Image's Height
+        imageView.setFitWidth(70);                                                  // set Image's Width
         imageView.setRotate(rotation);                                              // Rotate the image by specified degree
         return imageView;                                                           // Return the ImageView that we created
     }
@@ -358,7 +344,8 @@ public class Viewer extends Application{
         // Store the top location from the newDeck which is passed.
         AtomicInteger tempLocationOfTopDeck = new AtomicInteger(newDeck.getTop() - 1);
         // Store the string value of the tile that is at the top of the deck
-        String topOfDeck= newDeck.getDeck(tempLocationOfTopDeck.get());
+        String topOfDeck = newDeck.getDeck(tempLocationOfTopDeck.get());
+        //String TopOfDeck2 = new;
 
         // Find the tile that is at the top of deck and store its location
         String topLocation = "src/comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
@@ -381,8 +368,6 @@ public class Viewer extends Application{
 
         // Check if the player already holds any tile in his/her hands and create label for it
         String tileInHand = player.getTileInHand(player.getCurrentPlayer());
-        System.out.println("Early Tile "+tileInHand);
-        System.out.println("Outside Tile "+player.getTileInHand(player.getCurrentPlayer()));
         if (tileInHand != null) {
             // Find the tile that is in the player's hand and store its location
             String playersHandTileLocation = "src/comp1110/ass2/gui/assets/" + tileInHand + ".jpg";
@@ -398,42 +383,55 @@ public class Viewer extends Application{
             noTileInHand.setTextFill(Color.rgb(0, 0, 0));
             noTileInHand.setPadding(new Insets(5, 25, 5, 55));
         }
+        // Create a label for this tile
+        Label playerTile1Name = new Label();
+        // Create the image from the location using the createImage() function
+        ImageView handView1 = new ImageView();
+        handView1.setFitHeight(150);
+        handView1.setFitWidth(150);
+        GridPane.setConstraints(handView1, 0, 1);
+        //Create a Label for second tile
+        Label playerTile2Name = new Label();
+        //Create the image for the second tile
+        ImageView handView2 = new ImageView();
+        handView2.setFitHeight(150);
+        handView2.setFitWidth(150);
+        GridPane.setConstraints(handView2, 0, 1);
 
+        //System.out.println(player.numofTilesinHand(player.getTileInHand(player.getCurrentPlayer())));
+        //System.out.println(player.canPickUpTile(,player.getCurrentPlayer()));
         // Add button to press to pick up a tile from the deck
         Button getTileButton = new Button("Pick up tile");
         getTileButton.setOnAction(e -> {
-            // Create the image from the location using the createImage() function
-            ImageView handView = null;
-            try { //tileInHand == null
-                if (player.getTileInHand(player.getCurrentPlayer()) == null) {
+                if (player.getTileInHand(player.getCurrentPlayer()) == null || (player.getTileInHand(player.getCurrentPlayer())).length() <= 4) {
+                    //System.out.println("Inside Button " + player.numofTilesinHand(player.getTileInHand(player.getCurrentPlayer())));
                     // adds the tile to the player's hand
+                    // added a string again because it was just placing the same tile over and over again.
+                    // Changed file location because new Image load in a different way to createImage
+                    // because the src folder is the build path.
+                    String pickupTopLocation = "comp1110/ass2/gui/assets/" + newDeck.getDeck(tempLocationOfTopDeck.get()) + ".jpg";
+                    player.setTileInHand(player.getCurrentPlayer(), newDeck.getDeck(tempLocationOfTopDeck.get()));
+                    //Changing image to correct tile in hand.
+                    handView1.setImage(new Image(pickupTopLocation));
+                    // Changing name to match correct tile.
+                    playerTile1Name.setText(newDeck.getDeck(tempLocationOfTopDeck.get()));
+                    //Decreasing the position in deck.
                     tempLocationOfTopDeck.decrementAndGet();
-                    player.setTileInHand(player.getCurrentPlayer(), topOfDeck);
-                    handView = createImage(topLocation, 0);
-                    handView.setFitHeight(150);
-                    handView.setFitWidth(150);
-                    GridPane.setConstraints(handView, 0, 1);
-                    deckLoc.getChildren().add(handView);
-                    // Create a label for this tile
-                    Label tile2Name = new Label(topOfDeck);
-                    deckLoc.getChildren().add(tile2Name);
-                    System.out.println(player.getTileInHand(0));
-                    //System.out.println(topOfDeck);
-                    System.out.println(tempLocationOfTopDeck);
                 }
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
         });
 
         // Add all of the elements of the right side to the VBox
-        deckLoc.getChildren().addAll(deckName, tileView, tile1Name, playerName, getTileButton);
+        deckLoc.getChildren().addAll(deckName, tileView, tile1Name, playerName, getTileButton, handView1, playerTile1Name);
         deckLoc.setSpacing(10);
         deckLoc.setLayoutX(710);
 
 
         return deckLoc;
     }
+
+
+
+
 
     /**
      * Create a basic text field for input and a "Place Tile" button.
@@ -462,6 +460,7 @@ public class Viewer extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Metro Game Viewer");
+        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         makeControls();
         root.getChildren().add(controls);
@@ -473,6 +472,7 @@ public class Viewer extends Application{
             return;
         // Create a new variable of Player that hold all the functionality of a player.
         Player player = new Player( n );
+
 
         // Create a new Grid. i.e. the initial stage of the board
         newBoard = createBoard(player);
@@ -486,7 +486,6 @@ public class Viewer extends Application{
         GridPane.setConstraints(rightDeckLocation, 1, 0);
         screenDistribution.getChildren().add(rightDeckLocation);
 
-        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
         root.getChildren().add(screenDistribution);
 
         primaryStage.setScene(scene);
