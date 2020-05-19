@@ -484,8 +484,8 @@ public class Move {
     // OR, if a piece is invalid because it is on top of a middle station
     public static boolean atStation2 (String piece, int posY, int posX) {
         // check if on top of middle stations
-        if (posY == 3 && (posX == 3 || posX == 4)) return true;
-        else if (posY == 4 && (posX == 3 || posX == 4)) return true;
+        if ( atMiddle(posX, posY) )
+            return true;
 
         // check corners
         if ((posY == 0 && posX == 0) && (piece.charAt(0) == 'c' || piece.charAt(3) == 'b')) return true;
@@ -499,6 +499,7 @@ public class Move {
         else if (posX == 0 && piece.charAt(3) == 'd') return true;
         else return (posX == 7 && piece.charAt(1) == 'd');
     }
+
     // Checks if a piece is invalid because it is on top of a middle station
     public static boolean atMiddle (int posY, int posX) {
         // check if on top of middle stations

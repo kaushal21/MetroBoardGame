@@ -126,13 +126,6 @@ public class Player {
     }
 
     /**
-     * @param currPlayer Sets the currentPlayer to the passed integer
-     */
-    public void setCurrentPlayer(int currPlayer) {
-        currentPlayer = currPlayer;
-    }
-
-    /**
      * @param currentPlayer The current Player for which we are storing the tile
      * @param tile the Tile which is picked from the deck, and player is keeping it in his/her hand
      */
@@ -144,7 +137,7 @@ public class Player {
      * switch the "currentPlayer" in a round robin fashion
      * Increment the currentPlayer and if it exceeds the players then bring it back to 1.
      */
-    public int switchTurn(int players, int currentPlayer) {
+    public int switchTurn() {
         // this might end up going in the viewer class depending on how the UI works
         currentPlayer++;
         if(currentPlayer >= players)

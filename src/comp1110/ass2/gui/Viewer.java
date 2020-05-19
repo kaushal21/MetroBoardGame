@@ -27,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
 /**
  * A very simple viewer for piece placements in the Metro game.
  * <p>
@@ -57,10 +56,8 @@ public class Viewer extends Application{
 
     /**
      * Draw a placement in the window, removing any previously drawn one
-     *
      * @param placement A valid placement string
      */
-
     void makePlacement(String placement) throws FileNotFoundException {
         // FIXME Task 4: implement the simple placement viewer
         if(!Metro.isPlacementSequenceValid(placement)){
@@ -203,19 +200,19 @@ public class Viewer extends Application{
                 // Set the Background color of the grid. This creates a chess board type of color effect.
                 if ( i % 2 == 0 ) {
                     if (j % 2 == 0)
-                        gridCell.setBackground(new Background(new BackgroundFill(Color.rgb(107, 34, 18), CornerRadii.EMPTY, Insets.EMPTY)));
+                        gridCell.setBackground(new Background(new BackgroundFill(Color.BROWN, CornerRadii.EMPTY, Insets.EMPTY)));
                     else
-                        gridCell.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+                        gridCell.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
                 } else {
                     if ( j % 2 == 1 )
-                        gridCell.setBackground(new Background(new BackgroundFill(Color.rgb(107, 34, 18), CornerRadii.EMPTY, Insets.EMPTY)));
+                        gridCell.setBackground(new Background(new BackgroundFill(Color.BROWN, CornerRadii.EMPTY, Insets.EMPTY)));
                     else
-                        gridCell.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+                        gridCell.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
                 }
 
                 // Set the minimum Width and Height for the label.
-                gridCell.setMinWidth(70);
-                gridCell.setMinHeight(70);
+                gridCell.setMinWidth(SQUARE_SIZE);
+                gridCell.setMinHeight(SQUARE_SIZE);
 
                 gridCell.setTextFill(Color.rgb(255, 255, 255));                 // Set the Text Color to White
                 gridCell.setFont(Font.font("Arial", 15));                           // Set Font Family to "Arial" and Font size to 12px
@@ -236,6 +233,7 @@ public class Viewer extends Application{
         GridPane.setConstraints(centerImageView3, 4, 5);
         GridPane.setConstraints(centerImageView4, 5, 5);
         grid.getChildren().addAll(centerImageView1, centerImageView2, centerImageView3, centerImageView4);
+
         //Checking which gridCell was clicked, then prints out the gridCell Location.
         grid.addEventFilter(javafx.scene.input.MouseEvent.MOUSE_PRESSED, e -> {
             //Loops through the gridPane looking at each panel and names them node
@@ -300,7 +298,7 @@ public class Viewer extends Application{
     }
 
     /**
-     * This function returns a rotated image of size 70x70 with the specified degree
+     * This function returns a rotated image of size SQUARE_SIZE with the specified degree
      * @param imageLocation this is the location of the image i.e. File Path.
      * @param rotation This indicates the degree by which the images needs to be rotated.
      * @return It returns the image at the given location which is rotated by the specified degree.
@@ -311,8 +309,8 @@ public class Viewer extends Application{
         Image image = new Image(fileLocation);                                      // Create a image
         ImageView imageView = new ImageView(image);                                 // Get the ImageView from the image
         imageView.setPreserveRatio(true);                                           // To preserve the image ratio
-        imageView.setFitHeight(70);                                                 // set Image's Height
-        imageView.setFitWidth(70);                                                  // set Image's Width
+        imageView.setFitHeight(SQUARE_SIZE);                                        // set Image's Height
+        imageView.setFitWidth(SQUARE_SIZE);                                         // set Image's Width
         imageView.setRotate(rotation);                                              // Rotate the image by specified degree
         return imageView;                                                           // Return the ImageView that we created
     }
@@ -423,9 +421,6 @@ public class Viewer extends Application{
                     //System.out.println(topOfDeck);
                     System.out.println(tempLocationOfTopDeck);
                 }
-
-
-
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
@@ -439,10 +434,6 @@ public class Viewer extends Application{
 
         return deckLoc;
     }
-
-
-
-
 
     /**
      * Create a basic text field for input and a "Place Tile" button.
@@ -471,7 +462,6 @@ public class Viewer extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Metro Game Viewer");
-        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         makeControls();
         root.getChildren().add(controls);
@@ -496,6 +486,7 @@ public class Viewer extends Application{
         GridPane.setConstraints(rightDeckLocation, 1, 0);
         screenDistribution.getChildren().add(rightDeckLocation);
 
+        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
         root.getChildren().add(screenDistribution);
 
         primaryStage.setScene(scene);
