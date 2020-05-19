@@ -217,6 +217,7 @@ public class CreatingBoard extends Application{
         String topLocation = "src/comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
         // Create the image from the location using the createImage() function
         ImageView tileView = createImage(topLocation, 0);
+        //tileView.setImage(new Image(topOfDeck));
         tileView.setFitHeight(SQUARE_SIZE*2);
         tileView.setFitWidth(SQUARE_SIZE*2);
         paddingLeft = (SQUARE_SIZE * 10) + (12) + (50);
@@ -361,6 +362,8 @@ public class CreatingBoard extends Application{
                 mouseOffsetY = tileView.getLayoutY() - event.getSceneY();
                 tileView.setFitHeight(SQUARE_SIZE);
                 tileView.setFitWidth(SQUARE_SIZE);
+                String topLocation2 = "comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
+                tileView.setImage(new Image(topLocation2));
             });
 
             tileView.setOnMouseDragged(event -> {
@@ -396,6 +399,7 @@ public class CreatingBoard extends Application{
             });
 
             tileView.setOnMouseReleased(event -> {
+
                 Label closest = findClosestLabel(tileView);
                 double locationX = (closest.getLayoutX() / SQUARE_SIZE) - 1;
                 double locationY = (closest.getLayoutY() / SQUARE_SIZE) - 1;
@@ -416,6 +420,11 @@ public class CreatingBoard extends Application{
                 tileView.setLayoutY(30);
                 tileView.setFitWidth(SQUARE_SIZE*2);
                 tileView.setFitHeight(SQUARE_SIZE*2);
+                String topOfDeck2 = newDeck.pop();
+                String topLocation2 = "comp1110/ass2/gui/assets/" + topOfDeck2 + ".jpg";
+                tileView.setImage(new Image(topLocation2));
+                System.out.println(topOfDeck);
+
             });
 
             System.out.println(topOfDeck);
