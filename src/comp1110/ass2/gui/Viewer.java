@@ -27,6 +27,8 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
+// Authorship: Kaushal Sharma, Kyle Robertson, Tom Stephens
+
 
 /**
  * A very simple viewer for piece placements in the Metro game.
@@ -99,7 +101,6 @@ public class Viewer extends Application{
         } else
             {
         AlertBox.alertBox("Please enter a valid placement string");
-        return;
             }
     }
 
@@ -331,9 +332,15 @@ public class Viewer extends Application{
      * @throws FileNotFoundException This exception may re thrown is the image of the tile from the deck is not found.
      */
     VBox deckLocation (Player player) throws FileNotFoundException {
-        // Create a New GridPane which will Show what to display on the right side of the screen.
+        // Create a New VBox which will contain what to display on the right side of the screen.
         VBox deckLoc = new VBox();
         deckLoc.setPadding(new Insets(0, 0, 0, 0));
+
+        // Creating Label for player's Name
+        Label playerName = new Label("Player "+(player.getCurrentPlayer() + 1));
+        playerName.setAlignment(Pos.CENTER);
+        playerName.setFont(Font.font("Arial", 20));
+        playerName.setTextFill(Color.rgb(0, 0, 0));
 
         // Create a Label named "DECK" and apply all the properties.
         Label deckName = new Label("DECK");
@@ -360,13 +367,9 @@ public class Viewer extends Application{
         tile1Name.setFont(Font.font("Arial", 15));
         tile1Name.setTextFill(Color.rgb(0, 0, 0));
 
-        // Creating Label for player's Name
-        Label playerName = new Label("Player "+(player.getCurrentPlayer() + 1));
-        playerName.setAlignment(Pos.CENTER);
-        playerName.setFont(Font.font("Arial", 20));
-        playerName.setTextFill(Color.rgb(0, 0, 0));
 
-        // Check if the player already holds any tile in his/her hands and create label for it
+
+        // Check if the player already holds any tile in his/her hands
         String tileInHand = player.getTileInHand(player.getCurrentPlayer());
         if (tileInHand != null) {
             // Find the tile that is in the player's hand and store its location
@@ -421,15 +424,13 @@ public class Viewer extends Application{
         });
 
         // Add all of the elements of the right side to the VBox
-        deckLoc.getChildren().addAll(deckName, tileView, tile1Name, playerName, getTileButton, handView1, playerTile1Name);
+        deckLoc.getChildren().addAll(playerName,deckName, tileView, tile1Name, getTileButton, handView1, playerTile1Name);
         deckLoc.setSpacing(10);
         deckLoc.setLayoutX(710);
 
 
         return deckLoc;
     }
-
-
 
 
 
