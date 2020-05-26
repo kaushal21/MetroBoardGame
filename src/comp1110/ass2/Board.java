@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+// Authorship: Kyle Robertson: u6671630
+
 /**
  * This class represents the Board in the Metro game.
  * The board of the metro game can be divided into the given coordinates.

@@ -2,17 +2,17 @@ package comp1110.ass2;
 
 import java.util.Arrays;
 
+// Authorship: Tom Stephens
+
 /**
- * This class calculates the score at the end of the game
+ * This class calculates the score of a game
  * The variables that are declared here are
  * 1.> "score" - An array of that stores the scores for all the players
  */
 public class Score extends Player{
-    public static int[] score;                    // Store the scores for each player
+    public static int[] score;         // Store the scores for each player
 
-    /**
-     * This constructor initializes the scores for each player in the game
-     */
+    // This constructor initializes the scores for each player in the game as 0
     public Score (int players) {
         super(players);
         score = new int[players];
@@ -54,20 +54,19 @@ public class Score extends Player{
         int[] playerStations = Player.getStations(player, players);
         int playerScore = 0;
         // iterate over the stations and follow the track that comes out of each one (if there is one)
-        for (int i = 0; i < playerStations.length; i++) {
+        for (int playerStation : playerStations) {
             // check if a tile exists at a station
-            if (!(getTileAtStation(playerStations[i], tiles)).equals("")) {
+            if (!(getTileAtStation(playerStation, tiles)).equals("")) {
                 int trackScore = 0;
-                int input = getFirstInputPosition(playerStations[i]);
-                String currentTile = getTileAtStation(playerStations[i], tiles);
+                int input = getFirstInputPosition(playerStation);
+                String currentTile = getTileAtStation(playerStation, tiles);
 
                 // stepping through the track, ending if there is no next tile or the track is at a station
                 while (!currentTile.equals("")) {
-                    trackScore ++;
+                    trackScore++;
                     if (atStation(currentTile, input)) {
                         playerScore += trackScore;
-                    }
-                    else if (atMiddleStation(currentTile, input)) {
+                    } else if (atMiddleStation(currentTile, input)) {
                         playerScore += trackScore * 2;
                     }
                     input = getNextInputPosition(currentTile, input);
@@ -78,8 +77,10 @@ public class Score extends Player{
         return playerScore;
     }
 
-    // Returns the tile next to a particular station if there is one.
-    // remembering that (y,x)
+    /**
+     * Returns the tile next to a particular station if there is one,
+     * remembering that (y,x) is the co-ordinate system
+     */
     public static String getTileAtStation(int station, String[] tiles) {
         int positionY = 100; // if these values don't get changed then there is no tile at the station
         int positionX = 100;
@@ -99,8 +100,8 @@ public class Score extends Player{
             positionY = 32 - station;
             positionX = 7;
         }
-        for (int i = 0; i < tiles.length; i++) {
-            if (tiles[i].charAt(4) - 48 == positionY && tiles[i].charAt(5) - 48 == positionX) return tiles[i];
+        for (String tile : tiles) {
+            if (tile.charAt(4) - 48 == positionY && tile.charAt(5) - 48 == positionX) return tile;
         }
         return "";
     }
@@ -129,8 +130,8 @@ public class Score extends Player{
             //check adjacent left
         else if (inputPosition == 2) positionX -= 1;
 
-        for (int i = 0; i < tiles.length; i++) {
-            if (tiles[i].charAt(4) == positionY && tiles[i].charAt(5) == positionX) return tiles[i];
+        for (String s : tiles) {
+            if (s.charAt(4) == positionY && s.charAt(5) == positionX) return s;
         }
         return ""; // this is returned when the track does not continue any further.
     }
@@ -153,9 +154,11 @@ public class Score extends Player{
         else return inputPosition; // this should never be returned so long as the inputPosition is 0,2,4 or 6.
     }
 
-    // Returns where the track will 'output' to based on the letter and the input position
-    // i.e. 'a' (going straight) corresponds to outputting the track at 5 positions greater than its input.
-    // also, inputPositions 0,2,4 & 6 map to letters 0,1,2 and 3 in the tile string (hence inputPosition/2)
+    /**
+     * Returns where the track will 'output' to based on the letter and the input position
+     * i.e. 'a' (going straight) corresponds to outputting the track at 5 positions greater than its input
+     * also, inputPositions 0,2,4 & 6 map to letters 0,1,2 and 3 in the tile string (hence inputPosition/2)
+     */
     public static int getOutput(String tile,int inputPosition) {
         if (tile.charAt(inputPosition/2) == 'a') {
             return (inputPosition + 5) % 8;
@@ -174,8 +177,7 @@ public class Score extends Player{
     }
 
     /**
-     * @return true if the line terminates at a middle station (i.e. at a station and facing a track into the station),
-     * otherwise it returns false.
+     * @return true if the line terminates at a station (i.e. at a station and facing a track into the station),
      */
     public static boolean atStation(String tile, int inputPosition) {
         int output = getOutput(tile, inputPosition);

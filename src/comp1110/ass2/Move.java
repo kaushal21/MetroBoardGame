@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+
+// Authorship: Kaushal Sharma, Tom Stephens
+
 /**
  * This class represents the Move that any player make in the Metro game.
  */
@@ -342,7 +345,7 @@ public class Move {
                 // Check for a loop in the top right corner of the board
                 if (row == 0 && col == 0 ) {
                     // Check for the track that connects neighbouring stations
-                    if ( ( currentTile.charAt(0) == 'c') ) {
+                    if ((currentTile.charAt(0) == 'c')||(currentTile.charAt(3) == 'b')) {
                         // return true if it's the only place left for the tile on board
                         return board.getBoardTotal() == 59;
                     }
@@ -445,7 +448,7 @@ public class Move {
         if (tiles.length == 0) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    if (!atStation2(piece, i, j)) return (piece + i + j);
+                    if (!isInvalid(piece, i, j)) return (piece + i + j);
                 }
             }
         }
@@ -453,7 +456,7 @@ public class Move {
         for (int i = 0; i < 8; i++) {
             //iterates through columns (each member of each row)
             outer: for (int j = 0; j < 8; j++) {
-                if (atStation2(piece, i,j)) {
+                if (isInvalid(piece, i,j)) {
                     continue;
                 }
                 for (String tile : tiles) {
@@ -480,11 +483,13 @@ public class Move {
         return "Board is full, no valid moves left";
     }
 
-    // Determines if a piece is invalidly going into a station based on its location
-    // OR, if a piece is invalid because it is on top of a middle station
-    public static boolean atStation2 (String piece, int posY, int posX) {
+    /**
+     * Determines if a piece is invalidly going into a station based on its location
+     * OR, if a piece is invalid because it is on top of a middle station
+    */
+    public static boolean isInvalid(String piece, int posY, int posX) {
         // check if on top of middle stations
-        if ( atMiddle(posX, posY) )
+        if ( atMiddle(posY, posX) )
             return true;
 
         // check corners

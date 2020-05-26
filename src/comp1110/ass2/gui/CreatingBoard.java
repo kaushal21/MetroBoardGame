@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// Authorship: Kaushal Sharma, Kyle Robertson, Tom Stephens
+
 public class CreatingBoard extends Application{
     Group root = new Group();
     String placementSequence;
