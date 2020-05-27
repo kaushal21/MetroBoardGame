@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// Authorship: Kaushal Sharma, Kyle Robertson, Tom Stephens 
+
 public class CreatingBoard extends Application{
     Group root = new Group();
     String placementSequence;
@@ -400,6 +402,8 @@ public class CreatingBoard extends Application{
             mouseOffsetY = tileView.getLayoutY() - event.getSceneY();
             tileView.setFitHeight(SQUARE_SIZE);
             tileView.setFitWidth(SQUARE_SIZE);
+            String topLocation2 = "comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
+            tileView.setImage(new Image(topLocation2));
         });
 
         tileView.setOnMouseDragged(event -> {
@@ -482,6 +486,9 @@ public class CreatingBoard extends Application{
             tileView.setLayoutY(Y);
             tileView.setFitWidth(SQUARE_SIZE * 2);
             tileView.setFitHeight(SQUARE_SIZE * 2);
+            String topLocation2 = "comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
+            tileView.setImage(new Image(topLocation2));
+
         });
     }
 

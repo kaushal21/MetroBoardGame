@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+// Authorship: Kyle Robertson,
+
 public class Metro {
     /**
      * Creating a tile object. It stores the deck, and the top position of deck.

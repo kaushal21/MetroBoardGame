@@ -3,6 +3,9 @@ package comp1110.ass2;
 /**
  * This class represents the Players in the Metro game.
  */
+
+// Authorship: Kyle Robertson: u6671630
+
 public class Player {
     int players;                    // Number of players from 2 to 6
     static int[][] stations;               // Stations allocated to the players
