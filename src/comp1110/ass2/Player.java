@@ -19,6 +19,7 @@ public class Player {
      */
     public Player(int n) {
         players = n;
+        currentPlayer = 0;
         tileInHand = new String[players];
         for(int i = 0; i < players; i++) {
             tileInHand[i] = null;
@@ -150,7 +151,7 @@ public class Player {
     public int switchTurn() {
         // this might end up going in the viewer class depending on how the UI works
         currentPlayer++;
-        if(currentPlayer >= players) {
+        if(currentPlayer == players) {
             currentPlayer = 0;
         }
         return currentPlayer;
