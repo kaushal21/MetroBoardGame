@@ -21,7 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-// Authorship: Kaushal Sharma, Kyle Robertson, Tom Stephens 
+// Authorship: Kaushal Sharma, Kyle Robertson, Tom Stephens
 
 public class CreatingBoard extends Application{
     Group root = new Group();                               // Container for the scene

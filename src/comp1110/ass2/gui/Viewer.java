@@ -466,6 +466,7 @@ public class Viewer extends Application{
         makeControls();
         root.getChildren().add(controls);
 
+
         // Get the number of players from the user using getPlayer() function.
         int n = GetPlayers.getPlayers();
         playerNums = n;
