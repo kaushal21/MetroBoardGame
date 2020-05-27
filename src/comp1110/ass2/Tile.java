@@ -1,6 +1,9 @@
 package comp1110.ass2;
 import java.util.*;
 
+// Authorship: Kaushal Sharma, Tom Stephens
+
+
 /**
  * This class represents a Tile in the Metro game.
  * The variables that are declared here are
@@ -108,6 +111,19 @@ public class Tile {
                 return;
             }
         }
+    }
+
+    /**
+     * @param deck the original deck
+     * @return a new deck with the construction tile in it
+     */
+    public String[] makeConstructionDeck(String[] deck) {
+        // generates a random position in the deck for the construction tile to replace
+        int rand = (int) (Math.random() * 60);
+
+        // update the deck to contain "construction" as a tile
+        deck[rand] = "contruction";
+        return deck;
     }
 
 }
