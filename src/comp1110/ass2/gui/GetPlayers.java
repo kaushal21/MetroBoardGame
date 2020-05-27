@@ -4,12 +4,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 // Authorship: Kaushal Sharma, Tom Stephens
@@ -24,6 +26,8 @@ public class GetPlayers {
         // These store the total number of players entered by the user, and the number of computer opponents
         AtomicInteger h = new AtomicInteger();
         AtomicInteger a = new AtomicInteger();
+        AtomicBoolean c = new AtomicBoolean();
+
         // Create a new Stage to Accept the Number of Players
         Stage newWindow = new Stage();
 
@@ -48,6 +52,11 @@ public class GetPlayers {
         TextField numberOfAIs = new TextField();
         numberOfAIs.setMaxWidth(100);
         numberOfAIs.setPromptText("No. of Computer opponents");
+        Label confConstructionTile = new Label("Enable Construction Tile? (Checked for Yes, unchecked for no)");
+        CheckBox checkBox = new CheckBox();
+        //cbYes.setText("Yes");
+
+
 
         Button submit = new Button("PLAY");                               // Create a Play button
         submit.setOnAction(e -> {
@@ -56,13 +65,14 @@ public class GetPlayers {
             if (checkEnteredNumberOfPlayers(numberOfPlayers) && checkEnteredNumberOfAIs(numberOfPlayers,numberOfAIs) ) {
                 h.set(Integer.parseInt(numberOfPlayers.getText()));
                 a.set(Integer.parseInt(numberOfAIs.getText()));
+                c.set(checkIfConTileEnabled(checkBox));
                 newWindow.close();
             }
         });
 
         // Create a VBox to display this layout on the screen
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(noOfPlayers, numberOfPlayers, noOfAIs, numberOfAIs, submit);
+        layout.getChildren().addAll(noOfPlayers, numberOfPlayers, noOfAIs, numberOfAIs,confConstructionTile,checkBox, submit);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(5, 10, 5, 10));
 
@@ -124,5 +134,17 @@ public class GetPlayers {
             return false;
         }
     }
+
+    static boolean checkIfConTileEnabled(CheckBox checked){
+        //Checking if the check box is selected
+        if(checked.isSelected()){
+            //Prints out to show that the check box has been checked.
+            System.out.println("Checked");
+            return true;
+        } else{
+            return false;
+        }
+    }
+
 
 }
