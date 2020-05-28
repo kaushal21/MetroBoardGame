@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import com.sun.webkit.network.Util;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
@@ -7,6 +8,8 @@ import org.junit.rules.Timeout;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
+
+//Authorship: Kyle Robertson
 
 public class PlayerTests {
     @Rule
@@ -22,24 +25,25 @@ public class PlayerTests {
     // in the game.
     @Test
     public void testStationAllocation(){
-        int NumOfPlayers = 3;
-        int[][] stationExpected = {{1, 4, 6, 11, 15, 20, 23, 25, 28, 31},{2, 7, 9, 12, 14, 19, 22, 27, 29, 32},{3, 5, 8, 10, 13, 18, 21, 24, 26, 30}};
-        int[][] stationOutcome = Player.allocateStations(NumOfPlayers);
-        assertNotNull("Expected station allocation :" + Arrays.deepToString(stationExpected) + " instead got null" ,stationOutcome);
-        assertTrue("Expected station allocation: " + Arrays.deepToString(stationExpected) + " but got " + Arrays.deepToString(stationOutcome)
-                , Arrays.deepEquals(stationExpected, stationOutcome));
-
+        for (int i = 2; i <= 6; i++){ //Loops through all possible station allocation.
+            int[][] stationExpected = Utilities.FULL_STATION_LOCATION[i-2]; //FULL_STATION_LOCATION is a collection of all stations locations.
+            int[][] stationOutcome = Player.allocateStations(i);
+            assertNotNull("Expected station allocation :" + Arrays.deepToString(stationExpected) + " instead got null" ,stationOutcome);
+            assertTrue("Expected station allocation: " + Arrays.deepToString(stationExpected) + " but got " + Arrays.deepToString(stationOutcome)
+                    , Arrays.deepEquals(stationExpected, stationOutcome));
+        }
     }
     @Test
     //Test to see if the stations are assigned to the correct player.
     public void testStationReturn(){
-        int playerNumber = 2;
-        int playerPosition = playerNumber - 1;
-        int numberOfPlayers = 4;
-        int [] playerExpected = {3, 8, 12, 15, 19, 24, 28, 31};
-        int [] playerOutcome = Player.getStations(playerPosition,numberOfPlayers);
-        assertNotNull("Expected stations for player 2: "  + Arrays.toString(playerExpected) + "instead got null", playerOutcome);
-        assertArrayEquals("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome), playerExpected, playerOutcome);
+        for(int i = 0; i <= 4; i++){
+            int playerPosition = i;
+            int numberOfPlayer = i + 2;
+            int[] playerExpected = Utilities.FULL_STATION_LOCATION[i][i];
+            int[] playerOutcome = Player.getStations(playerPosition,numberOfPlayer);
+            assertNotNull("Expected stations for player 2: "  + Arrays.toString(playerExpected) + "instead got null", playerOutcome);
+            assertArrayEquals("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome), playerExpected, playerOutcome);
+        }
     }
 
     @Test
