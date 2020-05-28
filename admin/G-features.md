@@ -10,4 +10,4 @@ of our project implements the following features:
 
 additional features...
 
- - Playable against a computer opponent (Task 11)
+ - Playable against a computer opponent (Task 10)
