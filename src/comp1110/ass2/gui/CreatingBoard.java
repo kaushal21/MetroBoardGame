@@ -44,7 +44,7 @@ public class CreatingBoard extends Application{
     ImageView playerImage = new ImageView();                // Image for the tile in players hand
     Label playerTileName;                                   // Label for the tile in players hand
     Label playerName = new Label();                         // Current Player's Name
-    int CurrentPlayer = player.getCurrentPlayer();          // Store the Current Player
+    int CurrentPlayer = Player.getCurrentPlayer();          // Store the Current Player
 
     // Create a new variable of Tile that hold a new random Deck and its top location
     Tile newDeck = new Tile();
@@ -511,7 +511,7 @@ public class CreatingBoard extends Application{
                                 labelText.setText(topOfDeck);                                           // Update the Label using the String of top of deck
                                 CurrentPlayer = player.switchTurn();
                             }
-                            
+
 
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
