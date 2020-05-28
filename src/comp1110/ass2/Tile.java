@@ -122,7 +122,7 @@ public class Tile {
         int rand = (int) (Math.random() * 60);
 
         // update the deck to contain "construction" as a tile
-        deck[rand] = "contruction";
+        deck[rand] = "construction";
         return deck;
     }
 
