@@ -142,7 +142,7 @@ public class Player {
      * @param currPlayer Set the Current Player
      */
     public void setCurrentPlayer(int currPlayer){
-        currentPlayer = currPlayer;
+        currentPlayer = currPlayer % players;
     }
 
     /**
