@@ -468,7 +468,8 @@ public class Viewer extends Application{
 
 
         // Get the number of players from the user using getPlayer() function.
-        int n = GetPlayers.getPlayers();
+        int[] tn = GetPlayers.getPlayers();
+        int n = tn[0];
         playerNums = n;
         if ( n == -1 )                          // Check if the user wants to quit or continue
             return;

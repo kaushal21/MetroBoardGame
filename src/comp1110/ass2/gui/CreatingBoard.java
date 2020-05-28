@@ -36,9 +36,9 @@ public class CreatingBoard extends Application{
     double mouseOffsetY;                                    // Stores the Y offset location for the draggable option
     int temp_i, temp_j;
     Label highlighted = null;                               // Stores the label that is highlighted
-    Player player = new Player(GetPlayers.getPlayers());    // Get the no. of players
-    int noOfPlayers = GetPlayers.getPlayers();
-    int noOfAIs = GetPlayers.getComputerOpponents();
+    Player player;                                          // Get the no. of players
+    int noOfPlayers;
+    int noOfAIs;
     ImageView deckImage = new ImageView();                  // Image for the top of Deck
     Label deckTileName;                                     // Label for the top of Deck
     ImageView playerImage = new ImageView();                // Image for the tile in players hand
@@ -600,11 +600,13 @@ public class CreatingBoard extends Application{
         stage.setTitle("Board");
 
         // Get the number of players from the user using getPlayer() function.
-        int noOfPlayers = GetPlayers.getPlayers();
-        int noOfAI = GetPlayers.getComputerOpponents();
+        int[] temp = GetPlayers.getPlayers();
+        noOfPlayers = temp[0];
+        noOfAIs = temp[1];
 
         // Create a new variable of Player that hold all the functionality of a player.
-        Player player = new Player(noOfPlayers);
+        System.out.println(noOfPlayers);
+        player = new Player(noOfPlayers);
 
 
         placementSequence = "";

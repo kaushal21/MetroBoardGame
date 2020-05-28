@@ -22,12 +22,13 @@ public class GetPlayers {
     static AtomicInteger h = new AtomicInteger();
     static AtomicInteger a = new AtomicInteger();
     static AtomicBoolean c = new AtomicBoolean();
+
     /**
      * It Creates a new Dialog box that takes an integer value and check if it is valid and is in the range
      * @return The integer value accepted from the user.
      */
-    public static int getPlayers() {
-
+    public static int[] getPlayers() {
+        int[] retArr = new int[2];
         // Create a new Stage to Accept the Number of Players
         Stage newWindow = new Stage();
 
@@ -48,15 +49,15 @@ public class GetPlayers {
         TextField numberOfPlayers = new TextField();                            // TextField is used to store the input value
         numberOfPlayers.setMaxWidth(100);
         numberOfPlayers.setPromptText("No. of Players");
+
         Label noOfAIs = new Label("Enter The number of Computer opponents (must be less than the number of players):");
         TextField numberOfAIs = new TextField();
         numberOfAIs.setMaxWidth(100);
         numberOfAIs.setPromptText("No. of Computer opponents");
+
         Label confConstructionTile = new Label("Enable Construction Tile? (Checked for Yes, unchecked for no)");
         CheckBox checkBox = new CheckBox();
         //cbYes.setText("Yes");
-
-
 
         Button submit = new Button("PLAY");                               // Create a Play button
         submit.setOnAction(e -> {
@@ -72,7 +73,7 @@ public class GetPlayers {
 
         // Create a VBox to display this layout on the screen
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(noOfPlayers, numberOfPlayers, noOfAIs, numberOfAIs,confConstructionTile,checkBox, submit);
+        layout.getChildren().addAll(noOfPlayers, numberOfPlayers, noOfAIs, numberOfAIs, confConstructionTile, checkBox, submit);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(5, 10, 5, 10));
 
@@ -81,22 +82,10 @@ public class GetPlayers {
         newWindow.showAndWait();
 
         // return the entered value
-        return h.get();
-    }
+        retArr[0] = h.get();
+        retArr[1] = a.get();
 
-    public static int getComputerOpponents() {
-        Label noOfPlayers = new Label("Enter The number of Players (2-6):");       // Label Used to display the message
-        TextField numberOfPlayers = new TextField();                            // TextField is used to store the input value
-        numberOfPlayers.setMaxWidth(100);
-        numberOfPlayers.setPromptText("No. of Players");
-        Label noOfAIs = new Label("Enter The number of Computer opponents (must be less than the number of players):");
-        TextField numberOfAIs = new TextField();
-        numberOfAIs.setMaxWidth(100);
-        numberOfAIs.setPromptText("No. of Computer opponents");
-        if (checkEnteredNumberOfAIs(numberOfPlayers,numberOfAIs)) {
-            a.set(Integer.parseInt(numberOfAIs.getText()));
-        }
-        return a.get();
+        return retArr;
     }
 
     public static boolean playingConstructionRules() {
@@ -127,6 +116,7 @@ public class GetPlayers {
             return false;
         }
     }
+
     /**
      * It called by the submit button while accepting the number of users. It checks 2 conditions
      * 1.> The entered number of players is in integer.
@@ -141,7 +131,7 @@ public class GetPlayers {
             int totalNum = Integer.parseInt(totalNumber.getText());
             int numAI = Integer.parseInt(number.getText());
             // Check the range of the entered value
-            if ( numAI < 0 || (numAI >= totalNum) )
+            if ( numAI >= totalNum )
                 // If the value is out of range then throw an exception.
                 throw new NumberFormatException("You can't have more opponents than players!");
             else
