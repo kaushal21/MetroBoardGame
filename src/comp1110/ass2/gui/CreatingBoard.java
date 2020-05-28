@@ -753,11 +753,6 @@ public class CreatingBoard extends Application{
         stage.setTitle("Board");
 
         // Get the number of players from the user using getPlayer() function.
-        int[] temp = GetPlayers.getPlayers();
-        noOfPlayers = temp[0];
-        noOfAIs = temp[1];
-
-        // Get the number of players from the user using getPlayer() function.
         int noOfPlayers = GetPlayers.getPlayers();
         int noOfAI = GetPlayers.getComputerOpponents();
         playerNums = noOfPlayers;
