@@ -1,6 +1,7 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.Metro;
+import comp1110.ass2.OpponentAI;
 import comp1110.ass2.Player;
 import comp1110.ass2.Tile;
 import javafx.application.Application;
@@ -35,7 +36,9 @@ public class CreatingBoard extends Application{
     double mouseOffsetY;                                    // Stores the Y offset location for the draggable option
     int temp_i, temp_j;
     Label highlighted = null;                               // Stores the label that is highlighted
-    Player player = new Player( 2 );                     // Get the player class
+    Player player = new Player(GetPlayers.getPlayers());    // Get the no. of players
+    int noOfPlayers = GetPlayers.getPlayers();
+    int noOfAIs = GetPlayers.getComputerOpponents();
     ImageView deckImage = new ImageView();                  // Image for the top of Deck
     Label deckTileName;                                     // Label for the top of Deck
     ImageView playerImage = new ImageView();                // Image for the tile in players hand
@@ -274,7 +277,7 @@ public class CreatingBoard extends Application{
      */
     public void playerLocation() throws FileNotFoundException {
         // Store in playerName the player's Name
-        playerName = new Label("Player "+(player.getCurrentPlayer() + 1));
+        playerName = new Label("Player "+(Player.getCurrentPlayer() + 1));
         playerName.setMinWidth(250);                                        // Set Minimum Width
         playerName.setAlignment(Pos.CENTER);                                // Set Alignment to center
         playerName.setFont(Font.font("Arial", 20));                   // Set the Font of Text
@@ -289,7 +292,7 @@ public class CreatingBoard extends Application{
         // Check if the player already holds any tile in his/her hands and create label for it
         String tileInHand = player.getTileInHand(CurrentPlayer);
         if (tileInHand != null) {
-            // The player Already has a tile in his/her hand
+            // The player already has a tile in his/her hand
             // Store in playerImage the tile Image
             String playersHandTileLocation = "src/comp1110/ass2/gui/assets/" + tileInHand + ".jpg";
             playerImage = createImage(playersHandTileLocation, 0);
@@ -317,7 +320,7 @@ public class CreatingBoard extends Application{
             draggable(playerImage, playerTileName, "player",(SQUARE_SIZE * 10) + (12) + (50), (SQUARE_SIZE*2) + (30) + (10) + (50) + (30));
 
         } else {
-            // Create Label for empty Image thats indicates player's hand
+            // Create Label for empty Image that indicates player's hand is empty
             Label playersHandTileView = new Label();
             playersHandTileView.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
             playersHandTileView.setMinHeight(SQUARE_SIZE*2);
@@ -328,7 +331,7 @@ public class CreatingBoard extends Application{
             playersHandTileView.setLayoutY(paddingTop);
             board.getChildren().add(playersHandTileView);
 
-            // Creating a Button to select the the tile in players hand
+            // Creating a Button to select a new tile to put in players hand
             Button noTileInHand = new Button("Pick Up Tile");
             noTileInHand.setFont(Font.font("Arial", 15));
             noTileInHand.setTextFill(Color.BLACK);
@@ -341,7 +344,7 @@ public class CreatingBoard extends Application{
             board.getChildren().add(noTileInHand);
 
             // Creating a click event on the button.
-            // If the button is pressed then the top of deck is selected in players hand
+            // If the button is pressed then the top of deck is selected as the player's hand
             noTileInHand.setOnMouseClicked(actionEvent -> {
                 // Set the tile in players hand to the top of deck
                 player.setTileInHand(CurrentPlayer, topOfDeck);
@@ -469,7 +472,7 @@ public class CreatingBoard extends Application{
                 double locationY = (closest.getLayoutY() / SQUARE_SIZE) - 1;
 
                 // Create a new placement string and placementSequence
-                String placement = tile + Integer.toString((int) locationX) + Integer.toString((int) locationY);
+                String placement = tile + ((int) locationX) + ((int) locationY);
                 String tempPlacementSequence = placementSequence + placement;
 
                 // Check if the placementSequence is valid or not
@@ -489,13 +492,30 @@ public class CreatingBoard extends Application{
                         player.setTileInHand(CurrentPlayer, null);
                     }
 
-                    playerImage.setImage(null);                                 // Set playerImage to null
-                    playerTileName.setText(null);                               // Set playerTileName to null
+                    //playerImage.setImage(null);                                 // Set playerImage to null
+                    //playerTileName.setText(null);                               // Set playerTileName to null
                     board.getChildren().removeAll(deckImage, deckTileName);     // Remove deckImage and deckTileName form board
                     board.getChildren().remove(playerName);                     // Remove playerName from board
                     board.getChildren().remove(playerImage);                    // Remove playerImage from board
                     board.getChildren().remove(playerTileName);                 // Remove playerTileName from board
-                    CurrentPlayer = player.switchTurn();                        // Switch player and store it in CurrentPlayer
+                                                                          // Switch player and store it in CurrentPlayer
+
+                    // if currentPlayer is an AI, place a tile at random
+                    if (CurrentPlayer > noOfPlayers - noOfAIs) {
+                        try {
+                            for (int i = 0; i < noOfAIs; i++) {
+                                makePlacement(OpponentAI.randomBotMove(placementSequence, Tile.returnArrayDeck(newDeck)));
+                                player.setCurrentPlayer(CurrentPlayer + i + 1);
+                            }
+                            CurrentPlayer = player.switchTurn();
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        CurrentPlayer = player.switchTurn();
+                    }
 
                     // Call the deckLocation and playerLocation for the next Round
                     try {
