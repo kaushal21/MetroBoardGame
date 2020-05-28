@@ -83,6 +83,22 @@ public class GetPlayers {
         // return the entered value
         return h.get();
     }
+
+    public static int getComputerOpponents() {
+        Label noOfPlayers = new Label("Enter The number of Players (2-6):");       // Label Used to display the message
+        TextField numberOfPlayers = new TextField();                            // TextField is used to store the input value
+        numberOfPlayers.setMaxWidth(100);
+        numberOfPlayers.setPromptText("No. of Players");
+        Label noOfAIs = new Label("Enter The number of Computer opponents (must be less than the number of players):");
+        TextField numberOfAIs = new TextField();
+        numberOfAIs.setMaxWidth(100);
+        numberOfAIs.setPromptText("No. of Computer opponents");
+        if (checkEnteredNumberOfAIs(numberOfPlayers,numberOfAIs)) {
+            a.set(Integer.parseInt(numberOfAIs.getText()));
+        }
+        return a.get();
+    }
+
     public static boolean playingConstructionRules() {
         return c.get();
     }

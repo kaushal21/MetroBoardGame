@@ -579,7 +579,14 @@ public class CreatingBoard extends Application{
     public void start(Stage stage) throws Exception {
         stage.setTitle("Board");
 
+        // Get the number of players from the user using getPlayer() function.
+        int noOfPlayers = GetPlayers.getPlayers();
+        int noOfAI = GetPlayers.getComputerOpponents();
+
         // Create a new variable of Player that hold all the functionality of a player.
+        Player player = new Player(noOfPlayers);
+
+
         placementSequence = "";
 
         // Create a new Grid. i.e. the initial stage of the board

@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-// Authorship: Kyle Robertson,
+// Authorship: Kyle Robertson, Tom Stephens, Kaushal Sharma
 
 public class Metro {
     /**

@@ -9,6 +9,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+// Authorship: Kaushal Sharma
+
 public class AlertBox {
     public static void alertBox(String message) {
         // This stores the boolean answer by the user.
