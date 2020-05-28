@@ -655,8 +655,6 @@ public class CreatingBoard extends Application{
                             break;
                     }
 
-                    //playerImage.setImage(null);                                 // Set playerImage to null
-                    //playerTileName.setText(null);                               // Set playerTileName to null
                     board.getChildren().removeAll(deckImage, deckTileName);     // Remove deckImage and deckTileName form board
                     board.getChildren().remove(playerName);                     // Remove playerName from board
                     board.getChildren().remove(playerImage);                    // Remove playerImage from board
@@ -719,8 +717,12 @@ public class CreatingBoard extends Application{
 
                     // Call the deckLocation and playerLocation for the next Round
                     try {
-                        deckLocation(topOfDeck);
-                        playerLocation();
+                        if ( newDeck.deckNew.size() != 0 ) {
+                            deckLocation(topOfDeck);
+                            playerLocation();
+                        } else {
+                            FinalScreen.finalScreen(placementSequence, player.getPlayers());
+                        }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
