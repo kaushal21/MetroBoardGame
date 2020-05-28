@@ -1,6 +1,9 @@
 package comp1110.ass2;
 import java.util.*;
 
+// Authorship: Kaushal Sharma, Tom Stephens
+
+
 /**
  * This class represents a Tile in the Metro game.
  * The variables that are declared here are
@@ -8,8 +11,8 @@ import java.util.*;
  * 2.> "top" - location of the top most tile which is ready to be popped.
  */
 public class Tile {
-    String[] deck = new String[60];
-    int top;
+    public static String[] deck = new String[60];
+    public static int top;
 
     /**
      * The implementation of the Deck is done as a Stack.
@@ -46,20 +49,20 @@ public class Tile {
      * @return The top location of deck
      */
     public int getTop () {
-        return this.top;
+        return Tile.top;
     }
 
     /**
      * @return The tile at passed position in deck
      */
-    public String getDeck (int pos) {
+    public static String getDeck (int pos) {
         return deck[pos];
     }
 
     /**
      * Take the deck and shuffle it to create a randomized list of all the tiles
      */
-    public void randomiseDeck() {
+    public static void randomiseDeck() {
         // Convert the Array of String into a List of String
         List<String> strList = Arrays.asList(deck);
 
@@ -75,7 +78,7 @@ public class Tile {
      * if there is nothing in deck i.e. top = 0.
      * @return true if the deck is not empty, otherwise return false.
      */
-    public boolean checkDeckEmpty() {
+    public boolean checkDeckNonEmpty() {
         return top > 0;
     }
 
@@ -93,21 +96,34 @@ public class Tile {
      * and then update the top value.
      * @param alreadyPlacedTile this is the string which is already present either in the placementSequence or totalHands.
      */
-    public void updateDeck ( String alreadyPlacedTile ) {
+    public static void updateDeck ( String alreadyPlacedTile ) {
         // Check the complete deck from starting to the last location i.e. top
-        for(int i = 0; i < this.top; i++) {
+        for(int i = 0; i < Tile.top; i++) {
 
             // if this tile is matched with the passed tile then swap these two
-            if ( this.deck[i].equals(alreadyPlacedTile) ) {
+            if ( Tile.deck[i].equals(alreadyPlacedTile) ) {
 
                 // Updating the top location and storing the value in a variable.
-                int lastLocation = --this.top;
-                String temp = this.deck[lastLocation];
-                this.deck[lastLocation] = this.deck[i];
-                this.deck[i] = temp;
+                int lastLocation = --Tile.top;
+                String temp = Tile.deck[lastLocation];
+                Tile.deck[lastLocation] = Tile.deck[i];
+                Tile.deck[i] = temp;
                 return;
             }
         }
+    }
+
+    /**
+     * @param deck the original deck
+     * @return a new deck with the construction tile in it
+     */
+    public static String[] makeConstructionDeck(String[] deck) {
+        // generates a random position in the deck for the construction tile to replace
+        int rand = (int) (Math.random() * 60);
+
+        // update the deck to contain the construction tile named "cons"
+        deck[rand] = "cons";
+        return deck;
     }
 
 }

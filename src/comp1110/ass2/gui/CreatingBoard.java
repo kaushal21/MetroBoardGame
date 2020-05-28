@@ -393,9 +393,7 @@ public class CreatingBoard extends Application{
      * @return true if the game is over, otherwise it returns false
      */
     boolean gameOver () {
-        if ( !newDeck.checkDeckEmpty() )
-            return true;
-        return false;
+        return !newDeck.checkDeckNonEmpty();
     }
 
     public void draggable(ImageView tileView, Label labelText, String passedBy, int X, int Y) {
@@ -424,7 +422,7 @@ public class CreatingBoard extends Application{
             double locationY = (closest.getLayoutY() / SQUARE_SIZE) - 1;
 
             // Create a Temporary Placement String and PlacementSequence to check placement validity
-            String placement = tile + Integer.toString((int) locationX) + Integer.toString((int) locationY);
+            String placement = tile + (int) locationX + (int) locationY;
             String tempPlacementSequence = placementSequence + placement;
 
             // Check highlighted Label
@@ -581,7 +579,14 @@ public class CreatingBoard extends Application{
     public void start(Stage stage) throws Exception {
         stage.setTitle("Board");
 
+        // Get the number of players from the user using getPlayer() function.
+        int noOfPlayers = GetPlayers.getPlayers();
+        int noOfAI = GetPlayers.getComputerOpponents();
+
         // Create a new variable of Player that hold all the functionality of a player.
+        Player player = new Player(noOfPlayers);
+
+
         placementSequence = "";
 
         // Create a new Grid. i.e. the initial stage of the board

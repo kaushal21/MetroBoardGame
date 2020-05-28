@@ -10,7 +10,7 @@
 #
 
 declaration: >-
-  Stage G represents the culmunation of the entire assignment.  We declare that
+  Stage G represents the culmination of the entire assignment.  We declare that
   everything we have submitted for for all stages of this assignment was
   entirely our own work, with the following exceptions:
 
@@ -50,8 +50,8 @@ assets:
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
 signatures:
-  - name:
-    uid:
+  - name: Tom Stephens
+    uid: u6953044
   - name:
     uid:
   - name:

@@ -7,7 +7,7 @@ package comp1110.ass2;
 // Authorship: Kyle Robertson: u6671630
 
 public class Player {
-    int players;                    // Number of players from 2 to 6
+    public static int players;                    // Number of players from 2 to 6
     static int[][] stations;               // Stations allocated to the players
     int currentPlayer;              // Player range 0 to (players-1) i.e. 5
     String[] tileInHand;            // For all the players it Stores the tile in hand of the players
@@ -15,7 +15,7 @@ public class Player {
 
     /**
      * The number of playing the game is taken as an input from the user.
-     * Players are initialized with the current player being 1.
+     * Players are initialized with the current player being Player 1.
      */
     public Player(int n) {
         players = n;

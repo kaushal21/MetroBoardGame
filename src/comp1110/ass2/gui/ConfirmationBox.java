@@ -9,6 +9,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+// Authorship: Kaushal Sharma
+
 public class ConfirmationBox {
     static boolean answer;
     public static boolean confirmationBox(String message) {

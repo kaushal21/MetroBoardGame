@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-// Authorship: Kyle Robertson,
+// Authorship: Kyle Robertson, Tom Stephens, Kaushal Sharma
 
 public class Metro {
     /**
@@ -86,14 +86,14 @@ public class Metro {
 
             // Update the deck i.e. swap the tile that is there in the placedTiles to the last location in the deck.
             for (String out: placedTiles){
-                updatedDeck.updateDeck( out );
+                Tile.updateDeck( out );
             }
         }
 
         // Create a String variable that will store the returning string
         String temp = "";
         // Check if the deck is empty or not
-        if ( updatedDeck.checkDeckEmpty() ) {
+        if ( updatedDeck.checkDeckNonEmpty() ) {
             temp = updatedDeck.pop();
         }
         // Return the string that is top most tile in the deck.

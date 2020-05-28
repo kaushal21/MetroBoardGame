@@ -3,6 +3,8 @@ package comp1110.ass2;
 
 // Authorship: Kaushal Sharma, Tom Stephens
 
+import comp1110.ass2.gui.GetPlayers;
+
 /**
  * This class represents the Move that any player make in the Metro game.
  */
@@ -16,7 +18,7 @@ public class Move {
      * 3.> The position of the tile in tilePlacement is valid position i.e. x and y lie between 0 and 7.
      * @return true if the tilePlacement is correct, otherwise it returns false.
      */
-    public boolean checkTilePlacement(String tilePlacement) {
+    public static boolean checkTilePlacement(String tilePlacement) {
         // Check if the piecePlacement is not of an accurate size
         if ( tilePlacement.length() != 6 )
             return false;
@@ -27,13 +29,26 @@ public class Move {
 
         // Create a Tile variable to check if the passed string is in the deck or not
         Tile tile = new Tile();
-        // Iterate the deck to look for the tile. If it isn't there then it means the tile is wrong and return false.
-        for (int i = tile.top -1; i >= 0; i--) {
-            if ( piece.equals(tile.deck[i]) ) {
-                temp = 1;
-                break;
+        // Iterate the correct deck to look for the tile. If it isn't there then it means the tile is wrong and return false.
+
+        if (GetPlayers.playingConstructionRules()) { // if using construction deck
+            String[] newDeck = Tile.makeConstructionDeck(Tile.deck);
+            for (int i = Tile.top -1; i >= 0; i--) {
+                if ( piece.equals(newDeck[i]) ) {
+                    temp = 1;
+                    break;
+                }
+            }
+        } else { // if using regular deck
+            for (int i = Tile.top -1; i >= 0; i--) {
+                if ( piece.equals(Tile.deck[i]) ) {
+                    temp = 1;
+                    break;
+                }
             }
         }
+
+
 
         // If the tile was there in the deck, then temp will be 1.
         // Check for the next 2 integers. if within the range of 0 to 7 then return true, otherwise return false.
@@ -75,10 +90,13 @@ public class Move {
         String[] copies3 = {"cbcb", "bcbc"};
         String[] copies2 = {"cccc", "bbbb", "dacc", "cdac", "ccda", "accd", "dbba", "adbb", "badb", "bbad", "ddbc",
                 "cddb", "bcdd", "dbcd", "adad", "dada", "dddd"};
+        // construction tile
+        String[] copies1 = {"cons"};
         // Stores the number of times each tile has appeared in "placement" string
         int[] copies4count = new int[5];
         int[] copies3count = new int[2];
         int[] copies2count = new int[17];
+        int[] copies1count = new int[1];    // this is for construction tile
 
         // For number of tiles in the placement string
         for (int i = 0; i < numberOfTile; i++) {
@@ -127,6 +145,15 @@ public class Move {
                 if ( copies2[j].equals(tile) ) {
                     copies2count[j] += 1;
                     if ( copies2count[j] > 2 )
+                        return false;
+                    break;
+                }
+            }
+            // Count for the construction tile which can't be repeated
+            for(int j = 0; j < 1; j++){
+                if (copies1[j].equals(tile) ) {
+                    copies1count[j] += 1;
+                    if ( copies1count[j] > 1 )
                         return false;
                     break;
                 }
@@ -480,7 +507,7 @@ public class Move {
                 }
             }
         }
-        return "Board is full, no valid moves left";
+        return "No valid moves left";
     }
 
     /**
