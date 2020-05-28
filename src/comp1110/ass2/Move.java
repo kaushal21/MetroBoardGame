@@ -27,8 +27,6 @@ public class Move {
         String piece = tilePlacement.substring(0, 4);
         int temp = 0;
 
-        // Create a Tile variable to check if the passed string is in the deck or not
-        Tile tile = new Tile();
         // Iterate the correct deck to look for the tile. If it isn't there then it means the tile is wrong and return false.
 
         if (GetPlayers.playingConstructionRules()) { // if using construction deck
@@ -47,8 +45,6 @@ public class Move {
                 }
             }
         }
-
-
 
         // If the tile was there in the deck, then temp will be 1.
         // Check for the next 2 integers. if within the range of 0 to 7 then return true, otherwise return false.
@@ -183,8 +179,9 @@ public class Move {
      */
     public boolean isPlacementSequenceValid ( String placementSequence ) {
         // Check if the passed string is correct placementSequence string
-        if ( !checkPlacementSequence(placementSequence) )
+        if ( !checkPlacementSequence(placementSequence) ) {
             return false;
+        }
 
         // Get the number of tiles in the placementSequence
         int numberOfTiles = placementSequence.length() / 6;
@@ -197,7 +194,6 @@ public class Move {
             String currentTile = tiles[i].substring(0, 4);
             int row = Integer.parseInt(String.valueOf(tiles[i].charAt(4)));
             int col = Integer.parseInt(String.valueOf(tiles[i].charAt(5)));
-            System.out.println((i+1)+".> "+tiles[i]);
 
             // Get the upper, lower, right and left values for the given location
             int top_row = row - 1, left_col = col - 1, right_col = col + 1, bottom_row = row + 1;
@@ -242,7 +238,13 @@ public class Move {
             }
 
             // Check if the tile is placed at an edge of the board. Also, allow the first tile from the deck to be placed here without any condition
-            if ( ( ( ( row == 0 || row == 7 ) && col <= 7 ) || ( ( col == 0 || col == 7 ) && row <= 7 ) ) && i != 0 ) {
+            if ( ( ( ( row == 0 || row == 7 ) && col <= 7 ) || ( ( col == 0 || col == 7 ) && row <= 7 ) ) ) {
+                // If the first tile is 'dddd' then allow this move and continue
+                if ( i == 0 && currentTile.equals("dddd") ) {
+                    // if all the above conditions were matched then update this tile in board
+                    board.updateBoardPositions( tiles[i] );
+                    continue;
+                }
                 // Check if its not a corner of the board.
                 // if ( !( ( row == 0 && col == 0 ) || ( row == 0 && col == 7 ) || ( row == 7 && col == 0 ) || ( row == 7 && col == 7 ) ) ) {
                     // Check for a loop at the top edge of the board
@@ -251,7 +253,6 @@ public class Move {
                         for (int j = 1; j < 7; j++) {
                             for (int k = 1; k < 7; k++) {
                                 if (board.getBoard(j, k) == 0) {
-                                    System.out.println("Here1");
                                     return false;
                                 }
                             }
@@ -260,14 +261,12 @@ public class Move {
                         // Check on the left edge of the board
                         for (int j = 1; j < 7; j++) {
                             if ( board.getBoard(j,0) == 0 && currentTile.charAt(3) != 'd') {
-                                System.out.println("Here2");
                                 return false;
                             }
                         }
                         // Check on the right edge of the board
                         for (int j = 1; j < 7; j++) {
                             if ( board.getBoard(j,7) == 0 && currentTile.charAt(1) != 'd') {
-                                System.out.println("Here3");
                                 return false;
                             }
                         }
@@ -287,7 +286,6 @@ public class Move {
                                 }
                             } else {
                                 if ( board.getBoard(7, j) == 0 && currentTile.charAt(2) != 'd') {
-                                    System.out.println("Here4");
                                     return false;
                                 }
                             }
@@ -333,7 +331,6 @@ public class Move {
                                 }
                             } else {
                                 if ( board.getBoard(0, j) == 0 && currentTile.charAt(2) != 'd') {
-                                    System.out.println("Here4");
                                     return false;
                                 }
                             }
@@ -373,7 +370,6 @@ public class Move {
                                 }
                             } else {
                                 if ( board.getBoard(j, 7) == 0 && currentTile.charAt(2) != 'd') {
-                                    System.out.println("Here4");
                                     return false;
                                 }
                             }
@@ -419,7 +415,6 @@ public class Move {
                                 }
                             } else {
                                 if ( board.getBoard(j, 0) == 0 && currentTile.charAt(2) != 'd') {
-                                    System.out.println("Here4");
                                     return false;
                                 }
                             }
@@ -447,7 +442,6 @@ public class Move {
                     if ( currentTile.charAt(0) == 'd' && currentTile.charAt(3) == 'd' ) {
                         if ( i == 0 )
                             return false;
-                        System.out.println("Here6");
                         return board.getBoardTotal() == 59;
                     }
                 }

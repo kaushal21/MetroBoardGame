@@ -18,11 +18,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
-import javax.swing.plaf.ColorUIResource;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 // Authorship: Kaushal Sharma, Kyle Robertson, Tom Stephens
 
@@ -58,7 +56,7 @@ public class CreatingBoard extends Application{
 
     // Create a new variable of Tile that hold a new random Deck and its top location
     Tile newDeck = new Tile();
-    String topOfDeck = newDeck.pop();                       // Stores the top of Deck
+    String topOfDeck;                                       // Stores the top of Deck
 
     /**
      * createBoard function creates initial stage of the board.
@@ -470,7 +468,7 @@ public class CreatingBoard extends Application{
                 // Set the tile in players hand to the top of deck
                 player.setTileInHand(CurrentPlayer, topOfDeck);
                 // Pop a new tile from the deck to be the top of the deck
-                topOfDeck = newDeck.pop();
+                topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
 
                 // Display the topOfDeck back on the screen
                 String topLocation2 = "comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
@@ -608,7 +606,7 @@ public class CreatingBoard extends Application{
                     }
                     // If passed by deck then update the top of Deck by popping from newDeck
                     if (passedBy.equals("deck")) {
-                        topOfDeck = newDeck.pop();
+                        topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
                     }
 
                     // If passed by the player the empty player's hand
@@ -617,7 +615,7 @@ public class CreatingBoard extends Application{
                     }
 
                     scorePlayers = Metro.getScore(placementSequence,playerNums);
-                    System.out.println(CurrentPlayer);
+                    // System.out.println(CurrentPlayer);
 
                     switch (playerNums){
                         case 2:
@@ -670,7 +668,7 @@ public class CreatingBoard extends Application{
                         try {
                             for (int i = 0; i < noOfAIs; i++) {
                                 makePlacement(OpponentAI.randomBotMove(placementSequence, topOfDeck));
-                                System.out.println("AI " + CurrentPlayer);
+                                // System.out.println("AI " + CurrentPlayer);
                                 scorePlayers = Metro.getScore(placementSequence,playerNums);
                                 switch (playerNums){
                                     case 2:
@@ -709,20 +707,15 @@ public class CreatingBoard extends Application{
                                         //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5,playerScore6);
                                         break;
                                 }
-                                topOfDeck = newDeck.pop();
+                                topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
                                 String topLocation2 = "comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
                                 tileView.setImage(new Image(topLocation2));                             // Update the image for topOfDeck
                                 labelText.setText(topOfDeck);                                           // Update the Label using the String of top of deck
                                 CurrentPlayer = player.switchTurn();
                             }
-
-
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
-
-                    } else {
-                        CurrentPlayer = player.switchTurn();
                     }
 
                     // Call the deckLocation and playerLocation for the next Round
@@ -814,6 +807,7 @@ public class CreatingBoard extends Application{
 
         // Create a new variable of Player that hold all the functionality of a player.
         player = new Player(noOfPlayers);
+        topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
 
         placementSequence = "";
 

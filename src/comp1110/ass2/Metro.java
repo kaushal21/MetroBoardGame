@@ -6,7 +6,6 @@ public class Metro {
     /**
      * Creating a tile object. It stores the deck, and the top position of deck.
      */
-    static Tile tile = new Tile();
     static Move move = new Move();
 
     /**

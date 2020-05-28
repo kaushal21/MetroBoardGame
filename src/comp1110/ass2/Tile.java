@@ -13,6 +13,7 @@ import java.util.*;
 public class Tile {
     public static String[] deck = new String[60];
     public static int top;
+    public ArrayList<String> deckNew = new ArrayList<>();
 
     /**
      * The implementation of the Deck is done as a Stack.
@@ -25,6 +26,7 @@ public class Tile {
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 5; j++) {
                 deck[top++] = copies4[j];
+                deckNew.add(copies4[j]);
             }
         }
         // These are the 2 tiles that are having 3 copies in the deck
@@ -32,6 +34,7 @@ public class Tile {
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 2; j++) {
                 deck[top++] = copies3[j];
+                deckNew.add(copies3[j]);
             }
         }
         // These are the 17 tiles that are having 2 copies in the deck
@@ -40,8 +43,10 @@ public class Tile {
         for(int i = 0; i < 2; i++) {
             for(int j = 0; j < 17; j++) {
                 deck[top++] = copies2[j];
+                deckNew.add(copies2[j]);
             }
         }
+        Collections.shuffle(deckNew);
         randomiseDeck();
     }
 
@@ -58,7 +63,6 @@ public class Tile {
     public static String getDeck (int pos) {
         return deck[pos];
     }
-
 
     public static String[] returnArrayDeck() {
         String[] deckArray = new String[top];
@@ -97,6 +101,7 @@ public class Tile {
      * @return the top most tile in the deck. Reduce the top by 1.
      */
     public String pop() {
+        // newDeck.remove(newDeck.size());
         return deck[--top];
     }
 
@@ -135,5 +140,18 @@ public class Tile {
         return deck;
     }
 
+    public static void main(String[] args) {
+        Tile tile = new Tile();
+        //System.out.println(tile.newDeck.size());
+        //System.out.println(tile.newDeck.remove(tile.newDeck.size()-1));
+        //System.out.println(tile.newDeck.size());
+        int count = 0;
+        for ( int i = 0; i < 60; i++) {
+            String temp = tile.pop();
+            if ( temp.equals("adbb") )
+                count++;
+        }
+        // System.out.println(count);
+    }
 }
 
