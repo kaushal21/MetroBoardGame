@@ -121,8 +121,8 @@ public class Tile {
         // generates a random position in the deck for the construction tile to replace
         int rand = (int) (Math.random() * 60);
 
-        // update the deck to contain "construction" as a tile
-        deck[rand] = "construction";
+        // update the deck to contain the construction tile named "cons"
+        deck[rand] = "cons";
         return deck;
     }
 
