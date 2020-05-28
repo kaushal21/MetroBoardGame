@@ -498,23 +498,19 @@ public class CreatingBoard extends Application{
                     board.getChildren().remove(playerName);                     // Remove playerName from board
                     board.getChildren().remove(playerImage);                    // Remove playerImage from board
                     board.getChildren().remove(playerTileName);                 // Remove playerTileName from board
-                                                                          // Switch player and store it in CurrentPlayer
+                    CurrentPlayer = player.switchTurn();                        // Switch player and store it in CurrentPlayer
 
                     // if currentPlayer is an AI, place a tile at random
-                    if (CurrentPlayer > noOfPlayers - noOfAIs) {
+                    if (CurrentPlayer >= noOfPlayers - noOfAIs) {
                         try {
                             for (int i = 0; i < noOfAIs; i++) {
-                                makePlacement(OpponentAI.randomBotMove(placementSequence, Tile.returnArrayDeck(newDeck)));
-                                player.setCurrentPlayer(CurrentPlayer + i + 1);
+                                makePlacement(OpponentAI.randomBotMove(placementSequence, topOfDeck));
+                                topOfDeck = newDeck.pop();
+                                CurrentPlayer = player.switchTurn();
                             }
-                            CurrentPlayer = player.switchTurn();
-
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
-
-                    } else {
-                        CurrentPlayer = player.switchTurn();
                     }
 
                     // Call the deckLocation and playerLocation for the next Round

@@ -25,7 +25,6 @@ public class OpponentAI extends Player{
         if (Metro.generateMove(placementString, piece, Player.players).equals("No valid moves left")) {
             // simulate picking up another tile as a human player would
             return "No possible moves";
-
         }
         // removes the placed tile from the deck
         Tile.updateDeck(piece);
