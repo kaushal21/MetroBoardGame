@@ -346,7 +346,7 @@ public class CreatingBoard extends Application{
     }
 
     /**
-     * Draw a placement in the window
+     * Draw a placement in the window and update the placementSequence
      * @param placement A valid placement string
      */
     void makePlacement(String placement) throws FileNotFoundException {
@@ -526,6 +526,14 @@ public class CreatingBoard extends Application{
 
     }
 
+    /**
+     * The draggable function on the screen is implemented by this function
+     * @param tileView The image which we want to drag around
+     * @param labelText The Label for the image
+     * @param passedBy Name string of the function that passed it
+     * @param X The X location of the image
+     * @param Y The Y location of the image
+     */
     public void draggable(ImageView tileView, Label labelText, String passedBy, int X, int Y) {
         String tile = labelText.getText();                          // Get the String of the Tile form the Label
 
