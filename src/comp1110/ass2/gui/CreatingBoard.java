@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 // Authorship: Kaushal Sharma, Kyle Robertson, Tom Stephens
 
@@ -44,7 +45,16 @@ public class CreatingBoard extends Application{
     ImageView playerImage = new ImageView();                // Image for the tile in players hand
     Label playerTileName;                                   // Label for the tile in players hand
     Label playerName = new Label();                         // Current Player's Name
-    int CurrentPlayer = player.getCurrentPlayer();          // Store the Current Player
+    int CurrentPlayer = player.getCurrentPlayer();
+    int playerNums = 0;
+    Label playerScore1 = new Label();
+    Label playerScore2 = new Label();
+    Label playerScore3 = new Label();
+    Label playerScore4 = new Label();
+    Label playerScore5 = new Label();
+    Label playerScore6 = new Label();
+    int [] scorePlayers;
+
 
     // Create a new variable of Tile that hold a new random Deck and its top location
     Tile newDeck = new Tile();
@@ -181,7 +191,107 @@ public class CreatingBoard extends Application{
         deckName.setPadding(new Insets(0, 0, 10, 0));          // Set Padding for the Label
         deckName.setLayoutX((SQUARE_SIZE * 10) + (12));
         deckName.setLayoutY(0);
-        board.getChildren().add(deckName);
+        Label score = new Label ("Player Scores:");
+        score.setMinWidth(250);                                          // Set Minimum Width
+        score.setAlignment(Pos.CENTER);                                  // Set Alignment to Center
+        score.setFont(Font.font("Arial", 15));                      // Set Font of the Text
+        score.setTextFill(Color.BLACK);                                  // Set Color of the Text
+        score.setPadding(new Insets(0, 0, 10, 0));          // Set Padding for the Label
+        score.setLayoutX((SQUARE_SIZE * 10) + (12));
+        score.setLayoutY(475);
+
+        //Label playerScore1 = new Label("1");
+        scorePlayers = Metro.getScore(placementSequence,playerNums);
+        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+        playerScore1.setMinWidth(250);                                          // Set Minimum Width
+        playerScore1.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
+        playerScore1.setFont(Font.font("Arial", 15));                     // Set Font of the Text
+        playerScore1.setTextFill(Color.BLACK);                                  // Set Color of the Text
+        playerScore1.setPadding(new Insets(0, 0, 10, 0));         // Set Padding for the Label
+        playerScore1.setLayoutX((SQUARE_SIZE * 10) + (12));
+        playerScore1.setLayoutY(500);
+
+        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+        playerScore2.setMinWidth(250);                                          // Set Minimum Width
+        playerScore2.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
+        playerScore2.setFont(Font.font("Arial", 15));                     // Set Font of the Text
+        playerScore2.setTextFill(Color.BLACK);                                  // Set Color of the Text
+        playerScore2.setPadding(new Insets(0, 0, 10, 0));         // Set Padding for the Label
+        playerScore2.setLayoutX((SQUARE_SIZE * 10) + (12));
+        playerScore2.setLayoutY(525);
+
+        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+        playerScore3.setMinWidth(250);                                          // Set Minimum Width
+        playerScore3.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
+        playerScore3.setFont(Font.font("Arial", 15));                     // Set Font of the Text
+        playerScore3.setTextFill(Color.BLACK);                                  // Set Color of the Text
+        playerScore3.setPadding(new Insets(0, 0, 10, 0));         // Set Padding for the Label
+        playerScore3.setLayoutX((SQUARE_SIZE * 10) + (12));
+        playerScore3.setLayoutY(550);
+
+        playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+        playerScore4.setMinWidth(250);                                          // Set Minimum Width
+        playerScore4.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
+        playerScore4.setFont(Font.font("Arial", 15));                     // Set Font of the Text
+        playerScore4.setTextFill(Color.BLACK);                                  // Set Color of the Text
+        playerScore4.setPadding(new Insets(0, 0, 10, 0));         // Set Padding for the Label
+        playerScore4.setLayoutX((SQUARE_SIZE * 10) + (12));
+        playerScore4.setLayoutY(575);
+
+        playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+        playerScore5.setMinWidth(250);                                          // Set Minimum Width
+        playerScore5.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
+        playerScore5.setFont(Font.font("Arial", 15));                     // Set Font of the Text
+        playerScore5.setTextFill(Color.BLACK);                                  // Set Color of the Text
+        playerScore5.setPadding(new Insets(0, 0, 10, 0));         // Set Padding for the Label
+        playerScore5.setLayoutX((SQUARE_SIZE * 10) + (12));
+        playerScore5.setLayoutY(600);
+
+        playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
+        playerScore6.setMinWidth(250);                                          // Set Minimum Width
+        playerScore6.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
+        playerScore6.setFont(Font.font("Arial", 15));                     // Set Font of the Text
+        playerScore6.setTextFill(Color.BLACK);                                  // Set Color of the Text
+        playerScore6.setPadding(new Insets(0, 0, 10, 0));         // Set Padding for the Label
+        playerScore6.setLayoutX((SQUARE_SIZE * 10) + (12));
+        playerScore6.setLayoutY(625);
+
+
+        /*int i = 1;
+        while (i <= playerNums){
+            Label playerScore1 = new Label();
+            playerScore1.setText("Player " + i + "'s Score: " + Metro.getScore(placementSequence,CurrentPlayer) + "\n") Number of player not current player;
+            System.out.println("Player " + i);
+            playerScore1.setMinWidth(250);                                          // Set Minimum Width
+            playerScore1.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
+            playerScore1.setFont(Font.font("Arial", 15));                     // Set Font of the Text
+            playerScore1.setTextFill(Color.BLACK);                                  // Set Color of the Text
+            playerScore1.setPadding(new Insets(0, 0, 10, 0));         // Set Padding for the Label
+            playerScore1.setLayoutX((SQUARE_SIZE * 10) + (12));
+            playerScore1.setLayoutY(475 + (i*25));
+            board.getChildren().add(playerScore1);
+            i++;
+        } */
+        switch (playerNums){
+            case 2:
+                board.getChildren().addAll(playerScore1,playerScore2);
+                break;
+            case 3:
+                board.getChildren().addAll(playerScore1,playerScore2,playerScore3);
+                break;
+            case 4:
+                board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4);
+                break;
+            case 5:
+                board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5);
+                break;
+            case 6:
+                board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5,playerScore6);
+                break;
+        }
+
+
+        board.getChildren().addAll(deckName,score);
     }
 
     /**
@@ -288,6 +398,7 @@ public class CreatingBoard extends Application{
         playerName.setLayoutX(paddingLeft);
         playerName.setLayoutY(paddingTop);
         board.getChildren().add(playerName);
+
 
         // Check if the player already holds any tile in his/her hands and create label for it
         String tileInHand = player.getTileInHand(CurrentPlayer);
@@ -473,6 +584,7 @@ public class CreatingBoard extends Application{
 
                 // Create a new placement string and placementSequence
                 String placement = tile + ((int) locationX) + ((int) locationY);
+                String placement = tile + (int) locationX + (int) locationY;
                 String tempPlacementSequence = placementSequence + placement;
 
                 // Check if the placementSequence is valid or not
@@ -526,6 +638,7 @@ public class CreatingBoard extends Application{
                     }
                 } else {
                     // The move was not valid, generate an Alert
+                    System.out.println("failed at large if statement");
                     System.out.println(tempPlacementSequence);
                     AlertBox.alertBox("Please enter a valid placement string");
                 }
@@ -557,6 +670,8 @@ public class CreatingBoard extends Application{
             String topLocation2 = "comp1110/ass2/gui/assets/" + tile + ".jpg";
             tileView.setImage(new Image(topLocation2));                             // Update the tile as the Image
             labelText.setText(tile);                                                // Update the Label to the String
+
+
         });
     }
 
@@ -602,7 +717,7 @@ public class CreatingBoard extends Application{
         // Get the number of players from the user using getPlayer() function.
         int noOfPlayers = GetPlayers.getPlayers();
         int noOfAI = GetPlayers.getComputerOpponents();
-
+        playerNums = noOfPlayers;
         // Create a new variable of Player that hold all the functionality of a player.
         Player player = new Player(noOfPlayers);
 

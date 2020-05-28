@@ -54,7 +54,6 @@ public class GetPlayers {
         numberOfAIs.setPromptText("No. of Computer opponents");
         Label confConstructionTile = new Label("Enable Construction Tile? (Checked for Yes, unchecked for no)");
         CheckBox checkBox = new CheckBox();
-        //cbYes.setText("Yes");
 
 
 

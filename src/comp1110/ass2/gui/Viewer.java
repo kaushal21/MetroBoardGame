@@ -92,6 +92,7 @@ public class Viewer extends Application{
             plSequence = Metro.updatePlacement(placementSequence,tilePlacement);
 
             Metro.getScore(plSequence,playerNums);
+            System.out.println(Arrays.toString(Metro.getScore(plSequence,playerNums)));
             newBoard = updateBoard(newBoard, tile, row, col);
             player.setTileInHand(player.getCurrentPlayer(),null);
 
