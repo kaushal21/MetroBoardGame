@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
+import javax.swing.plaf.ColorUIResource;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -258,7 +259,7 @@ public class CreatingBoard extends Application{
 
         /*Button finishScreen = new Button("Finish Screen");
         finishScreen.setOnMouseClicked(actionEvent -> {
-
+                FinalScreen finalSc = new FinalScreen();
         } */
 
 
@@ -278,7 +279,7 @@ public class CreatingBoard extends Application{
                 playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                 playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                 playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
-                playerScore3.setText("Player 4's Score: " + scorePlayers[3]);
+                playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
                 board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4);
                 break;
             case 5:
@@ -300,7 +301,7 @@ public class CreatingBoard extends Application{
                 break;
         }
 
-        board.getChildren().addAll(deckName,score); 
+        board.getChildren().addAll(deckName,score);
     }
 
     /**
@@ -616,26 +617,43 @@ public class CreatingBoard extends Application{
                     }
 
                     scorePlayers = Metro.getScore(placementSequence,playerNums);
-                    // System.out.println(CurrentPlayer);
+                    System.out.println(CurrentPlayer);
 
-                    switch (CurrentPlayer){
-                        case 0:
-                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
-                            break;
-                        case 1:
-                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
-                            break;
+                    switch (playerNums){
                         case 2:
-                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                            //board.getChildren().addAll(playerScore1,playerScore2);
                             break;
                         case 3:
-                            playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                            //board.getChildren().addAll(playerScore1,playerScore2,playerScore3);
                             break;
                         case 4:
-                            playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                            playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                            //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4);
                             break;
                         case 5:
+                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                            playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                            playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+                            //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5);
+                            break;
+                        case 6:
+                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                            playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                            playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
                             playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
+                            //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5,playerScore6);
                             break;
                     }
 
@@ -652,31 +670,43 @@ public class CreatingBoard extends Application{
                         try {
                             for (int i = 0; i < noOfAIs; i++) {
                                 makePlacement(OpponentAI.randomBotMove(placementSequence, topOfDeck));
-
-                                switch (CurrentPlayer){
-                                    case 0:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
-                                        break;
-                                    case 1:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
-                                        break;
+                                System.out.println("AI " + CurrentPlayer);
+                                scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                switch (playerNums){
                                     case 2:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                        //board.getChildren().addAll(playerScore1,playerScore2);
                                         break;
                                     case 3:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                        playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                                        //board.getChildren().addAll(playerScore1,playerScore2,playerScore3);
                                         break;
                                     case 4:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                        playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                                        playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                                        //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4);
                                         break;
                                     case 5:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                                        playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                                        playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+                                        //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5);
+                                        break;
+                                    case 6:
+                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                                        playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                                        playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
                                         playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
+                                        //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5,playerScore6);
                                         break;
                                 }
                                 topOfDeck = newDeck.pop();
