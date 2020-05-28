@@ -506,11 +506,19 @@ public class CreatingBoard extends Application{
                             for (int i = 0; i < noOfAIs; i++) {
                                 makePlacement(OpponentAI.randomBotMove(placementSequence, topOfDeck));
                                 topOfDeck = newDeck.pop();
+                                String topLocation2 = "comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
+                                tileView.setImage(new Image(topLocation2));                             // Update the image for topOfDeck
+                                labelText.setText(topOfDeck);                                           // Update the Label using the String of top of deck
                                 CurrentPlayer = player.switchTurn();
                             }
+
+
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
+
+                    } else {
+                        CurrentPlayer = player.switchTurn();
                     }
 
                     // Call the deckLocation and playerLocation for the next Round

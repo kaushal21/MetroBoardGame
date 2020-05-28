@@ -57,7 +57,6 @@ public class GetPlayers {
 
         Label confConstructionTile = new Label("Enable Construction Tile? (Checked for Yes, unchecked for no)");
         CheckBox checkBox = new CheckBox();
-        //cbYes.setText("Yes");
 
         Button submit = new Button("PLAY");                               // Create a Play button
         submit.setOnAction(e -> {

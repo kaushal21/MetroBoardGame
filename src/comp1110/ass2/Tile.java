@@ -48,7 +48,7 @@ public class Tile {
     /**
      * @return The top location of deck
      */
-    public int getTop () {
+    public static int getTop () {
         return Tile.top;
     }
 
