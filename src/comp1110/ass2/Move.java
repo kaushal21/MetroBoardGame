@@ -28,8 +28,8 @@ public class Move {
         // Create a Tile variable to check if the passed string is in the deck or not
         Tile tile = new Tile();
         // Iterate the deck to look for the tile. If it isn't there then it means the tile is wrong and return false.
-        for (int i = tile.top -1; i >= 0; i--) {
-            if ( piece.equals(tile.deck[i]) ) {
+        for (int i = Tile.top -1; i >= 0; i--) {
+            if ( piece.equals(Tile.deck[i]) ) {
                 temp = 1;
                 break;
             }
@@ -480,7 +480,7 @@ public class Move {
                 }
             }
         }
-        return "Board is full, no valid moves left";
+        return "No valid moves left";
     }
 
     /**
