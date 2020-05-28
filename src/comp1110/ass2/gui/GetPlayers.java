@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -50,13 +51,16 @@ public class GetPlayers {
         numberOfPlayers.setMaxWidth(100);
         numberOfPlayers.setPromptText("No. of Players");
 
-        Label noOfAIs = new Label("Enter The number of Computer opponents (must be less than the number of players):");
+        Label noOfAIs = new Label("Enter The number of Computer opponents (< no. of players):");
         TextField numberOfAIs = new TextField();
         numberOfAIs.setMaxWidth(100);
         numberOfAIs.setPromptText("No. of Computer opponents");
 
-        Label confConstructionTile = new Label("Enable Construction Tile? (Checked for Yes, unchecked for no)");
+        Label confConstructionTile = new Label("Enable Construction Tile?");
         CheckBox checkBox = new CheckBox();
+        HBox confirmationLayout = new HBox(10);
+        confirmationLayout.getChildren().addAll(checkBox, confConstructionTile);
+        confirmationLayout.setAlignment(Pos.CENTER);
 
         Button submit = new Button("PLAY");                               // Create a Play button
         submit.setOnAction(e -> {
@@ -72,7 +76,7 @@ public class GetPlayers {
 
         // Create a VBox to display this layout on the screen
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(noOfPlayers, numberOfPlayers, noOfAIs, numberOfAIs, confConstructionTile, checkBox, submit);
+        layout.getChildren().addAll(noOfPlayers, numberOfPlayers, noOfAIs, numberOfAIs, confirmationLayout, submit);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(5, 10, 5, 10));
 
