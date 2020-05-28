@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-//Authorship: Kyle Robertson
+//Authorship: Kyle Robertson, Tom Stephens
 
 public class PlayerTests {
     @Rule
@@ -18,7 +18,7 @@ public class PlayerTests {
     private void test(String piecePlacement, Boolean expected) {
         boolean out = Metro.isPiecePlacementWellFormed(piecePlacement);
         assertEquals("expected " + expected + " for piece placement: " + piecePlacement +
-                ", but got " + out, out, (boolean) expected);
+                ", but got " + out, out, expected);
     }
 
     //Test to see if the correct stations have been assigned to each player depending on the amount of players in the
@@ -37,10 +37,9 @@ public class PlayerTests {
     //Test to see if the stations are assigned to the correct player.
     public void testStationReturn(){
         for(int i = 0; i <= 4; i++){
-            int playerPosition = i;
             int numberOfPlayer = i + 2;
             int[] playerExpected = Utilities.FULL_STATION_LOCATION[i][i];
-            int[] playerOutcome = Player.getStations(playerPosition,numberOfPlayer);
+            int[] playerOutcome = Player.getStations(i,numberOfPlayer);
             assertNotNull("Expected stations for player 2: "  + Arrays.toString(playerExpected) + "instead got null", playerOutcome);
             assertArrayEquals("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome), playerExpected, playerOutcome);
         }
