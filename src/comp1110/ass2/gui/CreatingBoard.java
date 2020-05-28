@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -53,10 +54,12 @@ public class CreatingBoard extends Application{
     Label playerScore5 = new Label();
     Label playerScore6 = new Label();
     int [] scorePlayers;
+    Button finishGame = new Button();
 
     // Create a new variable of Tile that hold a new random Deck and its top location
     Tile newDeck = new Tile();
     String topOfDeck;                                       // Stores the top of Deck
+
 
     /**
      * createBoard function creates initial stage of the board.
@@ -255,10 +258,10 @@ public class CreatingBoard extends Application{
         playerScore6.setLayoutX((SQUARE_SIZE * 10) + (12));
         playerScore6.setLayoutY(625);
 
-        /*Button finishScreen = new Button("Finish Screen");
-        finishScreen.setOnMouseClicked(actionEvent -> {
-                FinalScreen finalSc = new FinalScreen();
-        } */
+        finishGame.setText("Finish Game");
+        finishGame.setAlignment(Pos.CENTER_LEFT);
+        finishGame.setLayoutX((SQUARE_SIZE * 10) + (12));
+        finishGame.setLayoutY(650);
 
 
         switch (playerNums){
@@ -299,7 +302,7 @@ public class CreatingBoard extends Application{
                 break;
         }
 
-        board.getChildren().addAll(deckName,score);
+        board.getChildren().addAll(deckName,score,finishGame);
     }
 
     /**
@@ -516,6 +519,8 @@ public class CreatingBoard extends Application{
      */
     boolean gameOver () {
         return !newDeck.checkDeckNonEmpty();
+
+
     }
 
     public void draggable(ImageView tileView, Label labelText, String passedBy, int X, int Y) {
@@ -820,6 +825,12 @@ public class CreatingBoard extends Application{
         playerLocation();
 
         root.getChildren().add(board);
+
+        finishGame.setOnAction(e -> {
+            FinalScreen finalS = new FinalScreen();
+            finalS.finalScreen(placementSequence, playerNums);
+            stage.close();
+        });
 
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
         stage.setScene(scene);

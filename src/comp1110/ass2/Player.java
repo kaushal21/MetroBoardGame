@@ -4,7 +4,7 @@ package comp1110.ass2;
  * This class represents the Players in the Metro game.
  */
 
-// Authorship: Kyle Robertson: u6671630
+// Authorship: Kyle Robertson
 
 public class Player {
     public static int players;                    // Number of players from 2 to 6
