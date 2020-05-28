@@ -48,7 +48,7 @@ public class Tile {
     /**
      * @return The top location of deck
      */
-    public int getTop () {
+    public static int getTop () {
         return Tile.top;
     }
 
@@ -60,7 +60,7 @@ public class Tile {
     }
 
 
-    public static String[] returnArrayDeck(Tile deck) {
+    public static String[] returnArrayDeck() {
         String[] deckArray = new String[top];
         for (int i = 0; i < top; i++) {
             deckArray[i] = getDeck(i);
