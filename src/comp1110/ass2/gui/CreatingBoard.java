@@ -55,6 +55,7 @@ public class CreatingBoard extends Application{
     Label playerScore6 = new Label();
     int [] scorePlayers;
     Button finishGame = new Button();
+    int finishedGame = 0;
 
     // Create a new variable of Tile that hold a new random Deck and its top location
     Tile newDeck = new Tile();
@@ -301,7 +302,9 @@ public class CreatingBoard extends Application{
                 board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5,playerScore6);
                 break;
         }
-
+        /*if(GetPlayers.c.get()){
+            Tile.makeConstructionDeck(newDeck.deckNew);
+        }*/
         board.getChildren().addAll(deckName,score,finishGame);
     }
 
@@ -731,6 +734,7 @@ public class CreatingBoard extends Application{
                             playerLocation();
                         } else {
                             FinalScreen.finalScreen(placementSequence, player.getPlayers());
+                            finishedGame = 1;
                         }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
