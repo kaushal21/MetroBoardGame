@@ -1,6 +1,6 @@
 package comp1110.ass2;
 
-// Authorship: Kyle Robertson: u6671630
+// Authorship: Kyle Robertson
 
 /**
  * This class represents the Board in the Metro game.
