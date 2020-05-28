@@ -18,15 +18,18 @@ public class OpponentAI extends Player{
      * @return a move (i.e. tile and location)
      */
     public static String randomBotMove(String placementString, String topOfDeck) {
-        String piece = topOfDeck;
 
-        if (Metro.generateMove(placementString, piece, Player.players).equals("No valid moves left")) {
+        if (Metro.generateMove(placementString, topOfDeck, Player.players).equals("No valid moves left")) {
             // simulate picking up another tile as a human player would
             return "No possible moves";
         }
         // removes the placed tile from the deck
-        Tile.updateDeck(piece);
-        return Metro.generateMove(placementString, piece, Player.players);
+        Tile.updateDeck(topOfDeck);
+        return Metro.generateMove(placementString, topOfDeck, Player.players);
+
+    }
+
+    public static void main(String[] args) {
 
     }
 
