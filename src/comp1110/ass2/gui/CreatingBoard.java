@@ -55,7 +55,6 @@ public class CreatingBoard extends Application{
     Label playerScore6 = new Label();
     int [] scorePlayers;
 
-
     // Create a new variable of Tile that hold a new random Deck and its top location
     Tile newDeck = new Tile();
     String topOfDeck = newDeck.pop();                       // Stores the top of Deck
@@ -334,8 +333,8 @@ public class CreatingBoard extends Application{
         String tileLocation = "src/comp1110/ass2/gui/assets/"+tile+".jpg";
         // Create the image from the location using the create Image() function
         ImageView tileView = createImage(tileLocation, 0);
-        tileView.setLayoutX(SQUARE_SIZE+(SQUARE_SIZE*row));
-        tileView.setLayoutY(SQUARE_SIZE+(SQUARE_SIZE*col));
+        tileView.setLayoutX(SQUARE_SIZE+(SQUARE_SIZE*col));
+        tileView.setLayoutY(SQUARE_SIZE+(SQUARE_SIZE*row));
 
         // Store the image at the given location
         board.getChildren().add(tileView);
@@ -546,7 +545,7 @@ public class CreatingBoard extends Application{
             double locationY = (closest.getLayoutY() / SQUARE_SIZE) - 1;
 
             // Create a Temporary Placement String and PlacementSequence to check placement validity
-            String placement = tile + (int) locationX + (int) locationY;
+            String placement = tile + (int) locationY + (int) locationX;
             String tempPlacementSequence = placementSequence + placement;
 
             // Check highlighted Label
@@ -593,8 +592,11 @@ public class CreatingBoard extends Application{
                 double locationY = (closest.getLayoutY() / SQUARE_SIZE) - 1;
 
                 // Create a new placement string and placementSequence
-                String placement = tile + ((int) locationX) + ((int) locationY);
+                String placement = tile + ((int) locationY) + ((int) locationX);
                 String tempPlacementSequence = placementSequence + placement;
+                System.out.println("New: "+placementSequence+" + ");
+                System.out.println(placement+" = ");
+                System.out.println(tempPlacementSequence);
 
                 // Check if the placementSequence is valid or not
                 if (Metro.isPlacementSequenceValid(tempPlacementSequence)) {
@@ -614,7 +616,7 @@ public class CreatingBoard extends Application{
                     }
 
                     scorePlayers = Metro.getScore(placementSequence,playerNums);
-                    System.out.println(CurrentPlayer);
+                    // System.out.println(CurrentPlayer);
 
                     switch (CurrentPlayer){
                         case 0:
@@ -688,6 +690,9 @@ public class CreatingBoard extends Application{
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
+
+                    } else {
+                        CurrentPlayer = player.switchTurn();
                     }
 
                     // Call the deckLocation and playerLocation for the next Round
@@ -778,9 +783,7 @@ public class CreatingBoard extends Application{
         noOfAIs = temp[1];
 
         // Create a new variable of Player that hold all the functionality of a player.
-        System.out.println(noOfPlayers);
         player = new Player(noOfPlayers);
-
 
         placementSequence = "";
 
