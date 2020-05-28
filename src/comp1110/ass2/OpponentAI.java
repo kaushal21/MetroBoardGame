@@ -29,4 +29,8 @@ public class OpponentAI extends Player{
 
     }
 
+    public static void main(String[] args) {
+
+    }
+
 }

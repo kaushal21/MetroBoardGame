@@ -47,14 +47,14 @@ public class PlayerTests {
 
     @Test
     public void testRandomBotMove(){
-        // output should be a tile and a position so a string of length 6
-        // assertTrue("expected the output to be a string of length 6", OpponentAI.randomBotMove("aaaa00bbbb20",Tile.getDeck(Tile.getTop())).length() == 6);
+        //output should be a tile and a position so a string of length 6
+        Tile tile = new Tile();
+        String a = tile.deckNew.get(tile.deckNew.size() - 1);
+        assertEquals("expected the output to be a string of length 6", 6, OpponentAI.randomBotMove("aaaa00bbbb20", a).length());
         // Tests that full board strings wont return a possible move.
-        // for (String completeString : Utilities.COMPLETE_BOARDSTRINGS) {
-            // assertTrue("Expected result to be 'no moves left'", OpponentAI.randomBotMove(completeString,Tile.getDeck(Tile.getTop())).equals("No possible moves"));
-        //}
-        // Tests that the method outputs a well formed piece placement
-        test(OpponentAI.randomBotMove("aaaa00bbbb20",Tile.getDeck(Tile.getTop())), true);
+        for (String completeString : Utilities.COMPLETE_BOARDSTRINGS) {
+            assertEquals("Expected result to be 'no moves left'", "No possible moves", OpponentAI.randomBotMove(completeString, a));
+        }
 
     }
 

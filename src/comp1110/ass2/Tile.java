@@ -140,18 +140,5 @@ public class Tile {
         return deck;
     }
 
-    public static void main(String[] args) {
-        Tile tile = new Tile();
-        //System.out.println(tile.newDeck.size());
-        //System.out.println(tile.newDeck.remove(tile.newDeck.size()-1));
-        //System.out.println(tile.newDeck.size());
-        int count = 0;
-        for ( int i = 0; i < 60; i++) {
-            String temp = tile.pop();
-            if ( temp.equals("adbb") )
-                count++;
-        }
-        // System.out.println(count);
-    }
 }
 
