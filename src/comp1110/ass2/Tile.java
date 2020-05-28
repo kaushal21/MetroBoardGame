@@ -78,7 +78,7 @@ public class Tile {
      * if there is nothing in deck i.e. top = 0.
      * @return true if the deck is not empty, otherwise return false.
      */
-    public boolean checkDeckEmpty() {
+    public boolean checkDeckNonEmpty() {
         return top > 0;
     }
 
