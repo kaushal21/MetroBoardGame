@@ -107,7 +107,7 @@ public class Score extends Player{
                 if (!tile.substring(0,4).equals("cons")) return tile;
             }
         }
-        return "";
+        return ""; 
     }
 
     /**
