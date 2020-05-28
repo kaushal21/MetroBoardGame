@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class ScoreTests {
     @Rule
-    public Timeout globalTimeout = Timeout.millis(1000);
+    public Timeout globalTimeout = Timeout.millis(1000); 
 
     // Tests the situation where a track goes directly between 2 adjacent corner stations or 2 adjacent edge stations
     // It also includes a track that goes to the middle station to check if that works (although that may be part of another test)
