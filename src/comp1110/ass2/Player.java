@@ -15,7 +15,7 @@ public class Player {
 
     /**
      * The number of playing the game is taken as an input from the user.
-     * Players are initialized with the current player being 1.
+     * Players are initialized with the current player being Player 1.
      */
     public Player(int n) {
         players = n;
