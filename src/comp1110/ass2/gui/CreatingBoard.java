@@ -47,8 +47,8 @@ public class CreatingBoard extends Application{
     Label playerName = new Label();                         // Current Player's Name
     int CurrentPlayer = Player.getCurrentPlayer();
     int playerNums = 0;
-    Label playerScore1 = new Label();
-    Label playerScore2 = new Label();
+    Label playerScore1 = new Label();                       //Setting global variables so they can be called in
+    Label playerScore2 = new Label();                       // numerous part of the class 
     Label playerScore3 = new Label();
     Label playerScore4 = new Label();
     Label playerScore5 = new Label();
@@ -202,10 +202,9 @@ public class CreatingBoard extends Application{
         score.setLayoutX((SQUARE_SIZE * 10) + (12));
         score.setLayoutY(475);
 
-        playerNums = noOfPlayers;
-        //Label playerScore1 = new Label("1");
+        playerNums = noOfPlayers; //Getting the number of players
         scorePlayers = Metro.getScore(placementSequence,playerNums);
-        //playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+        //Setting all the design elements of the playerScores.
         playerScore1.setMinWidth(250);                                          // Set Minimum Width
         playerScore1.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
         playerScore1.setFont(Font.font("Arial", 15));                     // Set Font of the Text
@@ -264,7 +263,7 @@ public class CreatingBoard extends Application{
         finishGame.setLayoutX((SQUARE_SIZE * 10) + (12));
         finishGame.setLayoutY(650);
 
-
+        //Displaying the correct number of players scores in relation to the amount of players.
         switch (playerNums){
             case 2:
                 playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
@@ -302,9 +301,6 @@ public class CreatingBoard extends Application{
                 board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5,playerScore6);
                 break;
         }
-        /*if(GetPlayers.c.get()){
-            Tile.makeConstructionDeck(newDeck.deckNew);
-        }*/
         board.getChildren().addAll(deckName,score,finishGame);
     }
 
@@ -629,28 +625,28 @@ public class CreatingBoard extends Application{
                     if (passedBy.equals("player")) {
                         player.setTileInHand(CurrentPlayer, null);
                     }
-
+                    //Used to place the scores in an array so it can be called in the switch case.
+                    //This is required otherwise you cannot update the scores correctly.
+                    //makes the array length match the number of player in the game.
                     scorePlayers = Metro.getScore(placementSequence,playerNums);
                     // System.out.println(CurrentPlayer);
-
+                    //Setting the score for each player based on how many players are in the game.
                     switch (playerNums){
                         case 2:
+                            //Getting the score for each player by locating their position in the array
                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
-                            //board.getChildren().addAll(playerScore1,playerScore2);
                             break;
                         case 3:
                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                             playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
-                            //board.getChildren().addAll(playerScore1,playerScore2,playerScore3);
                             break;
                         case 4:
                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                             playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
                             playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
-                            //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4);
                             break;
                         case 5:
                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
@@ -658,7 +654,6 @@ public class CreatingBoard extends Application{
                             playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
                             playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
                             playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
-                            //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5);
                             break;
                         case 6:
                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
@@ -667,7 +662,6 @@ public class CreatingBoard extends Application{
                             playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
                             playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
                             playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
-                            //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5,playerScore6);
                             break;
                     }
 
@@ -687,8 +681,11 @@ public class CreatingBoard extends Application{
                                     makePlacement(placement);
                                     // System.out.println("AI " + CurrentPlayer);
                                     scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                    //Same idea as above but have to call in the AI placement otherwise the
+                                    //score won't be updated till the player places a tile.
                                     switch (playerNums){
                                         case 2:
+                                            //Called the scorePlayer again just to be safe.
                                             scorePlayers = Metro.getScore(placementSequence,playerNums);
                                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
@@ -841,11 +838,11 @@ public class CreatingBoard extends Application{
         playerLocation();
 
         root.getChildren().add(board);
-
+        //Calling the finish game screen if the button is pressed.
         finishGame.setOnAction(e -> {
             FinalScreen finalS = new FinalScreen();
-            finalS.finalScreen(placementSequence, playerNums);
-            stage.close();
+            finalS.finalScreen(placementSequence, playerNums); //Passing the placement String and number of players.
+            stage.close(); //Closing the boardScreen.
         });
 
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
