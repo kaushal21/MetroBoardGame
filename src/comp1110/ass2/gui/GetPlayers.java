@@ -18,15 +18,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GetPlayers {
 
+    // These store the total number of players entered by the user, and the number of computer opponents
+    static AtomicInteger h = new AtomicInteger();
+    static AtomicInteger a = new AtomicInteger();
+    static AtomicBoolean c = new AtomicBoolean();
     /**
      * It Creates a new Dialog box that takes an integer value and check if it is valid and is in the range
      * @return The integer value accepted from the user.
      */
     public static int getPlayers() {
-        // These store the total number of players entered by the user, and the number of computer opponents
-        AtomicInteger h = new AtomicInteger();
-        AtomicInteger a = new AtomicInteger();
-        AtomicBoolean c = new AtomicBoolean();
 
         // Create a new Stage to Accept the Number of Players
         Stage newWindow = new Stage();
@@ -82,6 +82,9 @@ public class GetPlayers {
 
         // return the entered value
         return h.get();
+    }
+    public static boolean playingConstructionRules() {
+        return c.get();
     }
 
     /**
