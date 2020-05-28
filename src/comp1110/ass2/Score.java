@@ -107,7 +107,7 @@ public class Score extends Player{
                 if (!tile.substring(0,4).equals("cons")) return tile;
             }
         }
-        return "";
+        return ""; 
     }
 
     /**
@@ -142,6 +142,11 @@ public class Score extends Player{
         return ""; // this is returned when the track does not continue any further.
     }
 
+    /**
+     * Use this function to figure out where to look in order to start a track (i.e. whether to start by checking to the left,right,up or down)
+     * @param station the station that we start the track from
+     * @return the first input position
+     */
     public static int getFirstInputPosition(int station) {
         //based on what station the track is starting from
         if (station >= 1 && station <= 8) return 0;
@@ -151,8 +156,10 @@ public class Score extends Player{
         return 10; // this should never be returned so long as the input is a valid station.
     }
 
+    /** based on previous tile's output,
+     * @return the next input (i.e. which location to check next based on where the track outputs so far
+     */
     public static int getNextInputPosition(String tile, int inputPosition) {
-        // based on previous tile's output
         if (getOutput(tile,inputPosition) == 1) return 4;
         else if (getOutput(tile,inputPosition) == 3) return 6;
         else if (getOutput(tile,inputPosition) == 5) return 0;
