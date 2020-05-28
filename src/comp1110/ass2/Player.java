@@ -9,13 +9,13 @@ package comp1110.ass2;
 public class Player {
     public static int players;                    // Number of players from 2 to 6
     static int[][] stations;               // Stations allocated to the players
-    int currentPlayer;              // Player range 0 to (players-1) i.e. 5
+    static int currentPlayer;              // Player range 0 to (players-1) i.e. 5
     String[] tileInHand;            // For all the players it Stores the tile in hand of the players
     int[] playerTiles;
 
     /**
      * The number of playing the game is taken as an input from the user.
-     * Players are initialized with the current player being Player 1.
+     * Players are initialized with the current player being Player being 1.
      */
     public Player(int n) {
         players = n;
@@ -110,7 +110,7 @@ public class Player {
     /**
      * @return It return the currentPlayer.
      */
-    public int getCurrentPlayer() {
+    public static int getCurrentPlayer() {
         return currentPlayer;
     }
 

@@ -59,6 +59,15 @@ public class Tile {
         return deck[pos];
     }
 
+
+    public static String[] returnArrayDeck(Tile deck) {
+        String[] deckArray = new String[top];
+        for (int i = 0; i < top; i++) {
+            deckArray[i] = getDeck(i);
+        }
+        return deckArray;
+    }
+
     /**
      * Take the deck and shuffle it to create a randomized list of all the tiles
      */
