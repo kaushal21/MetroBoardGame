@@ -13,7 +13,7 @@ public class ScoreTests {
     private void test(String piecePlacement, Boolean expected) {
         boolean out = Metro.isPiecePlacementWellFormed(piecePlacement);
         assertEquals("expected " + expected + " for piece placement: " + piecePlacement +
-                ", but got " + out, out, (boolean) expected);
+                ", but got " + out, out, expected);
     }
 
     // Tests the situation where a track goes directly between 2 adjacent corner stations or 2 adjacent edge stations
@@ -23,7 +23,7 @@ public class ScoreTests {
         String[] tileArray = {"cbcb00","bcbc07","bcbc70","dbcd77","ccda73","cbaa74","cbaa64","cbaa54"};
         int expected = 7;
         int outcome = Score.scorePlayer(2,tileArray, 6);
-        assertEquals("expected outcome is achieved", expected, outcome);
+        assertEquals("expected player score is " + expected + " but got " + outcome , expected, outcome);
     }
 
     // Tests the getNextTile function in Score.java
@@ -32,6 +32,24 @@ public class ScoreTests {
         String[] tileArray = {"cbcb00","bcbc07","bcbc70","dbcd77","ccda73","cbaa74","cbaa64","cbaa54"};
         String expected = "cbaa64";
         String outcome = Score.getNextTile("cbaa74", 4, tileArray);
-        assertSame("expected outcome is achieved", expected, outcome);
+        assertSame("getNextTile works in the basic test case", expected, outcome);
     }
+
+    // Tests the getNextTile function in the case of a construction tile being the next tile
+    @Test
+    public void testGetNextTileWithConsTile() {
+        String[] tileArray = {"cdac04","cccc14","cddb15"};
+        String expected = "";
+        String outcome = Score.getNextTile("cddb15", 4, tileArray);
+        assertSame("when cons is the next tile getNextTile returns an empty string", expected, outcome);
+    }
+
+    @Test
+    public void testPlayerScoreWithConsTile() {
+        String[] tileArray = {"cdac04","cccc14","cddb15","cons05"};
+        int expected = 0;
+        int outcome = Score.scorePlayer(0, tileArray, 4);
+        assertSame("expected score of 0 but got " + outcome, expected, outcome);
+    }
+
 }
