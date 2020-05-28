@@ -721,9 +721,7 @@ public class CreatingBoard extends Application{
                             e.printStackTrace();
                         }
 
-                    } else {
-                        CurrentPlayer = player.switchTurn();
-                    }
+                    } 
 
                     // Call the deckLocation and playerLocation for the next Round
                     try {
