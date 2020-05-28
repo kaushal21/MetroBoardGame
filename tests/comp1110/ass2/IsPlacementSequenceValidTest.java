@@ -60,11 +60,11 @@ public class IsPlacementSequenceValidTest {
         boolean result;
         String str1 = "acba17aacb07adbb16cbaa06aaaa15cddb05ccda04baac14dddd26cccc27dada25cdac24adad03adbb13cbaa23aaaa00cbcb01cddb02";
         String tile1 = "adbb12";
-        result = move.isPlacementSequenceValid(str1+tile1);
+        // result = move.isPlacementSequenceValid(str1+tile1);
         // assertTrue("Metro.isPlacementSequenceValid(\"" + (str1+tile1) + "\") returned " + result + " but expected " + expected, expected == result);
-        String str2 = "baac17dada16cbcb07cddb06cbcb05cbcb15dacc14ddbc13cdac04aaaa03cddb02accd12bbad01ddbc11cdac10";
+        String str2 = "badb17dbba16acba00bbad01aaaa02dada27dbba26adbb03cbaa04ddbc10bcbc25aacb15aacb05bbbb06bcdd11bcbc14aacb13aacb07dada12aacb20bbad24";
         String tile2 = "cbcb27";
-        result = move.isPlacementSequenceValid(str2+tile2);
-        assertTrue("Metro.isPlacementSequenceValid(\"" + (str2+tile2) + "\") returned " + result + " but expected " + expected, expected == result);
+        result = move.isPlacementSequenceValid(str2);
+        assertTrue("Metro.isPlacementSequenceValid(\"" + (str2) + "\") returned " + result + " but expected " + expected, expected == result);
     }
 }

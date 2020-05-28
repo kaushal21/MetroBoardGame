@@ -72,8 +72,10 @@ public class Move {
      */
     public boolean checkPlacementSequence( String placement ) {
         // Check if the length of the placement string is greater than maximum length or is of uneven length
-        if ( placement.length() / 6 > 60 || placement.length() % 6 != 0 )
+        if ( placement.length() / 6 > 60 || placement.length() % 6 != 0 ) {
+            System.out.println("Q");
             return false;
+        }
 
         int numberOfTile = placement.length() / 6;                  // Stores the number of tiles in "placement"
         String[] tiles = new String[numberOfTile];                  // Stores all the tiles in "placement"
@@ -101,8 +103,10 @@ public class Move {
             int temp = 0;
             tiles[i] = placement.substring(i*6, i*6+6);             // Stores the complete Tile from "placement"
             String tile = tiles[i].substring(0, 4);                 // Just stores the tile orientation
-            if ( !Metro.isPiecePlacementWellFormed(tiles[i]) )
+            if ( !Metro.isPiecePlacementWellFormed(tiles[i]) ) {
+                System.out.println("W");
                 return false;
+            }
             int t1 = Integer.parseInt(String.valueOf(tiles[i].charAt(4)));      // Stores the tiles row
             int t2 = Integer.parseInt(String.valueOf(tiles[i].charAt(5)));      // Stores the tile column
             // If a tile already exists at that location in then return false, otherwise update the boardGrid
@@ -116,8 +120,10 @@ public class Move {
             for(int j = 0; j < 5; j++){
                 if ( copies4[j].equals(tile) ) {
                     copies4count[j] += 1;
-                    if ( copies4count[j] > 4 )
+                    if ( copies4count[j] > 4 ) {
+                        System.out.println("T");
                         return false;
+                    }
                     temp = 1;
                     break;
                 }
@@ -129,8 +135,10 @@ public class Move {
             for(int j = 0; j < 2; j++){
                 if ( copies3[j].equals(tile) ) {
                     copies3count[j] += 1;
-                    if ( copies3count[j] > 3 )
+                    if ( copies3count[j] > 3 ) {
+                        System.out.println("T");
                         return false;
+                    }
                     temp = 1;
                     break;
                 }
@@ -142,8 +150,10 @@ public class Move {
             for(int j = 0; j < 17; j++){
                 if ( copies2[j].equals(tile) ) {
                     copies2count[j] += 1;
-                    if ( copies2count[j] > 2 )
+                    if ( copies2count[j] > 2 ) {
+                        System.out.println("T");
                         return false;
+                    }
                     break;
                 }
             }
@@ -151,8 +161,9 @@ public class Move {
             for(int j = 0; j < 1; j++){
                 if (copies1[j].equals(tile) ) {
                     copies1count[j] += 1;
-                    if ( copies1count[j] > 1 )
+                    if ( copies1count[j] > 1 ) {
                         return false;
+                    }
                     break;
                 }
             }
@@ -182,6 +193,7 @@ public class Move {
     public boolean isPlacementSequenceValid ( String placementSequence ) {
         // Check if the passed string is correct placementSequence string
         if ( !checkPlacementSequence(placementSequence) ) {
+            System.out.println("H");
             return false;
         }
 
