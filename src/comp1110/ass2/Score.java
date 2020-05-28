@@ -57,12 +57,13 @@ public class Score extends Player{
         for (int playerStation : playerStations) {
             // check if a tile exists at a station
             if (!(getTileAtStation(playerStation, tiles)).equals("")) {
+                // if there is then continue
                 int trackScore = 0;
                 int input = getFirstInputPosition(playerStation);
                 String currentTile = getTileAtStation(playerStation, tiles);
 
                 // stepping through the track, ending if there is no next tile or the track is at a station
-                while (!currentTile.equals("")) {
+                while (!currentTile.equals("")) { // also while the current tile is no cons
                     trackScore++;
                     if (atStation(currentTile, input)) {
                         playerScore += trackScore;
@@ -101,7 +102,10 @@ public class Score extends Player{
             positionX = 7;
         }
         for (String tile : tiles) {
-            if (tile.charAt(4) - 48 == positionY && tile.charAt(5) - 48 == positionX) return tile;
+            if (tile.charAt(4) - 48 == positionY && tile.charAt(5) - 48 == positionX) {
+                // if the tile at the station is the construction tile we want to act as if there is no tile there.
+                if (!tile.substring(0,4).equals("cons")) return tile;
+            }
         }
         return "";
     }
@@ -131,7 +135,9 @@ public class Score extends Player{
         else if (inputPosition == 2) positionX -= 1;
 
         for (String s : tiles) {
-            if (s.charAt(4) == positionY && s.charAt(5) == positionX) return s;
+            if (s.charAt(4) == positionY && s.charAt(5) == positionX) {
+                if (!s.substring(0,4).equals("cons")) return s;
+            }
         }
         return ""; // this is returned when the track does not continue any further.
     }

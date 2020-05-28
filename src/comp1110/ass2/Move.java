@@ -5,6 +5,8 @@ package comp1110.ass2;
 
 import comp1110.ass2.gui.GetPlayers;
 
+import java.util.Arrays;
+
 /**
  * This class represents the Move that any player make in the Metro game.
  */

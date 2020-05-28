@@ -672,30 +672,30 @@ public class CreatingBoard extends Application{
                                 scorePlayers = Metro.getScore(placementSequence,playerNums);
                                 switch (playerNums){
                                     case 2:
+                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
                                         playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                         playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
-                                        //board.getChildren().addAll(playerScore1,playerScore2);
                                         break;
                                     case 3:
+                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
                                         playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                         playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                         playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
-                                        //board.getChildren().addAll(playerScore1,playerScore2,playerScore3);
                                         break;
                                     case 4:
+                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
                                         playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                         playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                         playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
                                         playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
-                                        //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4);
                                         break;
                                     case 5:
+                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
                                         playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                         playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                         playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
                                         playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
                                         playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
-                                        //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5);
                                         break;
                                     case 6:
                                         playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
@@ -704,7 +704,6 @@ public class CreatingBoard extends Application{
                                         playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
                                         playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
                                         playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
-                                        //board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5,playerScore6);
                                         break;
                                 }
                                 topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
