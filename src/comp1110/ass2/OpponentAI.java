@@ -25,12 +25,9 @@ public class OpponentAI extends Player{
         }
         // removes the placed tile from the deck
         Tile.updateDeck(topOfDeck);
+
+        // Return the move made by AI
         return Metro.generateMove(placementString, topOfDeck, Player.players);
 
     }
-
-    public static void main(String[] args) {
-
-    }
-
 }

@@ -47,18 +47,19 @@ public class GetPlayers {
         });
 
         Label noOfPlayers = new Label("Enter The number of Players (2-6):");       // Label Used to display the message
-        TextField numberOfPlayers = new TextField();                            // TextField is used to store the input value
+        TextField numberOfPlayers = new TextField();                                // TextField is used to store the input value
         numberOfPlayers.setMaxWidth(100);
         numberOfPlayers.setPromptText("No. of Players");
 
-        Label noOfAIs = new Label("Enter The number of Computer opponents (< no. of players):");
-        TextField numberOfAIs = new TextField();
+        Label noOfAIs = new Label("Enter The number of Computer opponents (< no. of players):");    // Label for AI
+        TextField numberOfAIs = new TextField();                                    // Get Number of AI Players
         numberOfAIs.setMaxWidth(100);
         numberOfAIs.setPromptText("No. of Computer opponents");
 
         Label confConstructionTile = new Label("Enable Construction Tile?");
         CheckBox checkBox = new CheckBox();
         HBox confirmationLayout = new HBox(10);
+        c.set(false);
         confirmationLayout.getChildren().addAll(checkBox, confConstructionTile);
         confirmationLayout.setAlignment(Pos.CENTER);
 
@@ -76,7 +77,7 @@ public class GetPlayers {
 
         // Create a VBox to display this layout on the screen
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(noOfPlayers, numberOfPlayers, noOfAIs, numberOfAIs, confirmationLayout, submit);
+        layout.getChildren().addAll(noOfPlayers, numberOfPlayers, noOfAIs, numberOfAIs, submit);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(5, 10, 5, 10));
 
@@ -85,12 +86,15 @@ public class GetPlayers {
         newWindow.showAndWait();
 
         // return the entered value
-        retArr[0] = h.get();
-        retArr[1] = a.get();
+        retArr[0] = h.get();                                // Store the number of players at index 0
+        retArr[1] = a.get();                                // Store the number of AI players at index 1
 
         return retArr;
     }
 
+    /**
+     * @return The constructionsRules value i.e. true or false
+     */
     public static boolean playingConstructionRules() {
         return c.get();
     }
@@ -147,6 +151,10 @@ public class GetPlayers {
         }
     }
 
+    /**
+     * @param checked The checkbox form the getPlayer function
+     * @return true id the checkbox was checked, otherwise it returns false
+     */
     static boolean checkIfConTileEnabled(CheckBox checked){
         //Checking if the check box is selected
         if(checked.isSelected()){

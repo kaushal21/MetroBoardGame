@@ -68,6 +68,19 @@ public class TileTests {
         }
     }
 
+    // This Test is to check the deckNew is working properly or not
+    @Test
+    public void testDeckNew() {
+        Tile tile = new Tile();
+
+        // Check the Size of the deck
+        assertTrue("Deck Length is "+tile.deckNew.size()+" instead of 60", tile.deckNew.size() == 60);
+
+        // Check for the top of Deck
+        assertTrue("Got Top Of Deck as "+tile.deckNew.get(tile.deckNew.size()-1), tile.deckNew.get(tile.deckNew.size()-1) == tile.deckNew.remove(tile.deckNew.size()-1));
+
+    }
+
     /*
     // This test is to check that the construction deck is being made properly
     @Test

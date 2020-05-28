@@ -61,7 +61,6 @@ public class CreatingBoard extends Application{
     Tile newDeck = new Tile();
     String topOfDeck;                                       // Stores the top of Deck
 
-
     /**
      * createBoard function creates initial stage of the board.
      * This creates a grid of size 10x10.
@@ -514,15 +513,6 @@ public class CreatingBoard extends Application{
     }
 
     /**
-     * @return true if the game is over, otherwise it returns false
-     */
-    boolean gameOver () {
-        return !newDeck.checkDeckNonEmpty();
-
-
-    }
-
-    /**
      * The draggable function on the screen is implemented by this function
      * @param tileView The image which we want to drag around
      * @param labelText The Label for the image
@@ -738,6 +728,7 @@ public class CreatingBoard extends Application{
                             deckLocation(topOfDeck);
                             playerLocation();
                         } else {
+                            // If the game deck is empty then game over. Display the final score
                             FinalScreen.finalScreen(placementSequence, player.getPlayers());
                             finishedGame = 1;
                         }
