@@ -126,6 +126,9 @@ public class Tile {
             }
         }
     }
+    public void updateDeckNew ( String alreadyPlacedTile ) {
+        deckNew.remove(alreadyPlacedTile);
+    }
 
     /**
      * @param deck the original deck

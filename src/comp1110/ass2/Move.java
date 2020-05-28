@@ -40,8 +40,10 @@ public class Move {
                 }
             }
         } else { // if using regular deck
-            for (int i = Tile.top -1; i >= 0; i--) {
-                if ( piece.equals(Tile.deck[i]) ) {
+            String[] copies = {"aacb", "cbaa", "acba", "baac", "aaaa", "cbcb", "bcbc", "cccc", "bbbb", "dacc", "cdac",
+                    "ccda", "accd", "dbba", "adbb", "badb", "bbad", "ddbc", "cddb", "bcdd", "dbcd", "adad", "dada", "dddd"};
+            for (int i = 0; i < 24; i++) {
+                if ( piece.equals(copies[i]) ) {
                     temp = 1;
                     break;
                 }
@@ -73,7 +75,6 @@ public class Move {
     public boolean checkPlacementSequence( String placement ) {
         // Check if the length of the placement string is greater than maximum length or is of uneven length
         if ( placement.length() / 6 > 60 || placement.length() % 6 != 0 ) {
-            System.out.println("Q");
             return false;
         }
 
@@ -104,7 +105,6 @@ public class Move {
             tiles[i] = placement.substring(i*6, i*6+6);             // Stores the complete Tile from "placement"
             String tile = tiles[i].substring(0, 4);                 // Just stores the tile orientation
             if ( !Metro.isPiecePlacementWellFormed(tiles[i]) ) {
-                System.out.println("W");
                 return false;
             }
             int t1 = Integer.parseInt(String.valueOf(tiles[i].charAt(4)));      // Stores the tiles row
@@ -121,7 +121,6 @@ public class Move {
                 if ( copies4[j].equals(tile) ) {
                     copies4count[j] += 1;
                     if ( copies4count[j] > 4 ) {
-                        System.out.println("T");
                         return false;
                     }
                     temp = 1;
@@ -136,7 +135,6 @@ public class Move {
                 if ( copies3[j].equals(tile) ) {
                     copies3count[j] += 1;
                     if ( copies3count[j] > 3 ) {
-                        System.out.println("T");
                         return false;
                     }
                     temp = 1;
@@ -151,7 +149,6 @@ public class Move {
                 if ( copies2[j].equals(tile) ) {
                     copies2count[j] += 1;
                     if ( copies2count[j] > 2 ) {
-                        System.out.println("T");
                         return false;
                     }
                     break;
@@ -193,7 +190,6 @@ public class Move {
     public boolean isPlacementSequenceValid ( String placementSequence ) {
         // Check if the passed string is correct placementSequence string
         if ( !checkPlacementSequence(placementSequence) ) {
-            System.out.println("H");
             return false;
         }
 

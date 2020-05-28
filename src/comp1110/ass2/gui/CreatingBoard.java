@@ -670,50 +670,54 @@ public class CreatingBoard extends Application{
                     if (CurrentPlayer >= noOfPlayers - noOfAIs) {
                         try {
                             for (int i = 0; i < noOfAIs; i++) {
-                                makePlacement(OpponentAI.randomBotMove(placementSequence, topOfDeck));
-                                // System.out.println("AI " + CurrentPlayer);
-                                scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                switch (playerNums){
-                                    case 2:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
-                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
-                                        break;
-                                    case 3:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
-                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
-                                        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
-                                        break;
-                                    case 4:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
-                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
-                                        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
-                                        playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
-                                        break;
-                                    case 5:
-                                        scorePlayers = Metro.getScore(placementSequence,playerNums);
-                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
-                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
-                                        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
-                                        playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
-                                        playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
-                                        break;
-                                    case 6:
-                                        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
-                                        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
-                                        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
-                                        playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
-                                        playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
-                                        playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
-                                        break;
+                                placement = OpponentAI.randomBotMove(placementSequence, topOfDeck);
+                                tempPlacementSequence = placementSequence + placement;
+                                if ( Metro.isPlacementSequenceValid(tempPlacementSequence) ) {
+                                    makePlacement(placement);
+                                    // System.out.println("AI " + CurrentPlayer);
+                                    scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                    switch (playerNums){
+                                        case 2:
+                                            scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                            break;
+                                        case 3:
+                                            scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                                            break;
+                                        case 4:
+                                            scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                                            playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                                            break;
+                                        case 5:
+                                            scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                                            playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                                            playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+                                            break;
+                                        case 6:
+                                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                                            playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                                            playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+                                            playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
+                                            break;
+                                    }
+                                    topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
+                                    String topLocation2 = "comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
+                                    tileView.setImage(new Image(topLocation2));                             // Update the image for topOfDeck
+                                    labelText.setText(topOfDeck);                                           // Update the Label using the String of top of deck
+                                    CurrentPlayer = player.switchTurn();
                                 }
-                                topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
-                                String topLocation2 = "comp1110/ass2/gui/assets/" + topOfDeck + ".jpg";
-                                tileView.setImage(new Image(topLocation2));                             // Update the image for topOfDeck
-                                labelText.setText(topOfDeck);                                           // Update the Label using the String of top of deck
-                                CurrentPlayer = player.switchTurn();
                             }
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
