@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-// Authorship: Kaushal Sharma, Tom Stephens
+// Authorship: Kaushal Sharma, Tom Stephens, Kyle Robertson
 
 public class GetPlayers {
 
