@@ -38,8 +38,8 @@ public class CreatingBoard extends Application{
     int temp_i, temp_j;
     Label highlighted = null;                               // Stores the label that is highlighted
     Player player = new Player(GetPlayers.getPlayers());    // Get the no. of players
-    int noOfPlayers = GetPlayers.getPlayers();
-    int noOfAIs = GetPlayers.getComputerOpponents();
+    int noOfPlayers;
+    int noOfAIs;
     ImageView deckImage = new ImageView();                  // Image for the top of Deck
     Label deckTileName;                                     // Label for the top of Deck
     ImageView playerImage = new ImageView();                // Image for the tile in players hand
@@ -654,7 +654,11 @@ public class CreatingBoard extends Application{
                                                                           // Switch player and store it in CurrentPlayer
 
                     // if currentPlayer is an AI, place a tile at random
-                    if (CurrentPlayer > noOfPlayers - noOfAIs) {
+                    // Get the number of players from the user using getPlayer() function.
+                    int noOfPlayers = GetPlayers.getPlayers();
+                    int noOfAIs = GetPlayers.getComputerOpponents();
+                    System.out.println(CurrentPlayer);
+                    if (CurrentPlayer >= noOfPlayers - noOfAIs) {
                         try {
                             for (int i = 0; i < noOfAIs; i++) {
                                 makePlacement(OpponentAI.randomBotMove(placementSequence, Tile.returnArrayDeck(newDeck)));
@@ -679,7 +683,6 @@ public class CreatingBoard extends Application{
                     }
                 } else {
                     // The move was not valid, generate an Alert
-                    System.out.println("failed at large if statement");
                     System.out.println(tempPlacementSequence);
                     AlertBox.alertBox("Please enter a valid placement string");
                 }
@@ -711,8 +714,6 @@ public class CreatingBoard extends Application{
             String topLocation2 = "comp1110/ass2/gui/assets/" + tile + ".jpg";
             tileView.setImage(new Image(topLocation2));                             // Update the tile as the Image
             labelText.setText(tile);                                                // Update the Label to the String
-
-
         });
     }
 
@@ -754,6 +755,7 @@ public class CreatingBoard extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Board");
+
 
         // Get the number of players from the user using getPlayer() function.
         int noOfPlayers = GetPlayers.getPlayers();
