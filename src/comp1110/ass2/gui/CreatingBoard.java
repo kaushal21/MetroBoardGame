@@ -301,7 +301,7 @@ public class CreatingBoard extends Application{
                 break;
         }
 
-        board.getChildren().addAll(deckName,score);
+        board.getChildren().addAll(deckName,score); 
     }
 
     /**
