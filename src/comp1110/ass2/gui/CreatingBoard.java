@@ -48,7 +48,7 @@ public class CreatingBoard extends Application{
     int CurrentPlayer = Player.getCurrentPlayer();
     int playerNums = 0;
     Label playerScore1 = new Label();                       //Setting global variables so they can be called in
-    Label playerScore2 = new Label();                       // numerous part of the class
+    Label playerScore2 = new Label();                       // numerous part of the class 
     Label playerScore3 = new Label();
     Label playerScore4 = new Label();
     Label playerScore5 = new Label();
