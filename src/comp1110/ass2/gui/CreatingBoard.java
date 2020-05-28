@@ -202,7 +202,7 @@ public class CreatingBoard extends Application{
 
         //Label playerScore1 = new Label("1");
         scorePlayers = Metro.getScore(placementSequence,playerNums);
-        playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+        //playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
         playerScore1.setMinWidth(250);                                          // Set Minimum Width
         playerScore1.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
         playerScore1.setFont(Font.font("Arial", 15));                     // Set Font of the Text
@@ -211,7 +211,7 @@ public class CreatingBoard extends Application{
         playerScore1.setLayoutX((SQUARE_SIZE * 10) + (12));
         playerScore1.setLayoutY(500);
 
-        playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+        //playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
         playerScore2.setMinWidth(250);                                          // Set Minimum Width
         playerScore2.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
         playerScore2.setFont(Font.font("Arial", 15));                     // Set Font of the Text
@@ -220,7 +220,7 @@ public class CreatingBoard extends Application{
         playerScore2.setLayoutX((SQUARE_SIZE * 10) + (12));
         playerScore2.setLayoutY(525);
 
-        playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+        //playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
         playerScore3.setMinWidth(250);                                          // Set Minimum Width
         playerScore3.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
         playerScore3.setFont(Font.font("Arial", 15));                     // Set Font of the Text
@@ -229,7 +229,7 @@ public class CreatingBoard extends Application{
         playerScore3.setLayoutX((SQUARE_SIZE * 10) + (12));
         playerScore3.setLayoutY(550);
 
-        playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+        //playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
         playerScore4.setMinWidth(250);                                          // Set Minimum Width
         playerScore4.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
         playerScore4.setFont(Font.font("Arial", 15));                     // Set Font of the Text
@@ -238,7 +238,7 @@ public class CreatingBoard extends Application{
         playerScore4.setLayoutX((SQUARE_SIZE * 10) + (12));
         playerScore4.setLayoutY(575);
 
-        playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+        //playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
         playerScore5.setMinWidth(250);                                          // Set Minimum Width
         playerScore5.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
         playerScore5.setFont(Font.font("Arial", 15));                     // Set Font of the Text
@@ -247,7 +247,7 @@ public class CreatingBoard extends Application{
         playerScore5.setLayoutX((SQUARE_SIZE * 10) + (12));
         playerScore5.setLayoutY(600);
 
-        playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
+        //playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
         playerScore6.setMinWidth(250);                                          // Set Minimum Width
         playerScore6.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
         playerScore6.setFont(Font.font("Arial", 15));                     // Set Font of the Text
@@ -274,22 +274,41 @@ public class CreatingBoard extends Application{
         } */
         switch (playerNums){
             case 2:
+                playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                 board.getChildren().addAll(playerScore1,playerScore2);
                 break;
             case 3:
+                playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
                 board.getChildren().addAll(playerScore1,playerScore2,playerScore3);
                 break;
             case 4:
+                playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                playerScore3.setText("Player 4's Score: " + scorePlayers[3]);
                 board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4);
                 break;
             case 5:
+                playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
                 board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5);
                 break;
             case 6:
+                playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+                playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
                 board.getChildren().addAll(playerScore1,playerScore2,playerScore3,playerScore4,playerScore5,playerScore6);
                 break;
         }
-
 
         board.getChildren().addAll(deckName,score);
     }
@@ -584,7 +603,6 @@ public class CreatingBoard extends Application{
 
                 // Create a new placement string and placementSequence
                 String placement = tile + ((int) locationX) + ((int) locationY);
-                String placement = tile + (int) locationX + (int) locationY;
                 String tempPlacementSequence = placementSequence + placement;
 
                 // Check if the placementSequence is valid or not
@@ -602,6 +620,29 @@ public class CreatingBoard extends Application{
                     // If passed by the player the empty player's hand
                     if (passedBy.equals("player")) {
                         player.setTileInHand(CurrentPlayer, null);
+                    }
+
+                    scorePlayers = Metro.getScore(placementSequence,playerNums);
+                    System.out.println(CurrentPlayer);
+                    switch (CurrentPlayer){
+                        case 0:
+                            playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
+                            break;
+                        case 1:
+                            playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
+                            break;
+                        case 2:
+                            playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
+                            break;
+                        case 3:
+                            playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
+                            break;
+                        case 4:
+                            playerScore5.setText("Player 5's Score: " + scorePlayers[4]);
+                            break;
+                        case 5:
+                            playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
+                            break;
                     }
 
                     //playerImage.setImage(null);                                 // Set playerImage to null
