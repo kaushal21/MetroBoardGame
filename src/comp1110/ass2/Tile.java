@@ -117,7 +117,7 @@ public class Tile {
      * @param deck the original deck
      * @return a new deck with the construction tile in it
      */
-    public String[] makeConstructionDeck(String[] deck) {
+    public static String[] makeConstructionDeck(String[] deck) {
         // generates a random position in the deck for the construction tile to replace
         int rand = (int) (Math.random() * 60);
 
