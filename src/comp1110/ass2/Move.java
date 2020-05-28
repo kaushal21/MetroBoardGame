@@ -96,7 +96,7 @@ public class Move {
         int[] copies4count = new int[5];
         int[] copies3count = new int[2];
         int[] copies2count = new int[17];
-        int[] copies1count = new int[1];
+        int[] copies1count = new int[1];    // this is for construction tile
 
         // For number of tiles in the placement string
         for (int i = 0; i < numberOfTile; i++) {

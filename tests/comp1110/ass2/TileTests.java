@@ -3,6 +3,9 @@ package comp1110.ass2;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
+
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public class TileTests {
@@ -14,6 +17,8 @@ public class TileTests {
         assertEquals("expected " + expected + " for piece placement: " + piecePlacement +
                 ", but got " + out, out, expected);
     }
+
+    public static final String[] TEST_DECK = {"cbaa", "ccda", "aaaa", "dacc", "adbb", "cbaa", "acba", "ddbc", "cccc", "cddb", "bcbc", "cdac", "dada", "dddd", "aacb", "aacb", "cddb", "cbcb", "cbaa", "ccda", "dada", "baac", "badb", "baac", "accd", "aaaa", "acba", "adbb", "bbad", "dacc", "aacb", "bcdd", "dbcd", "ddbc", "aaaa", "badb", "cbaa", "baac", "cccc", "bcdd", "accd", "dbba", "acba", "cbcb", "baac", "cbcb", "adad", "cdac", "bbad", "dbcd", "bbbb", "dbba", "dddd", "adad", "bcbc", "bbbb", "aaaa", "aacb", "bcbc", "acba"};
 
     // This test is to check if the top tile is popped out or not
     @Test
@@ -63,10 +68,20 @@ public class TileTests {
         }
     }
 
+    /*
     // This test is to check that the construction deck is being made properly
     @Test
     public void testMakeConstructionDeck() {
-
+        new Test1();
+        assertNotEquals(Tile.deck, Tile.makeConstructionDeck(Tile.deck));
+        boolean b = false;
+        for (String s : Tile.makeConstructionDeck(Tile.deck)) {
+            if (s.equals("cons")) {
+                b = true;
+                break;
+            }
+        }
+        assertTrue(b);
     }
-
+    */
 }

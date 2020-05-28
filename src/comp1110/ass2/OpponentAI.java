@@ -13,20 +13,18 @@ public class OpponentAI extends Player{
         super(a);
     }
 
-
     /**
      * A basic computer opponent that picks the next possible move given a random tile from the deck
      * @return a move (i.e. tile and location)
      */
-    public String randomBotMove(String placementString) {
+    public static String randomBotMove(String placementString, String[] deck) {
         // generates a random position in the deck to get a random tile
         int rand = (int) (Math.random() * 60);
-        String piece = Tile.getDeck(rand);
+        String piece = deck[rand];
 
         if (Metro.generateMove(placementString, piece, Player.players).equals("No valid moves left")) {
             // simulate picking up another tile as a human player would
-            rand++;
-            piece = Tile.getDeck(rand);
+            return "No possible moves";
 
         }
         // removes the placed tile from the deck

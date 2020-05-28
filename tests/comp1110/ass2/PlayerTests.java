@@ -42,4 +42,19 @@ public class PlayerTests {
         assertArrayEquals("Expected stations for player 2" + Arrays.toString(playerExpected) + " instead got" + Arrays.toString(playerOutcome), playerExpected, playerOutcome);
     }
 
+
+    @Test
+    public void testRandomBotMove(){
+        // output should be a tile and a position so a string of length 6
+        assertTrue("expected the output to be a string of length 6", OpponentAI.randomBotMove("aaaa00bbbb20",TileTests.TEST_DECK).length() == 6);
+        // Tests that full board strings wont return a possible move.
+        for (String completeString : Utilities.COMPLETE_BOARDSTRINGS) {
+            assertTrue("Expected result to be 'no moves left'", OpponentAI.randomBotMove(completeString,TileTests.TEST_DECK).equals("No possible moves"));
+        }
+        // Tests that the method outputs a well formed piece placement
+        test(OpponentAI.randomBotMove("aaaa00bbbb20",TileTests.TEST_DECK), true);
+
+    }
+
+
 }
