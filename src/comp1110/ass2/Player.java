@@ -138,11 +138,12 @@ public class Player {
         tileInHand[currentPlayer] = tile;
     }
 
-
+    /**
+     * @param currPlayer Set the Current Player
+     */
     public void setCurrentPlayer(int currPlayer){
         currentPlayer = currPlayer % players;
     }
-
 
     /**
      * switch the "currentPlayer" in a round robin fashion
