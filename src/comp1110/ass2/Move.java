@@ -197,21 +197,25 @@ public class Move {
             String currentTile = tiles[i].substring(0, 4);
             int row = Integer.parseInt(String.valueOf(tiles[i].charAt(4)));
             int col = Integer.parseInt(String.valueOf(tiles[i].charAt(5)));
+            System.out.println((i+1)+".> "+tiles[i]);
 
             // Get the upper, lower, right and left values for the given location
             int top_row = row - 1, left_col = col - 1, right_col = col + 1, bottom_row = row + 1;
             int t, b, l, r;
 
+            // Condition 1 ->
             // Check if the location is already occupied, and we are not trying to overlap tiles
             if ( board.getBoard(row, col) == 1 ) {
                 return false;
             }
 
+            // Condition 2 ->
             // Check if the location is overlapping the center stations
             if ( ( row >= 3 && row <= 4 ) && ( col >= 3 && col <= 4 ) ) {
                 return false;
             }
 
+            // Condition 3 ->
             // Check if the tile is placed at the edge of central station and shares a boundary with other tile
             if ( ( row >= 2 && row <= 5 ) && ( col >= 2 && col <= 5 ) ) {
                 t = 0;
@@ -240,13 +244,14 @@ public class Move {
             // Check if the tile is placed at an edge of the board. Also, allow the first tile from the deck to be placed here without any condition
             if ( ( ( ( row == 0 || row == 7 ) && col <= 7 ) || ( ( col == 0 || col == 7 ) && row <= 7 ) ) && i != 0 ) {
                 // Check if its not a corner of the board.
-                if ( !( ( row == 0 && col == 0 ) || ( row == 0 && col == 7 ) || ( row == 7 && col == 0 ) || ( row == 7 && col == 7 ) ) ) {
+                // if ( !( ( row == 0 && col == 0 ) || ( row == 0 && col == 7 ) || ( row == 7 && col == 0 ) || ( row == 7 && col == 7 ) ) ) {
                     // Check for a loop at the top edge of the board
                     if (row == 0 && currentTile.charAt(0) == 'd') {
                         // return false if there is an empty place within the board which is also not an edge.
                         for (int j = 1; j < 7; j++) {
                             for (int k = 1; k < 7; k++) {
                                 if (board.getBoard(j, k) == 0) {
+                                    System.out.println("Here1");
                                     return false;
                                 }
                             }
@@ -255,19 +260,36 @@ public class Move {
                         // Check on the left edge of the board
                         for (int j = 1; j < 7; j++) {
                             if ( board.getBoard(j,0) == 0 && currentTile.charAt(3) != 'd') {
+                                System.out.println("Here2");
                                 return false;
                             }
                         }
                         // Check on the right edge of the board
                         for (int j = 1; j < 7; j++) {
                             if ( board.getBoard(j,7) == 0 && currentTile.charAt(1) != 'd') {
+                                System.out.println("Here3");
                                 return false;
                             }
                         }
                         // Check on the bottom edge of the board
                         for (int j = 0; j < 8; j++) {
-                            if ( board.getBoard(7, j) == 0 && currentTile.charAt(2) != 'd') {
-                                return false;
+                            if ( j == 0 ) {
+                                if ( board.getBoard(7, j) == 0 ) {
+                                    if ( currentTile.charAt(2) != 'd' && currentTile.charAt(2) != 'b' && currentTile.charAt(3) != 'd' && currentTile.charAt(3) != 'c' ) {
+                                        return false;
+                                    }
+                                }
+                            } else if ( j == 7 ) {
+                                if ( board.getBoard(7, j) == 0 ) {
+                                    if ( currentTile.charAt(1) != 'd' && currentTile.charAt(1) != 'b' && currentTile.charAt(2) != 'd' && currentTile.charAt(2) != 'c' ) {
+                                        return false;
+                                    }
+                                }
+                            } else {
+                                if ( board.getBoard(7, j) == 0 && currentTile.charAt(2) != 'd') {
+                                    System.out.println("Here4");
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -297,8 +319,23 @@ public class Move {
                         }
                         // Check on the top edge of the board
                         for (int j = 0; j < 8; j++) {
-                            if ( board.getBoard(0, j) == 0 && currentTile.charAt(0) != 'd') {
-                                return false;
+                            if ( j == 0 ) {
+                                if ( board.getBoard(0, j) == 0 ) {
+                                    if ( currentTile.charAt(3) != 'd' && currentTile.charAt(3) != 'b' && currentTile.charAt(0) != 'd' && currentTile.charAt(0) != 'c' ) {
+                                        return false;
+                                    }
+                                }
+                            } else if ( j == 7 ) {
+                                if ( board.getBoard(0, j) == 0 ) {
+                                    if ( currentTile.charAt(0) != 'd' && currentTile.charAt(0) != 'b' && currentTile.charAt(1) != 'd' && currentTile.charAt(1) != 'c' ) {
+                                        return false;
+                                    }
+                                }
+                            } else {
+                                if ( board.getBoard(0, j) == 0 && currentTile.charAt(2) != 'd') {
+                                    System.out.println("Here4");
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -322,8 +359,23 @@ public class Move {
                         }
                         // Check on the right edge of the board
                         for (int j = 0; j < 8; j++) {
-                            if ( board.getBoard(j,7) == 0 && currentTile.charAt(1) != 'd') {
-                                return false;
+                            if ( j == 0 ) {
+                                if ( board.getBoard(j, 7) == 0 ) {
+                                    if ( currentTile.charAt(0) != 'd' && currentTile.charAt(0) != 'b' && currentTile.charAt(1) != 'd' && currentTile.charAt(1) != 'c' ) {
+                                        return false;
+                                    }
+                                }
+                            } else if ( j == 7 ) {
+                                if ( board.getBoard(j, 7) == 0 ) {
+                                    if ( currentTile.charAt(1) != 'd' && currentTile.charAt(1) != 'b' && currentTile.charAt(2) != 'd' && currentTile.charAt(2) != 'c' ) {
+                                        return false;
+                                    }
+                                }
+                            } else {
+                                if ( board.getBoard(j, 7) == 0 && currentTile.charAt(2) != 'd') {
+                                    System.out.println("Here4");
+                                    return false;
+                                }
                             }
                         }
                         // Check on the bottom edge of the board
@@ -353,8 +405,23 @@ public class Move {
                         }
                         // Check on the left edge of the board
                         for (int j = 0; j < 8; j++) {
-                            if ( board.getBoard(j,0) == 0 && currentTile.charAt(3) != 'd') {
-                                return false;
+                            if ( j == 0 ) {
+                                if ( board.getBoard(j, 0) == 0 ) {
+                                    if ( currentTile.charAt(3) != 'd' && currentTile.charAt(3) != 'b' && currentTile.charAt(0) != 'd' && currentTile.charAt(0) != 'c' ) {
+                                        return false;
+                                    }
+                                }
+                            } else if ( j == 7 ) {
+                                if ( board.getBoard(j, 0) == 0 ) {
+                                    if ( currentTile.charAt(2) != 'd' && currentTile.charAt(2) != 'b' && currentTile.charAt(3) != 'd' && currentTile.charAt(3) != 'c' ) {
+                                        return false;
+                                    }
+                                }
+                            } else {
+                                if ( board.getBoard(j, 0) == 0 && currentTile.charAt(2) != 'd') {
+                                    System.out.println("Here4");
+                                    return false;
+                                }
                             }
                         }
                         // Check on the bottom edge of the board
@@ -364,7 +431,7 @@ public class Move {
                             }
                         }
                     }
-                }
+                // }
             }
 
             // Check if the tile is placed at the corner of the board
@@ -380,6 +447,7 @@ public class Move {
                     if ( currentTile.charAt(0) == 'd' && currentTile.charAt(3) == 'd' ) {
                         if ( i == 0 )
                             return false;
+                        System.out.println("Here6");
                         return board.getBoardTotal() == 59;
                     }
                 }
@@ -387,7 +455,7 @@ public class Move {
                 // Check for a loop in the top right corner of the board
                 if (row == 0 && col == 7 ) {
                     // Check for the track that connects neighbouring stations
-                    if ( currentTile.charAt(1) == 'c' ) {
+                    if ( currentTile.charAt(0) == 'b' || currentTile.charAt(1) == 'c' ) {
                         // return true if it's the only place left for the tile on board
                         return board.getBoardTotal() == 59;
                     }
@@ -402,7 +470,7 @@ public class Move {
                 // Check for a loop in the bottom right corner of the board
                 if (row == 7 && col == 7 ) {
                     // Check for the track that connects neighbouring stations
-                    if ( currentTile.charAt(2) == 'c') {
+                    if ( currentTile.charAt(1) == 'b' || currentTile.charAt(2) == 'c' ) {
                         // return true if it's the only place left for the tile on board
                         return board.getBoardTotal() == 59;
                     }
@@ -417,7 +485,7 @@ public class Move {
                 // Check for a loop in the bottom left corner of the board
                 if (row == 7 && col == 0 ) {
                     // Check for the track that connects neighbouring stations
-                    if ( currentTile.charAt(3) == 'c') {
+                    if ( currentTile.charAt(2) == 'b' || currentTile.charAt(3) == 'c') {
                         // return true if it's the only place left for the tile on board
                         return board.getBoardTotal() == 59;
                     }
