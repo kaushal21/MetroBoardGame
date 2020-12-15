@@ -15,14 +15,11 @@ import javafx.stage.Stage;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-// Authorship: Kaushal Sharma, Tom Stephens, Kyle Robertson
-
 public class GetPlayers {
 
     // These store the total number of players entered by the user, and the number of computer opponents
     static AtomicInteger h = new AtomicInteger();
     static AtomicInteger a = new AtomicInteger();
-    static AtomicBoolean c = new AtomicBoolean();
 
     /**
      * It Creates a new Dialog box that takes an integer value and check if it is valid and is in the range
@@ -56,13 +53,6 @@ public class GetPlayers {
         numberOfAIs.setMaxWidth(100);
         numberOfAIs.setPromptText("No. of Computer opponents");
 
-        Label confConstructionTile = new Label("Enable Construction Tile?");
-        CheckBox checkBox = new CheckBox();
-        HBox confirmationLayout = new HBox(10);
-        c.set(false);
-        confirmationLayout.getChildren().addAll(checkBox, confConstructionTile);
-        confirmationLayout.setAlignment(Pos.CENTER);
-
         Button submit = new Button("PLAY");                               // Create a Play button
         submit.setOnAction(e -> {
             // On click functionality of submit button
@@ -70,7 +60,6 @@ public class GetPlayers {
             if (checkEnteredNumberOfPlayers(numberOfPlayers) && checkEnteredNumberOfAIs(numberOfPlayers,numberOfAIs) ) {
                 h.set(Integer.parseInt(numberOfPlayers.getText()));
                 a.set(Integer.parseInt(numberOfAIs.getText()));
-                c.set(checkIfConTileEnabled(checkBox));
                 newWindow.close();
             }
         });
@@ -93,13 +82,6 @@ public class GetPlayers {
     }
 
     /**
-     * @return The constructionsRules value i.e. true or false
-     */
-    public static boolean playingConstructionRules() {
-        return c.get();
-    }
-
-    /**
      * It called by the submit button while accepting the number of users. It checks 2 conditions
      * 1.> The entered number of players is in integer.
      * 2.> The entered number is in the range from 2 to 6.
@@ -119,6 +101,7 @@ public class GetPlayers {
                 return true;
         } catch (NumberFormatException e1) {
             // Print out the error message and return false
+            AlertBox.alertBox("Enter the number of players correctly");
             System.out.println("Enter the number of players correctly");
             return false;
         }
@@ -146,25 +129,9 @@ public class GetPlayers {
                 return true;
         } catch (NumberFormatException e1) {
             // Print out the error message and return false
+            AlertBox.alertBox("Enter the number of AIs correctly");
             System.out.println("Enter the number of AIs correctly");
             return false;
         }
     }
-
-    /**
-     * @param checked The checkbox form the getPlayer function
-     * @return true id the checkbox was checked, otherwise it returns false
-     */
-    static boolean checkIfConTileEnabled(CheckBox checked){
-        //Checking if the check box is selected
-        if(checked.isSelected()){
-            //Prints out to show that the check box has been checked.
-            System.out.println("Checked");
-            return true;
-        } else{
-            return false;
-        }
-    }
-
-
 }

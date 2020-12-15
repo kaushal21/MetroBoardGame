@@ -48,8 +48,6 @@ public class Tile {
         }
         Collections.shuffle(deckNew);
         randomiseDeck();
-        //System.out.println("1" + deckNew);
-        //System.out.println("2" + Arrays.toString(deck));
     }
 
     /**
@@ -66,6 +64,9 @@ public class Tile {
         return deck[pos];
     }
 
+    /**
+     * @return The Complete Deck in form of an array of string upto top.
+     */
     public static String[] returnArrayDeck() {
         String[] deckArray = new String[top];
         for (int i = 0; i < top; i++) {
@@ -91,7 +92,6 @@ public class Tile {
     /**
      * Check for the termination condition of the deck i.e.
      * if there is nothing in deck i.e. top = 0.
-     *
      * @return true if the deck is not empty, otherwise return false.
      */
     public boolean checkDeckNonEmpty() {
@@ -101,11 +101,9 @@ public class Tile {
     /**
      * Take one tile out of deck.
      * if "top" is 0 then it returns error.
-     *
      * @return the top most tile in the deck. Reduce the top by 1.
      */
     public String pop() {
-        // newDeck.remove(newDeck.size());
         return deck[--top];
     }
 
@@ -131,9 +129,6 @@ public class Tile {
             }
         }
     }
-    public void updateDeckNew ( String alreadyPlacedTile ) {
-        deckNew.remove(alreadyPlacedTile);
-    }
 
     /**
      * @param deck the original deck
@@ -147,7 +142,6 @@ public class Tile {
         deck[rand] = "cons";
         System.out.println(deck);
         return deck;
-
     }
 }
 

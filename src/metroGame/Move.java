@@ -30,23 +30,12 @@ public class Move {
         int temp = 0;
 
         // Iterate the correct deck to look for the tile. If it isn't there then it means the tile is wrong and return false.
-
-        if (GetPlayers.playingConstructionRules()) { // if using construction deck
-            String[] newDeck = Tile.makeConstructionDeck(Tile.deck);
-            for (int i = Tile.top -1; i >= 0; i--) {
-                if ( piece.equals(newDeck[i]) ) {
-                    temp = 1;
-                    break;
-                }
-            }
-        } else { // if using regular deck
-            String[] copies = {"aacb", "cbaa", "acba", "baac", "aaaa", "cbcb", "bcbc", "cccc", "bbbb", "dacc", "cdac",
-                    "ccda", "accd", "dbba", "adbb", "badb", "bbad", "ddbc", "cddb", "bcdd", "dbcd", "adad", "dada", "dddd"};
-            for (int i = 0; i < 24; i++) {
-                if ( piece.equals(copies[i]) ) {
-                    temp = 1;
-                    break;
-                }
+        String[] copies = {"aacb", "cbaa", "acba", "baac", "aaaa", "cbcb", "bcbc", "cccc", "bbbb", "dacc", "cdac",
+                "ccda", "accd", "dbba", "adbb", "badb", "bbad", "ddbc", "cddb", "bcdd", "dbcd", "adad", "dada", "dddd"};
+        for (int i = 0; i < 24; i++) {
+            if ( piece.equals(copies[i]) ) {
+                temp = 1;
+                break;
             }
         }
 
