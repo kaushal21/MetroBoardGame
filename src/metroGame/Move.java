@@ -1,12 +1,5 @@
 package metroGame;
 
-
-// Authorship: Kaushal Sharma, Tom Stephens
-
-import metroGame.gui.GetPlayers;
-
-import java.util.Arrays;
-
 /**
  * This class represents the Move that any player make in the Metro game.
  */
@@ -93,7 +86,7 @@ public class Move {
             int temp = 0;
             tiles[i] = placement.substring(i*6, i*6+6);             // Stores the complete Tile from "placement"
             String tile = tiles[i].substring(0, 4);                 // Just stores the tile orientation
-            if ( !Metro.isPiecePlacementWellFormed(tiles[i]) ) {
+            if ( !checkTilePlacement(tiles[i]) ) {
                 return false;
             }
             int t1 = Integer.parseInt(String.valueOf(tiles[i].charAt(4)));      // Stores the tiles row
@@ -156,18 +149,6 @@ public class Move {
         }
         // If all the conditions are satisfied then return true.
         return true;
-    }
-
-    /**
-     * Update the Placement Sequence.
-     * @return the updated placementSequence string with the new tilePlacement and its location.
-     */
-    public String updatePlacementSequence ( String placementSequence, String tile ) {
-        String temp = "";
-        if (isPlacementSequenceValid(placementSequence))
-            if (checkTilePlacement(tile))
-                temp = placementSequence + tile;
-        return temp;
     }
 
     /**
@@ -593,7 +574,9 @@ public class Move {
         else return (posX == 7 && piece.charAt(1) == 'd');
     }
 
-    // Checks if a piece is invalid because it is on top of a middle station
+    /**
+     * Checks if a piece is invalid because it is on top of a middle station
+     */
     public static boolean atMiddle (int posY, int posX) {
         // check if on top of middle stations
         if (posY == 3 && (posX == 3 || posX == 4)) return true;

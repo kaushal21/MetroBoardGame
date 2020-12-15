@@ -73,5 +73,4 @@ public class Board {
         // Increment the total board count by 1
         boardTotal += 1;
     }
-
 }

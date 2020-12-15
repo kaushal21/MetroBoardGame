@@ -1,7 +1,6 @@
 package metroGame.gui;
 
-import metroGame.Metro;
-import metroGame.Player;
+import metroGame.Score;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,8 +15,6 @@ import javafx.stage.Stage;
 import java.util.Arrays;
 import java.util.Collections;
 
-//Authorship: Kyle Robertson
-
 public class FinalScreen{
     public static void finalScreen(String placement, int numOfPlayers) {
         Stage newWindow = new Stage();
@@ -28,7 +25,7 @@ public class FinalScreen{
         newWindow.setMinWidth(250);                             //Setting the min width of the window
         newWindow.setMinHeight(500);
         //Finding the max number in the array.
-        int[] scores2 = Metro.getScore(placement,numOfPlayers);
+        int[] scores2 = Score.scoreBoard(placement,numOfPlayers);
         int largest = scores2[0], index = 0;
             for (int i = 1; i < scores2.length; i++){ //Looks through the array.
                 if(scores2[i] >= largest){ //Check against every number to find the largest.
@@ -76,7 +73,7 @@ public class FinalScreen{
         //Displaying the correct number of players and their score.
         int i = 0;
         while (i < numOfPlayers){
-            int[] scores = Metro.getScore(placement,numOfPlayers);
+            int[] scores = Score.scoreBoard(placement,numOfPlayers);
             //Calling the label playerScore1 to the amount of players.
             Label playerScore1 = new Label();
             //Setting the player number and score line after line.

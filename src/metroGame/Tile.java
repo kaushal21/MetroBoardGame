@@ -1,8 +1,7 @@
 package metroGame;
-import java.util.*;
 
-// Authorship: Kaushal Sharma, Tom Stephens
-
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * This class represents a Tile in the Metro game.
@@ -11,9 +10,8 @@ import java.util.*;
  * 2.> "top" - location of the top most tile which is ready to be popped.
  */
 public class Tile {
-    public static String[] deck = new String[60];
     public static int top;
-    public ArrayList<String> deckNew = new ArrayList<>();
+    public static ArrayList<String> deck = new ArrayList<>();
 
     /**
      * The implementation of the Deck is done as a Stack.
@@ -25,16 +23,14 @@ public class Tile {
         String[] copies4 = {"aacb", "cbaa", "acba", "baac", "aaaa"};
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
-                deck[top++] = copies4[j];
-                deckNew.add(copies4[j]);
+                deck.add(copies4[j]);
             }
         }
         // These are the 2 tiles that are having 3 copies in the deck
         String[] copies3 = {"cbcb", "bcbc"};
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 2; j++) {
-                deck[top++] = copies3[j];
-                deckNew.add(copies3[j]);
+                deck.add(copies3[j]);
             }
         }
         // These are the 17 tiles that are having 2 copies in the deck
@@ -42,12 +38,10 @@ public class Tile {
                 "cddb", "bcdd", "dbcd", "adad", "dada", "dddd"};
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 17; j++) {
-                deck[top++] = copies2[j];
-                deckNew.add(copies2[j]);
+                deck.add(copies2[j]);
             }
         }
-        Collections.shuffle(deckNew);
-        randomiseDeck();
+        Collections.shuffle(deck);
     }
 
     /**
@@ -61,32 +55,7 @@ public class Tile {
      * @return The tile at passed position in deck
      */
     public static String getDeck(int pos) {
-        return deck[pos];
-    }
-
-    /**
-     * @return The Complete Deck in form of an array of string upto top.
-     */
-    public static String[] returnArrayDeck() {
-        String[] deckArray = new String[top];
-        for (int i = 0; i < top; i++) {
-            deckArray[i] = getDeck(i);
-        }
-        return deckArray;
-    }
-
-    /**
-     * Take the deck and shuffle it to create a randomized list of all the tiles
-     */
-    public static void randomiseDeck() {
-        // Convert the Array of String into a List of String
-        List<String> strList = Arrays.asList(deck);
-
-        // Shuffle the List, that stores all the possible tiles
-        Collections.shuffle(strList);
-
-        // Copy back the shuffled List into the "initialDeck"
-        deck = strList.toArray(new String[0]);
+        return deck.get(pos);
     }
 
     /**
@@ -104,7 +73,7 @@ public class Tile {
      * @return the top most tile in the deck. Reduce the top by 1.
      */
     public String pop() {
-        return deck[--top];
+        return deck.remove(--top);
     }
 
     /**
@@ -118,30 +87,16 @@ public class Tile {
         for (int i = 0; i < Tile.top; i++) {
 
             // if this tile is matched with the passed tile then swap these two
-            if (Tile.deck[i].equals(alreadyPlacedTile)) {
+            if (Tile.deck.get(i).equals(alreadyPlacedTile)) {
 
                 // Updating the top location and storing the value in a variable.
-                int lastLocation = --Tile.top;
-                String temp = Tile.deck[lastLocation];
-                Tile.deck[lastLocation] = Tile.deck[i];
-                Tile.deck[i] = temp;
+                int lastLocation = top-1;
+                String temp = Tile.deck.get(lastLocation);
+                Tile.deck.set(lastLocation, Tile.deck.get(i));
+                Tile.deck.set(i, temp);
                 return;
             }
         }
-    }
-
-    /**
-     * @param deck the original deck
-     * @return a new deck with the construction tile in it
-     */
-    public static String[] makeConstructionDeck(String[] deck) {
-        // generates a random position in the deck for the construction tile to replace
-        int rand = (int) (Math.random() * 60);
-
-        // update the deck to contain the construction tile named "cons"
-        deck[rand] = "cons";
-        System.out.println(deck);
-        return deck;
     }
 }
 

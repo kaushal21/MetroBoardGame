@@ -3,13 +3,11 @@ package metroGame;
 /**
  * This class represents the Players in the Metro game.
  */
-
 public class Player {
     public static int players;                      // Number of players from 2 to 6
     static int[][] stations;                        // Stations allocated to the players
     static int currentPlayer;                       // Player range 0 to (players-1) i.e. 5
     String[] tileInHand;                            // For all the players it Stores the tile in hand of the players
-    int[] playerTiles;
 
     /**
      * The number of playing the game is taken as an input from the user.

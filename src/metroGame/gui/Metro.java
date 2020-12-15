@@ -1,9 +1,6 @@
 package metroGame.gui;
 
-import metroGame.Metro;
-import metroGame.OpponentAI;
-import metroGame.Player;
-import metroGame.Tile;
+import metroGame.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -23,9 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-// Authorship: Kaushal Sharma, Kyle Robertson, Tom Stephens
-
-public class CreatingBoard extends Application{
+public class Metro extends Application{
     Group root = new Group();                               // Container for the scene
     String placementSequence;
     Group board = new Group();                              // Holds all the elements on the board
@@ -201,8 +195,8 @@ public class CreatingBoard extends Application{
         score.setLayoutX((SQUARE_SIZE * 10) + (12));
         score.setLayoutY(475);
 
-        playerNums = noOfPlayers; //Getting the number of players
-        scorePlayers = Metro.getScore(placementSequence,playerNums);
+        playerNums = noOfPlayers; //Getting the number of players Score.scoreBoard
+        scorePlayers = Score.scoreBoard(placementSequence,playerNums);
         //Setting all the design elements of the playerScores.
         playerScore1.setMinWidth(250);                                          // Set Minimum Width
         playerScore1.setAlignment(Pos.CENTER_LEFT);                             // Set Alignment to Center
@@ -345,7 +339,6 @@ public class CreatingBoard extends Application{
      * @param placement A valid placement string
      */
     void makePlacement(String placement) throws FileNotFoundException {
-        // FIXME Task 4: implement the simple placement viewer
         String tile = placement.substring(0, 4);
         int row = Integer.parseInt(String.valueOf(placement.charAt(4)));
         int col = Integer.parseInt(String.valueOf(placement.charAt(5)));
@@ -408,9 +401,8 @@ public class CreatingBoard extends Application{
         playerName.setLayoutY(paddingTop);
         board.getChildren().add(playerName);
 
-
         // Check if the player already holds any tile in his/her hands and create label for it
-        String tileInHand = player.getTileInHand(CurrentPlayer);
+        String tileInHand = player.getTileInHand(Player.getCurrentPlayer());
         if (tileInHand != null) {
             // The player already has a tile in his/her hand
             // Store in playerImage the tile Image
@@ -418,8 +410,8 @@ public class CreatingBoard extends Application{
             playerImage = createImage(playersHandTileLocation, 0);
             playerImage.setFitHeight(SQUARE_SIZE*2);                    // Set Minimum Height
             playerImage.setFitWidth(SQUARE_SIZE*2);                     // Set Minimum Width
-            paddingLeft = (SQUARE_SIZE * 10) + (12) + (50);
-            paddingTop = (SQUARE_SIZE*2) + (30) + (10) + (50) + (30);
+            paddingLeft = (SQUARE_SIZE * 10) + (12) + (50);             // Set Left Padding
+            paddingTop = (SQUARE_SIZE*2) + (30) + (10) + (50) + (30);   // Set Top Padding
             playerImage.setLayoutX(paddingLeft);
             playerImage.setLayoutY(paddingTop);
             board.getChildren().add(playerImage);
@@ -469,7 +461,7 @@ public class CreatingBoard extends Application{
                 // Set the tile in players hand to the top of deck
                 player.setTileInHand(CurrentPlayer, topOfDeck);
                 // Pop a new tile from the deck to be the top of the deck
-                topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
+                topOfDeck = newDeck.deck.remove(newDeck.deck.size()-1);
 
                 // Display the topOfDeck back on the screen
                 String topLocation2 = "metroGame/gui/assets/" + topOfDeck + ".jpg";
@@ -567,7 +559,8 @@ public class CreatingBoard extends Application{
                 }
             }
             // Check if the placement is valid
-            if (Metro.isPlacementSequenceValid(tempPlacementSequence)) {
+            Move checkingPlacementSequence1 = new Move();
+            if (checkingPlacementSequence1.isPlacementSequenceValid ( tempPlacementSequence) ) {
                 // If yes, the change color of closest and update the highlighted
                 closest.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
                 highlighted = closest;
@@ -600,7 +593,8 @@ public class CreatingBoard extends Application{
                 System.out.println(tempPlacementSequence);
 
                 // Check if the placementSequence is valid or not
-                if (Metro.isPlacementSequenceValid(tempPlacementSequence)) {
+                Move checkingPlacementSequence2 = new Move();
+                if (checkingPlacementSequence2.isPlacementSequenceValid ( tempPlacementSequence) ) {
                     try {
                         makePlacement(placement);
                     } catch (FileNotFoundException e) {
@@ -608,7 +602,7 @@ public class CreatingBoard extends Application{
                     }
                     // If passed by deck then update the top of Deck by popping from newDeck
                     if (passedBy.equals("deck")) {
-                        topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
+                        topOfDeck = newDeck.deck.remove(newDeck.deck.size()-1);
                     }
 
                     // If passed by the player the empty player's hand
@@ -618,7 +612,7 @@ public class CreatingBoard extends Application{
                     //Used to place the scores in an array so it can be called in the switch case.
                     //This is required otherwise you cannot update the scores correctly.
                     //makes the array length match the number of player in the game.
-                    scorePlayers = Metro.getScore(placementSequence,playerNums);
+                    scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                     // System.out.println(CurrentPlayer);
                     //Setting the score for each player based on how many players are in the game.
                     switch (playerNums){
@@ -667,34 +661,35 @@ public class CreatingBoard extends Application{
                             for (int i = 0; i < noOfAIs; i++) {
                                 placement = OpponentAI.randomBotMove(placementSequence, topOfDeck);
                                 tempPlacementSequence = placementSequence + placement;
-                                if ( Metro.isPlacementSequenceValid(tempPlacementSequence) ) {
+                                Move checkingPlacementSequence3 = new Move();
+                                if (checkingPlacementSequence3.isPlacementSequenceValid ( tempPlacementSequence) ) {
                                     makePlacement(placement);
                                     // System.out.println("AI " + CurrentPlayer);
-                                    scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                    scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                                     //Same idea as above but have to call in the AI placement otherwise the
                                     //score won't be updated till the player places a tile.
                                     switch (playerNums){
                                         case 2:
                                             //Called the scorePlayer again just to be safe.
-                                            scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                            scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                             break;
                                         case 3:
-                                            scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                            scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                             playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
                                             break;
                                         case 4:
-                                            scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                            scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                             playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
                                             playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
                                             break;
                                         case 5:
-                                            scorePlayers = Metro.getScore(placementSequence,playerNums);
+                                            scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                             playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
@@ -710,7 +705,7 @@ public class CreatingBoard extends Application{
                                             playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
                                             break;
                                     }
-                                    topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
+                                    topOfDeck = newDeck.deck.remove(newDeck.deck.size()-1);
                                     String topLocation2 = "metroGame/gui/assets/" + topOfDeck + ".jpg";
                                     tileView.setImage(new Image(topLocation2));                             // Update the image for topOfDeck
                                     labelText.setText(topOfDeck);                                           // Update the Label using the String of top of deck
@@ -724,7 +719,7 @@ public class CreatingBoard extends Application{
 
                     // Call the deckLocation and playerLocation for the next Round
                     try {
-                        if ( newDeck.deckNew.size() != 0 ) {
+                        if ( newDeck.deck.size() != 0 ) {
                             deckLocation(topOfDeck);
                             playerLocation();
                         } else {
@@ -817,7 +812,7 @@ public class CreatingBoard extends Application{
 
         // Create a new variable of Player that hold all the functionality of a player.
         player = new Player(noOfPlayers);
-        topOfDeck = newDeck.deckNew.remove(newDeck.deckNew.size()-1);
+        topOfDeck = newDeck.deck.remove(newDeck.deck.size()-1);
 
         placementSequence = "";
 
