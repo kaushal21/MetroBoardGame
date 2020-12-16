@@ -111,6 +111,18 @@ public class Player {
     }
 
     /**
+     * @return It returns the Previous Player Number.
+     */
+    public static int getPreviousPlayer() {
+        // Reduce the CurrentPlayer Number and check if its in the limit or not.
+        // If it is a valid player number then return that number.
+        int tempPlayer = currentPlayer - 1;
+        if(tempPlayer < 0) {
+            tempPlayer = players-1;
+        }
+        return tempPlayer;
+    }
+    /**
      * @param currentPlayer the currentPlayer for which we need to check the hand
      * @return String value i.e. the tile in Hand of the current player.
      */

@@ -41,7 +41,7 @@ public class Metro extends Application{
     Label playerName = new Label();                         // Current Player's Name
     int CurrentPlayer = Player.getCurrentPlayer();
     int playerNums = 0;
-    Label playerScore1 = new Label();                       //Setting global variables so they can be called in
+    Label playerScore1 = new Label();                       // Setting global variables so they can be called in
     Label playerScore2 = new Label();                       // numerous part of the class 
     Label playerScore3 = new Label();
     Label playerScore4 = new Label();
@@ -50,6 +50,8 @@ public class Metro extends Application{
     int [] scorePlayers;
     Button finishGame = new Button();
     int finishedGame = 0;
+    Button noTileInHand;                                    // Button for Picking up the Tile
+    Label playersHandTileView;                              // An empty Space Indicating no Tile in Hand for the Player
 
     // Create a new variable of Tile that hold a new random Deck and its top location
     Tile newDeck = new Tile();
@@ -352,10 +354,9 @@ public class Metro extends Application{
      * 1.> A String "DECK"
      * 2.> deckImage - a global Image variable that stores image of topOfDeck
      * 3.> deckTileName - a global Label that stores the string value of topOfDeck
-     * @param topOfDeck It is the top of Deck
      * @throws FileNotFoundException if there is no image found
      */
-    public void deckLocation(String topOfDeck) throws FileNotFoundException {
+    public void deckLocation() throws FileNotFoundException {
         // Store in deckImage the image for the topOfDeck
         String topLocation = "src/metroGame/gui/assets/" + topOfDeck + ".jpg";
         deckImage = createImage(topLocation, 0);
@@ -402,8 +403,16 @@ public class Metro extends Application{
         board.getChildren().add(playerName);
 
         // Check if the player already holds any tile in his/her hands and create label for it
-        String tileInHand = player.getTileInHand(Player.getCurrentPlayer());
+        String tileInHand = player.getTileInHand(player.getCurrentPlayer());
+        System.out.println(tileInHand+" "+player.getCurrentPlayer());
         if (tileInHand != null) {
+            // Check If the Board contains an empty space in place of players hand, then remove it
+            if ( board.getChildren().contains(playersHandTileView) ) {
+                board.getChildren().remove(playersHandTileView);
+            }
+            if ( board.getChildren().contains(noTileInHand) ) {
+                board.getChildren().remove(noTileInHand);
+            }
             // The player already has a tile in his/her hand
             // Store in playerImage the tile Image
             String playersHandTileLocation = "src/metroGame/gui/assets/" + tileInHand + ".jpg";
@@ -433,7 +442,7 @@ public class Metro extends Application{
 
         } else {
             // Create Label for empty Image that indicates player's hand is empty
-            Label playersHandTileView = new Label();
+            playersHandTileView = new Label();
             playersHandTileView.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
             playersHandTileView.setMinHeight(SQUARE_SIZE*2);
             playersHandTileView.setMinWidth(SQUARE_SIZE*2);
@@ -444,7 +453,7 @@ public class Metro extends Application{
             board.getChildren().add(playersHandTileView);
 
             // Creating a Button to select a new tile to put in players hand
-            Button noTileInHand = new Button("Pick Up Tile");
+            noTileInHand = new Button("Pick Up Tile");
             noTileInHand.setFont(Font.font("Arial", 15));
             noTileInHand.setTextFill(Color.BLACK);
             noTileInHand.setMinWidth(250);
@@ -461,12 +470,19 @@ public class Metro extends Application{
                 // Set the tile in players hand to the top of deck
                 player.setTileInHand(CurrentPlayer, topOfDeck);
                 // Pop a new tile from the deck to be the top of the deck
-                topOfDeck = newDeck.deck.remove(newDeck.deck.size()-1);
+                topOfDeck = newDeck.pop();
 
-                // Display the topOfDeck back on the screen
-                String topLocation2 = "metroGame/gui/assets/" + topOfDeck + ".jpg";
-                deckImage.setImage(new Image(topLocation2));
-                deckTileName.setText(topOfDeck);
+                // Display the topOfDeck back on the screen with the help of deckLocation() function
+                try {
+                    board.getChildren().remove(deckImage);
+                    board.getChildren().remove(deckTileName);
+                    deckLocation();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                // String topLocation2 = "metroGame/gui/assets/" + topOfDeck + ".jpg";
+                // deckImage.setImage(new Image(topLocation2));
+                // deckTileName.setText(topOfDeck);
 
                 // Remove the empty image and the button from the screen
                 board.getChildren().remove(playersHandTileView);
@@ -602,9 +618,8 @@ public class Metro extends Application{
                     }
                     // If passed by deck then update the top of Deck by popping from newDeck
                     if (passedBy.equals("deck")) {
-                        topOfDeck = newDeck.deck.remove(newDeck.deck.size()-1);
+                        topOfDeck = newDeck.pop();
                     }
-
                     // If passed by the player the empty player's hand
                     if (passedBy.equals("player")) {
                         player.setTileInHand(CurrentPlayer, null);
@@ -671,25 +686,21 @@ public class Metro extends Application{
                                     switch (playerNums){
                                         case 2:
                                             //Called the scorePlayer again just to be safe.
-                                            scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                             break;
                                         case 3:
-                                            scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                             playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
                                             break;
                                         case 4:
-                                            scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                             playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
                                             playerScore4.setText("Player 4's Score: " + scorePlayers[3]);
                                             break;
                                         case 5:
-                                            scorePlayers = Score.scoreBoard(placementSequence,playerNums);
                                             playerScore1.setText("Player 1's Score: " + scorePlayers[0]);
                                             playerScore2.setText("Player 2's Score: " + scorePlayers[1]);
                                             playerScore3.setText("Player 3's Score: " + scorePlayers[2]);
@@ -705,7 +716,7 @@ public class Metro extends Application{
                                             playerScore6.setText("Player 6's Score: " + scorePlayers[5]);
                                             break;
                                     }
-                                    topOfDeck = newDeck.deck.remove(newDeck.deck.size()-1);
+                                    topOfDeck = newDeck.pop();
                                     String topLocation2 = "metroGame/gui/assets/" + topOfDeck + ".jpg";
                                     tileView.setImage(new Image(topLocation2));                             // Update the image for topOfDeck
                                     labelText.setText(topOfDeck);                                           // Update the Label using the String of top of deck
@@ -720,7 +731,7 @@ public class Metro extends Application{
                     // Call the deckLocation and playerLocation for the next Round
                     try {
                         if ( newDeck.deck.size() != 0 ) {
-                            deckLocation(topOfDeck);
+                            deckLocation();
                             playerLocation();
                         } else {
                             // If the game deck is empty then game over. Display the final score
@@ -812,7 +823,7 @@ public class Metro extends Application{
 
         // Create a new variable of Player that hold all the functionality of a player.
         player = new Player(noOfPlayers);
-        topOfDeck = newDeck.deck.remove(newDeck.deck.size()-1);
+        topOfDeck = newDeck.pop();
 
         placementSequence = "";
 
@@ -820,7 +831,7 @@ public class Metro extends Application{
         createBoard();
 
         // Call the function to get the right side and the game moving
-        deckLocation(topOfDeck);
+        deckLocation();
         playerLocation();
 
         root.getChildren().add(board);

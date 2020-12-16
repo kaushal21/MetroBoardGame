@@ -73,7 +73,7 @@ public class Tile {
      * @return the top most tile in the deck. Reduce the top by 1.
      */
     public String pop() {
-        return deck.remove(--top);
+        return deck.remove(deck.size()-1);
     }
 
     /**
