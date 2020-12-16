@@ -480,42 +480,14 @@ public class Metro extends Application{
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                // String topLocation2 = "metroGame/gui/assets/" + topOfDeck + ".jpg";
-                // deckImage.setImage(new Image(topLocation2));
-                // deckTileName.setText(topOfDeck);
 
-                // Remove the empty image and the button from the screen
-                board.getChildren().remove(playersHandTileView);
-                board.getChildren().remove(noTileInHand);
-
-                // Get the tile from player's hand
-                String newTileInHand = player.getTileInHand(CurrentPlayer);
-                // Store in playerImage the image of this new tile in hand
-                String playersHandTileLocation = "src/metroGame/gui/assets/" + newTileInHand + ".jpg";
-                playerImage = null;
+                // Remove the player Name from the board and call the playerLocation() function again to print the picked up tile instead of an empty location
                 try {
-                    playerImage = createImage(playersHandTileLocation, 0);
+                    board.getChildren().remove(playerName);
+                    playerLocation();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                playerImage.setFitHeight(SQUARE_SIZE*2);                        // Set Minimum Height
-                playerImage.setFitWidth(SQUARE_SIZE*2);                         // Set Minimum Width
-                playerImage.setLayoutX((SQUARE_SIZE * 10) + (12) + (50));
-                playerImage.setLayoutY((SQUARE_SIZE*2) + (30) + (10) + (50) + (30));
-                board.getChildren().add(playerImage);
-
-                // Store in playerTileName the Label of the tile in the hand
-                playerTileName = new Label(newTileInHand);
-                playerTileName.setFont(Font.font("Arial", 15));                // Set Font of Text
-                playerTileName.setTextFill(Color.BLACK);                            // Set Color of Tesx
-                playerTileName.setMinWidth(250);                                    // Set Minimum Width
-                playerTileName.setAlignment(Pos.CENTER);                            // Set Alignment to Center
-                playerTileName.setLayoutX((SQUARE_SIZE * 10) + (12));
-                playerTileName.setLayoutY((30) + (SQUARE_SIZE*2) + (10) + (50) + (30) + (SQUARE_SIZE*2) + (10));
-                board.getChildren().add(playerTileName);
-
-                // Call Draggable function on the playerImage
-                draggable(playerImage, playerTileName,"player",(SQUARE_SIZE * 10) + (12) + (50), (SQUARE_SIZE*2) + (30) + (10) + (50) + (30));
             });
         }
     }
@@ -815,6 +787,7 @@ public class Metro extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Board");
+        stage.getIcons().add(new Image("metroGame/gui/assets/tile_back_cover.jpg"));
 
         // Get the number of players from the user using getPlayer() function.
         int[] temp = GetPlayers.getPlayers();

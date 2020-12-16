@@ -2,8 +2,10 @@
 
 ## Motivation
 
-This game was part of my assignment which I implemented in my first semester of 2020. 
-It was a group project, although over here I have redesigned the complete project so that I don't use the work done by my teammates. 
+This game was part of my assignment which I implemented in my first semester of 2020 at Australian National University. 
+It was a group project, although over here I have redesigned the project so that I don't use the work done by my teammates as my own.
+
+The Problem Description can be seen first which was given by the university. Followed by the screenshots of the actual game.
 
 ## Problem Description
 
@@ -126,7 +128,6 @@ A *placement sequence* string is a concatenation of up to 60 tile placement stri
 
 ### Scoring
 
-
 Any metro lines that start at a player's station and end at a station score points. 
 A player scores 1 point *for each tile the metro line crosses.* If a metro line crosses a tile *more than once*, then the player
 scores 1 point for *every time that line crosses the tile.* If a line ends at one of the central stations,
@@ -136,3 +137,55 @@ For example: In the image below, the yellow player scores 19 points on station 1
 (Remember tracks can finish at any station, this one just happens to loop back to itself).
 
 ![Example track scoring](assets/scoring_example_1.png)
+
+## Screenshots and Game Play
+
+### Get Players
+Initially the game asks for the number of players and the relative number of AI players they want.
+There is validation applied on the entry boxes for the specified limit, so the user can enter whatever he/she wants and depending on it the programs raises an error.
+For example, if we enter some wrong values like the figure given below, then it will raise an appropriate error message.
+
+![Example Wrong Input In Get Player](assets/wrongInputInGetPlayer.png)
+
+The same is applied for the next box for the number of computer component.
+If the User wants to quit the game before starting the game, then a confirmation box appears to confirm this decision.
+
+![Example Alert Message For Wrong Input](assets/alertMessageForWrongInput.png) ![Quiting The Game](assets/quiting.png)
+
+### Game Board and Game Play
+
+Based on the number of players, it allocates the station numbers as seen in the rules.
+
+#### The Board
+The board is divided in two parts, where on the right side the current player's name and the tile in his/her hand is shown with the tile on *top of the deck*.
+On the bottom side, we have the scores updating after each move for each player.
+There is a button at the end to end the game in between without wait for all the tile to be over.
+
+On the Left side is the board itself. 
+![The Initial Board and First Screen of Game Play](assets/gameStartPage.png)
+
+#### Player Moving Tile
+The player can pick and drag the tile across the board. If the location is valid for that tile placement, then the block appears green in color.
+![Player Moving Tile](assets/movingTile.png)
+
+If the players tries to place the tile on any location where the tile cannot be placed according to the rules then the game shows an error message.
+![Player Making an Illegal move](assets/playerMakingAnIllegalMove.png)
+
+#### Player Picking Up Tile
+A player can pick up a tile and move another tile from the *top of deck*. This can be done with the help of the button `Pick Up Tile`. 
+![Player Picking Up Tile](assets/pickedUpTIle.png)
+
+#### Finishing The Game
+The scores for each player is updated with every move that is made. This helps in keeping track of each players score in real time.
+The players can also finish the game prior to its ending with the help of `Finish Game` button at the end.
+When they press the `Finish Game` button then the Final Score screen apprears with the winners name and the scores for all players. 
+![Finish Game](assets/finishingGameWithButton.png)
+
+
+### Thank You
+This was a fun experience, and I learned a lot from this project and from my other teammates.
+They helped me understanding different aspects of the game.
+
+My teammates: 
+- Tom Stephens
+- Kyle Robertson

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -26,6 +27,7 @@ public class GetPlayers {
         int[] retArr = new int[2];
         // Create a new Stage to Accept the Number of Players
         Stage newWindow = new Stage();
+        newWindow.getIcons().add(new Image("metroGame/gui/assets/tile_back_cover.jpg"));
 
         // This makes the new Window a compulsory window
         newWindow.initModality(Modality.APPLICATION_MODAL);
